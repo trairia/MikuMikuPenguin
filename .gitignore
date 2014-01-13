@@ -8,6 +8,8 @@ Makefile.in
 /autom4te.cache
 /compile
 /config.guess
+/config.log
+/config.status
 /config.sub
 /configure
 /depcomp
@@ -17,10 +19,21 @@ Makefile.in
 
 # http://www.gnu.org/software/libtool
 
+/libtool
 /ltmain.sh
 
-#ignore data folder
+# ignore data folder
 data/model/
 data/motion/
 data/stage/
 build/
+
+# files generated during builds
+
+*.la
+*.lo
+*.o
+.deps/
+.libs/
+/pmx
+Makefile
