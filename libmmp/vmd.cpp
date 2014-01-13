@@ -158,15 +158,17 @@ VMDInfo &readVMD(string filename)
 	}
 	cout<<"done."<<endl;
 	
+	///NOTHING PAST THIS POINT TESTED (yet)
+	
 	//***Extract Light Info***
-	miku.read((char*)&vmdInfo.lightCount,4);
+	/*miku.read((char*)&vmdInfo.lightCount,4);
 	vmdInfo.lightFrames=new LightFrame[vmdInfo.lightCount];
 	//cout<<"Light Count: "<<vmdInfo.lightCount<<endl;
 	
 	
 	//***Extract Self Shadow Info***
 	miku.read((char*)&vmdInfo.selfShadowCount,4);
-	vmdInfo.selfShadowFrames=new SelfShadowFrame[vmdInfo.selfShadowCount];
+	vmdInfo.selfShadowFrames=new SelfShadowFrame[vmdInfo.selfShadowCount];*/
 	//cout<<"SelfShadow Count: "<<vmdInfo.selfShadowCount<<endl;
 	
 	return vmdInfo;
