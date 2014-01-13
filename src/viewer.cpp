@@ -709,6 +709,7 @@ void Viewer::initGLFW()
 		exit(EXIT_FAILURE);
 	}
 	
+	cout<<"OpenGL version info: "<<endl;
 	cout<<glGetString(GL_VERSION)<<endl;
 
 	// Initialize GLEW
