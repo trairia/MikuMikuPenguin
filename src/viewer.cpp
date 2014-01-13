@@ -697,8 +697,8 @@ void Viewer::initGLFW()
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4); //OpenGL version
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 1);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
@@ -708,6 +708,8 @@ void Viewer::initGLFW()
 		glfwTerminate();
 		exit(EXIT_FAILURE);
 	}
+	
+	cout<<glGetString(GL_VERSION)<<endl;
 
 	// Initialize GLEW
 	glewExperimental=true; //Needed in core profile
