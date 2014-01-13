@@ -698,7 +698,7 @@ void Viewer::initGLFW()
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
