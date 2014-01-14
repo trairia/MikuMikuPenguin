@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.64])
 AC_INIT([MikuMikuPenguin], [0.1], [ibenrunnin@gmail.com])
 AM_INIT_AUTOMAKE
 LT_PREREQ([2.2])
@@ -23,12 +23,42 @@ AM_CONDITIONAL([ENABLE_SOUND], [test "$enable_sound" = "yes"])
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_CXXCPP
 AC_PROG_CC
+AC_LANG([C++])
 
 # Checks for libraries.
+AC_CHECK_LIB(GL, glBegin,
+			[AC_DEFINE(HAVE_GL)],
+			[AC_MSG_ERROR(You must have libgl installed)])
+
+AC_CHECK_LIB(glfw, glfwInit,
+	[AC_DEFINE(HAVE_LIBGLFW)],
+	[AC_MSG_ERROR(You must have libglfw installed.)])
+	
+AC_CHECK_LIB(SOIL, SOIL_load_image,
+			[AC_DEFINE(HAVE_SOIL)],
+			[AC_MSG_ERROR(You must have libSOIL installed)])
+	
+AC_CHECK_LIB(BulletDynamics, plCreateDynamicsWorld,
+			[AC_DEFINE(HAVE_BULLETDYNAMICS)],
+			[AC_MSG_ERROR(You must have BulletDynamics (libbullet) installed)])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])
+
+AC_CHECK_HEADERS([GL/glew.h],
+	[AC_DEFINE(HAVE_LIBGLEW)],
+	[AC_MSG_ERROR(You must have libglew installed.)])
+
+AC_CHECK_HEADERS([GL/glu.h],
+			[AC_DEFINE(HAVE_GLU)],
+			[AC_MSG_ERROR(You must have libglu installed.)])
+
+AC_CHECK_HEADERS([glm/gtc/matrix_transform.hpp],
+			[AC_DEFINE(HAVE_LIBGLM)],
+			[AC_MSG_ERROR(You must have libglm installed.)])
+
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
