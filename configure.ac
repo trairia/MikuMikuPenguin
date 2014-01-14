@@ -42,7 +42,7 @@ AC_CHECK_LIB(SOIL, SOIL_load_image,
 	
 AC_CHECK_LIB(BulletDynamics, plCreateDynamicsWorld,
 			[AC_DEFINE(HAVE_BULLETDYNAMICS)],
-			[AC_MSG_ERROR(You must have BulletDynamics (libbullet) installed)])
+			[AC_MSG_ERROR(You must have BulletDynamics installed)])
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])
