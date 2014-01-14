@@ -426,21 +426,27 @@ void Viewer::initBuffers()
 	
 	//Intialize Vertex Attribute Pointers
 	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(0)); //4=number of components updated per vertex
+	glBindAttribLocation(shaderProgram, vPosition, "vPosition"); //Explicit vertex attribute index specification for older OpenGL version support. (Newer method is layout qualifier in vertex shader)
 	glEnableVertexAttribArray(vPosition);
 	
 	glVertexAttribPointer(vUV, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*4));
+	glBindAttribLocation(shaderProgram, vUV, "vUV");
 	glEnableVertexAttribArray(vUV);
 	
 	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*6));
+	glBindAttribLocation(shaderProgram, vNormal, "vNormal");
 	glEnableVertexAttribArray(vNormal);
 	
 	glVertexAttribPointer(vBoneIndices, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*10));
+	glBindAttribLocation(shaderProgram, vBoneIndices, "vBoneIndices");
 	glEnableVertexAttribArray(vBoneIndices);
 	
 	glVertexAttribPointer(vBoneWeights, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*14));
+	glBindAttribLocation(shaderProgram, vBoneWeights, "vBoneWeights");
 	glEnableVertexAttribArray(vBoneWeights);
 	
 	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*9));
+	glBindAttribLocation(shaderProgram, vWeightFormula, "vWeightFormula");
 	glEnableVertexAttribArray(vWeightFormula);	
 	
 	
@@ -698,8 +704,8 @@ void Viewer::initGLFW()
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )

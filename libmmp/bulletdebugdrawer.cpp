@@ -24,10 +24,12 @@ DebugDrawer::DebugDrawer(GLuint shaderProgram): m_debugMode(0)
 	
 	//0-vPosition
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*8, BUFFER_OFFSET(0));
+	glBindAttribLocation(shaderProgram, 0, "vPosition"); //Explicit vertex attribute index specification for older OpenGL version support. (Newer method is layout qualifier in vertex shader)
 	glEnableVertexAttribArray(0);
 	
 	//1-vColor
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*8, BUFFER_OFFSET(sizeof(GLfloat)*4));
+	glBindAttribLocation(shaderProgram, 1, "vColor");
 	glEnableVertexAttribArray(1);
 }
 
