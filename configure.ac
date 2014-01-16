@@ -23,7 +23,7 @@ PLATFORM_STRING="Linux"
 *-*-darwin*)
 AC_MSG_WARN([Hello])
 AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
-opengl_LIBS="-framework AGL -framework OpenGL -framework GLFW"
+opengl_LIBS="-lglfw -lglew -framework AGL -framework OpenGL"
 PLATFORM_STRING="Apple"
 ;;
 *)
