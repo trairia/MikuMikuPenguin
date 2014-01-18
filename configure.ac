@@ -23,7 +23,9 @@ PLATFORM_STRING="Linux"
 *-*-darwin*)
 AC_MSG_WARN([Hello])
 AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
-opengl_LIBS="-lglfw -lglew -framework AGL -framework OpenGL"
+opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+AC_SUBST(CXXFLAGS, "-stdlib=libc++ -I/usr/local/include/bullet")
+AC_SUBST(LDFLAGS, "-L/System/Library/Frameworks/OpenGL.framework/Libraries")
 PLATFORM_STRING="Apple"
 ;;
 *)
