@@ -8,6 +8,32 @@ LT_PREREQ([2.2])
 LT_INIT([dlopen])
 AC_CONFIG_MACRO_DIR([m4])
 
+
+case "$host" in
+*-*-mingw*|*-*-cygwin*)
+AC_DEFINE(PLATFORM_WIN32, 1, [Platform is Win32])
+opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+PLATFORM_STRING="Win32"
+;;
+*-*-linux*)
+AC_DEFINE(PLATFORM_LINUX, 1, [Platform is Linux])
+opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+PLATFORM_STRING="Linux"
+;;
+*-*-darwin*)
+AC_MSG_WARN([Hello])
+AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
+opengl_LIBS="-lglfw -lglew -framework AGL -framework OpenGL"
+PLATFORM_STRING="Apple"
+;;
+*)
+AC_MSG_WARN([*** Please add $host to configure.ac checks!])
+;;
+esac
+AC_SUBST(opengl_LIBS)
+
+
+#--enable-sound flag/optional SDL/SDL_mixer check
 AC_ARG_ENABLE([sound],
   [AS_HELP_STRING([--disable-sound], [Enable Sound support @<:@check@:>@])],
   [:],

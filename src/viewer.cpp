@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "SOIL/SOIL.h"
+#include <SOIL/SOIL.h>
 //#include <FreeImage.h>
 
 #include "texthandle.h"
@@ -704,7 +704,7 @@ void Viewer::initGLFW()
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
