@@ -12,7 +12,7 @@ AC_CONFIG_MACRO_DIR([m4])
 case "$host" in
 *-*-mingw*|*-*-cygwin*)
 AC_DEFINE(PLATFORM_WIN32, 1, [Platform is Win32])
-bullet_CXXFLAGS="-I/usr/local/include/bullet"
+bullet_CXXFLAGS="-I/usr/include/bullet"
 opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
 PLATFORM_STRING="Win32"
 ;;
