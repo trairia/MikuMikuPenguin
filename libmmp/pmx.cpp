@@ -7,7 +7,6 @@
 
 #include <string.h>
 
-#include "Converter.h"
 
 using namespace std;
 
@@ -53,73 +52,6 @@ using namespace std;
         }
         return out;
     }
-
-
-
-/*void getPMXText(ifstream &miku, PMXInfo &pmxInfo, string &result, bool debug)
-{
-	uint32_t text_size; //text size in bytes
-	miku.read((char*)&text_size,4);
-	
-	if(text_size==0) return;
-	
-	//cout<<"Text Size: "<<text_size<<endl;
-	if(pmxInfo.unicode_type==PMX_ENCODE_UTF16)
-	{
-		//WARNING: UTF-16 text-pulling code does NOT support the extra (multi-byte) codesets of UTF-16!!!!
-		
-		#ifdef _WIN32
-		
-		
-		char16_t c16[text_size/2];
-		for(int i=0; i<text_size; ++i)
-		{
-			c16[i]=0;
-		}
-		
-		miku.read((char*)&c16,text_size);
-		
-		result=UTF16to8((const short unsigned*) c16);
-		cout<<result<<endl;
-		
-		#else
-		
-		char16_t c16[text_size];
-		u16string s16;
-		for(int i=0; i<text_size; ++i)
-		{
-			c16[i]=0;
-		}
-	
-		int count=0;
-		for(int i=0; i<text_size/2; ++i)
-		{
-			miku.read((char*)&c16[i],2);
-			count+=2;
-		}
-		if(count!=text_size)
-		{
-			cerr<<"ERROR: number of bytes pulled does not equal number of bytes for text string"<<endl;
-			exit(EXIT_FAILURE);
-		}
-		
-		//if(debug)cout<<"Raw Text: "<<data_byte<<endl;
-		result = to_u8string(c16);
-		if(debug)cout<<"Result: "<<result<<endl;
-
-		#endif //_WIN32
-		
-		//exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		//WARNING: Loading UTF-8 encoded PMX files is untested (if only they all were UTF-8 encoded)
-		char c8[text_size];
-		miku.read((char*)&c8,text_size);
-		
-		result=c8;
-	}
-}*/
 
 void getPMXIndex(ifstream &miku, int &index, uint8_t &indexSize)
 {
