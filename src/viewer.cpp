@@ -369,9 +369,7 @@ void Viewer::drawIKMarkers()
 	
 	GLuint Bones_loc=glGetUniformLocation(shaderProgram,"Bones");
 	
-	vector<glm::mat4> tmpSkinMatrix(pmxInfo->bone_continuing_datasets);
-	
-	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, (const GLfloat*)&tmpSkinMatrix);
+	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, NULL); //Empty Skin Matrix on shader
 	
 	glDrawArrays(GL_POINTS, 0, pmxInfo->bone_continuing_datasets);
 }
@@ -718,6 +716,8 @@ void Viewer::initGLFW()
 		if( !glfwOpenWindow( screenWidth, screenHeight, 0,0,0,0, depthBits,0, GLFW_WINDOW ) )
 		{
 			cout<<"Fatal error: Failed to open GLFW window"<<endl;
+			cout<<"Your OpenGL implementation doesn't seem to support OpenGL 3.3 or higher."<<endl;
+			cout<<"In order to support PMXViewer on OSX, OpenGL 3.3 or higher is required. Sorry!"<<endl;
 			exit(EXIT_FAILURE);
 		}
 		else
