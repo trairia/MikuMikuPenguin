@@ -704,19 +704,35 @@ void Viewer::initGLFW()
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0); //Don't want old OpenGL
+	//glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+	//glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+	//glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	
  
 	//Open a window and create its OpenGL context
 	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
 	{
-		fprintf( stderr, "Failed to open GLFW window\n" );
-		glfwTerminate();
-		exit(EXIT_FAILURE);
+		cout<<"Failed to open GLFW window"<<endl;
+		cout<<"Going to attempt to open GLFW window without any OpenGL version hints"<<endl;
+		
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 0);
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
+		glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+		glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0);
+		
+		if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+		{
+			cout<<"FATAL ERROR: Failed to open GLFW window"<<endl;
+			glfwTerminate();
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			cout<<"glfwOpenWindow() successful"<<endl;
+		}
 	}
 	
-	cout<<"OpenGL version info: "<<endl;
-	cout<<glGetString(GL_VERSION)<<endl;
+	cout<<"OpenGL version info: "<<glGetString(GL_VERSION)<<endl;
 
 	// Initialize GLEW
 	glewExperimental=true; //Needed in core profile

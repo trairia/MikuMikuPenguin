@@ -33,7 +33,7 @@ vec4 getSphereColor()
 	if(sphereMode>0) //if sphere mapping is used
 	{
 		vec2 sphereCoord = 0.5 * (1.0 + vec2(1.0, -1.0) * normalize(normal).xy);
-		sphereColor=texture2D(sphereSampler, sphereCoord);
+		sphereColor=texture(sphereSampler, sphereCoord);
 	}
 	
 	return sphereColor;
@@ -51,7 +51,7 @@ void main()
 	
 	vec3 textureColor=vec3(1.0,1.0,1.0);
 	
-	textureColor*=texture2D(textureSampler, UV).rgb;
+	textureColor*=texture(textureSampler, UV).rgb;
 	
 	vec4 sphereColor=getSphereColor();
 	
