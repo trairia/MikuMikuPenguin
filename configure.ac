@@ -12,26 +12,30 @@ AC_CONFIG_MACRO_DIR([m4])
 case "$host" in
 *-*-mingw*|*-*-cygwin*)
 AC_DEFINE(PLATFORM_WIN32, 1, [Platform is Win32])
+bullet_CXXFLAGS="-I/usr/local/include/bullet"
 opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
 PLATFORM_STRING="Win32"
 ;;
 *-*-linux*)
 AC_DEFINE(PLATFORM_LINUX, 1, [Platform is Linux])
+bullet_CXXFLAGS="-I/usr/include/bullet"
 opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
 PLATFORM_STRING="Linux"
 ;;
 *-*-darwin*)
 AC_MSG_WARN([Hello])
 AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
-opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
-AC_SUBST(CXXFLAGS, "-stdlib=libc++ -I/usr/local/include/bullet")
-AC_SUBST(LDFLAGS, "-L/System/Library/Frameworks/OpenGL.framework/Libraries")
+bullet_CXXFLAGS="-stdlib=libc++ -I/usr/local/include/bullet"
+opengl_LIBS="-framework AGL -framework OpenGL"
 PLATFORM_STRING="Apple"
+#AC_SUBST(CXXFLAGS, "-stdlib=libc++ -I/usr/local/include/bullet")
+#AC_SUBST(LDFLAGS, "-L/System/Library/Frameworks/OpenGL.framework/Libraries")
 ;;
 *)
 AC_MSG_WARN([*** Please add $host to configure.ac checks!])
 ;;
 esac
+AC_SUBST(bullet_CXXFLAGS)
 AC_SUBST(opengl_LIBS)
 
 
@@ -75,13 +79,14 @@ AC_CHECK_LIB(BulletDynamics, plCreateDynamicsWorld,
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h])
 
-AC_CHECK_HEADERS([GL/glew.h],
-	[AC_DEFINE(HAVE_LIBGLEW)],
-	[AC_MSG_ERROR(You must have libglew installed.)])
+AC_CHECK_HEADERS([OpenGL/glew.h GL/glew.h],
+	[HAVE_GLEW=yes; break])
+AS_IF([test "x$HAVE_GLEW" != "xyes"],
+	[AC_MSG_ERROR([You must have libglew installed])])
 
-AC_CHECK_HEADERS([GL/glu.h],
-			[AC_DEFINE(HAVE_GLU)],
-			[AC_MSG_ERROR(You must have libglu installed.)])
+AC_CHECK_HEADERS([OpenGL/glu.h GL/glu.h],[HAVE_GLU=yes; break])
+AS_IF([test "x$HAVE_GLU" != "xyes"],
+	[AC_MSG_ERROR([You must have libglu installed])])
 
 AC_CHECK_HEADERS([glm/gtc/matrix_transform.hpp],
 			[AC_DEFINE(HAVE_LIBGLM)],
