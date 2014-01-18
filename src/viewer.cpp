@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "SOIL/SOIL.h"
+#include <SOIL/SOIL.h>
 //#include <FreeImage.h>
 
 #include "texthandle.h"
@@ -368,8 +368,9 @@ void Viewer::drawIKMarkers()
 	glBufferData(GL_ARRAY_BUFFER, pmxInfo->bone_continuing_datasets*sizeof(VertexData), IKVertexData, GL_DYNAMIC_DRAW);
 	
 	GLuint Bones_loc=glGetUniformLocation(shaderProgram,"Bones");
+	glm::mat4 tmpSkinMatrix[pmxInfo->bone_continuing_datasets];
 	
-	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, NULL); //Empty Skin Matrix on shader
+	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, (const GLfloat*)&tmpSkinMatrix);
 	
 	glDrawArrays(GL_POINTS, 0, pmxInfo->bone_continuing_datasets);
 }
@@ -425,21 +426,27 @@ void Viewer::initBuffers()
 	
 	//Intialize Vertex Attribute Pointers
 	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(0)); //4=number of components updated per vertex
+	glBindAttribLocation(shaderProgram, vPosition, "vPosition"); //Explicit vertex attribute index specification for older OpenGL version support. (Newer method is layout qualifier in vertex shader)
 	glEnableVertexAttribArray(vPosition);
 	
 	glVertexAttribPointer(vUV, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*4));
+	glBindAttribLocation(shaderProgram, vUV, "vUV");
 	glEnableVertexAttribArray(vUV);
 	
 	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*6));
+	glBindAttribLocation(shaderProgram, vNormal, "vNormal");
 	glEnableVertexAttribArray(vNormal);
 	
 	glVertexAttribPointer(vBoneIndices, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*10));
+	glBindAttribLocation(shaderProgram, vBoneIndices, "vBoneIndices");
 	glEnableVertexAttribArray(vBoneIndices);
 	
 	glVertexAttribPointer(vBoneWeights, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*14));
+	glBindAttribLocation(shaderProgram, vBoneWeights, "vBoneWeights");
 	glEnableVertexAttribArray(vBoneWeights);
 	
 	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*9));
+	glBindAttribLocation(shaderProgram, vWeightFormula, "vWeightFormula");
 	glEnableVertexAttribArray(vWeightFormula);	
 	
 	
@@ -695,37 +702,17 @@ void Viewer::initGLFW()
 {
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
-	const int screenWidth=1920;
-	const int screenHeight=1080;
-	const int depthBits=32;
-	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
-	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
-	if( !glfwOpenWindow( screenWidth, screenHeight, 0,0,0,0, depthBits,0, GLFW_WINDOW ) )
+	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
 	{
-		cout<<"Failed to open GLFW window"<<endl;
-		cout<<"Attempting to open with OpenGL 3.0..."<<endl;
-		
-		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
-		
-		if( !glfwOpenWindow( screenWidth, screenHeight, 0,0,0,0, depthBits,0, GLFW_WINDOW ) )
-		{
-			cout<<"Fatal error: Failed to open GLFW window"<<endl;
-			cout<<"Your OpenGL implementation doesn't seem to support OpenGL 3.3 or higher."<<endl;
-			cout<<"In order to support PMXViewer on OSX, OpenGL 3.3 or higher is required. Sorry!"<<endl;
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			cout<<"Your OpenGL implementation doesn't seem to support OpenGL 3.3 or higher."<<endl;
-			cout<<"In order to support PMXViewer on OSX, OpenGL 3.3 or higher is required. Sorry!"<<endl;
-			exit(EXIT_FAILURE);
-		}
+		fprintf( stderr, "Failed to open GLFW window\n" );
+		glfwTerminate();
+		exit(EXIT_FAILURE);
 	}
 	
 	cout<<"OpenGL version info: "<<endl;
