@@ -720,6 +720,12 @@ void Viewer::initGLFW()
 			cout<<"Fatal error: Failed to open GLFW window"<<endl;
 			exit(EXIT_FAILURE);
 		}
+		else
+		{
+			cout<<"Your OpenGL implementation doesn't seem to support OpenGL 3.3 or higher."<<endl;
+			cout<<"In order to support PMXViewer on OSX, OpenGL 3.3 or higher is required. Sorry!"<<endl;
+			exit(EXIT_FAILURE);
+		}
 	}
 	
 	cout<<"OpenGL version info: "<<endl;
