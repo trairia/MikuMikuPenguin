@@ -368,7 +368,8 @@ void Viewer::drawIKMarkers()
 	glBufferData(GL_ARRAY_BUFFER, pmxInfo->bone_continuing_datasets*sizeof(VertexData), IKVertexData, GL_DYNAMIC_DRAW);
 	
 	GLuint Bones_loc=glGetUniformLocation(shaderProgram,"Bones");
-	glm::mat4 tmpSkinMatrix[pmxInfo->bone_continuing_datasets];
+	
+	vector<glm::mat4> tmpSkinMatrix(pmxInfo->bone_continuing_datasets);
 	
 	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, (const GLfloat*)&tmpSkinMatrix);
 	
@@ -696,17 +697,29 @@ void Viewer::initGLFW()
 {
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
+	const int screenWidth=1920;
+	const int screenHeight=1080;
+	const int depthBits=32;
+	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);
 	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
  
 	//Open a window and create its OpenGL context
-	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+	if( !glfwOpenWindow( screenWidth, screenHeight, 0,0,0,0, depthBits,0, GLFW_WINDOW ) )
 	{
-		fprintf( stderr, "Failed to open GLFW window\n" );
-		glfwTerminate();
-		exit(EXIT_FAILURE);
+		cout<<"Failed to open GLFW window"<<endl;
+		cout<<"Attempting to open with OpenGL 3.0..."<<endl;
+		
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
+		
+		if( !glfwOpenWindow( screenWidth, screenHeight, 0,0,0,0, depthBits,0, GLFW_WINDOW ) )
+		{
+			cout<<"Fatal error: Failed to open GLFW window"<<endl;
+			exit(EXIT_FAILURE);
+		}
 	}
 	
 	cout<<"OpenGL version info: "<<endl;
