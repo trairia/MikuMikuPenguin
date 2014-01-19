@@ -92,6 +92,15 @@ AC_CHECK_HEADERS([glm/gtc/matrix_transform.hpp],
 			[AC_DEFINE(HAVE_LIBGLM)],
 			[AC_MSG_ERROR(You must have libglm installed.)])
 
+#Check for library versions
+#PKG_CHECK_MODULES([LIBGLU], [glu >= 9.0.0])
+#PKG_CHECK_MODULES([LIBGLEW], [glew >= 1.8.0])
+
+#PKG_CHECK_MODULES([LIBGLFW], [libglfw >= 2.7])
+#PKG_CHECK_MODULES([LIBGLFW], [libglfw < 3.0])
+
+#PKG_CHECK_MODULES([LIBBULLET], [bullet >= 2.81])
+
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL

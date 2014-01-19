@@ -702,7 +702,7 @@ void Viewer::initGLFW()
 {
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
-	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4); //4x antialiasing
+	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 2); //2x antialiasing
 	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
 	//glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
 	//glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
