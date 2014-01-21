@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([MikuMikuPenguin], [0.1], [ibenrunnin@gmail.com])
+AC_INIT([MikuMikuPenguin], [0.2], [ibenrunnin@gmail.com])
 AM_INIT_AUTOMAKE
 LT_PREREQ([2.2])
 LT_INIT([dlopen])
