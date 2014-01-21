@@ -45,21 +45,45 @@ PMXInfo &readPMX(std::string foldername,std::string filename);
 
 //PMX related structs
 
+
+/*!  \class PMXVertex
+ * \if ENGLISH
+ * \brief A struct for holding information about a vertex in a PMX file.
+ * 
+ * Detailed description starts here(PMXVertex).
+ * \endif
+ * 
+ * \if JAPANESE
+ * \brief PMXファイルに入っている頂点情報を格納する為のstruct。
+ * 
+ * 詳細はここに（PMXVertex）。
+ * \endif
+*/
 struct PMXVertex
-{	
-	glm::vec3 pos; //Vertex position
-	glm::vec3 normal; //Surface normal
-	glm::vec2 UV; //UV
+{
+	glm::vec3 pos;						//!< \if ENGLISH \brief Vertex Position \endif
+										//!< \if JAPANESE \brief 頂点の位置 \endif
+	glm::vec3 normal;					//!< \if ENGLISH \brief Vertex Normal \endif
+										//!< \if JAPANESE \brief 頂点のノーマル \endif
+	glm::vec2 UV; 						//!< \if ENGLISH \brief Texture UV Coordinates \endif
+										//!< \if JAPANESE \brief テクスチャのUV座標 \endif
 	
-	uint8_t weight_transform_formula; //0:BDEF1 1:BDEF2 2:BDEF4 3:SDEF
+	uint8_t weight_transform_formula;	//!< \if ENGLISH \brief Weight Transformation Formula \endif
+										//!< \if JAPANESE \brief ボーンのウエイト変形形式 \endif
+										/*!< 0:BDEF1 \n
+										 * 1:BDEF2 \n
+										 * 2:BDEF4 \n
+										 * 3:SDEF */
 	
 	//Bone Info
-	int boneIndex1;
-	int boneIndex2;
-	int boneIndex3;
-	int boneIndex4;
+	int boneIndex1;						//!< \if ENGLISH \brief The Index of Bone 1 (For bone transformation) \endif
+										//!< \if JAPANESE \brief ボーン１のインデクス（ボーン変形用） \endif
+	int boneIndex2;						
+	int boneIndex3;						
+	int boneIndex4;						
 	
-	float weight1;
+	float weight1;						//!< \if ENGLISH \brief The weight value of Bone 1 (For bone transformation) \endif
+										//!< \if JAPANESE \brief ボーン１の重み値（ボーン変形用） \endif
 	float weight2;
 	float weight3;
 	float weight4;
