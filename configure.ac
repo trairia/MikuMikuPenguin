@@ -60,9 +60,10 @@ AC_PROG_CC
 AC_LANG([C++])
 
 # Checks for libraries.
+AS_IF([test "$PLATFORM_STRING" != "Apple"],
 AC_CHECK_LIB(GL, glBegin,
 			[AC_DEFINE(HAVE_GL)],
-			[AC_MSG_ERROR(You must have libgl installed)])
+ 			[AC_MSG_ERROR(You must have libgl installed)]))
 
 AC_CHECK_LIB(glfw, glfwInit,
 	[AC_DEFINE(HAVE_LIBGLFW)],
