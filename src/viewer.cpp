@@ -177,8 +177,6 @@ void Viewer::render()
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VertexArrayBuffer]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[VertexIndexBuffer]);
 	
-	//drawIKMarkers();
-
 	//glFinish();
 	//glDrawBuffer(RecordBuffer,Buffers);
 	//glReadPixels(0,0,1920,1080,GL_RGB,

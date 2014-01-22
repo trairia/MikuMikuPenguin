@@ -57,7 +57,6 @@ class Viewer
 	void holdModelInBindPose();
 	
 	void drawModel(bool drawEdges);
-	void drawIKMarkers();
 	
 	
 	GLuint VAOs[NumVAOs];
