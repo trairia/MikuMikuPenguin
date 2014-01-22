@@ -23,7 +23,7 @@
 
 using namespace std;
 
-VMDMotionController::VMDMotionController(PMXInfo &pmxInfovar,VMDInfo &vmdInfovar,GLuint shaderProgram):pmxInfo(pmxInfovar),vmdInfo(vmdInfovar)
+VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuint shaderProgram):pmxInfo(pmxInfo),vmdInfo(vmdInfo)
 {	
 	//***INIT BONE TRANSFORMATION VARIABLES***
 	time=0;
