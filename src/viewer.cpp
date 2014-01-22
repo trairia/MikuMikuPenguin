@@ -28,6 +28,7 @@
 //#define MODELDUMP true
 
 using namespace std;
+using namespace ClosedMMDFormat;
 
 
 Viewer::Viewer(string modelPath, string motionPath,string musicPath)
@@ -154,22 +155,22 @@ void Viewer::render()
 	
 	if(glfwGetKey('S')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawWireframe);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('D')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawAabb);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawAabb);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('F')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawConstraints);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawConstraints);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('G')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawConstraintLimits);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawConstraintLimits);
 		bulletPhysics->DebugDrawWorld();
 	}
 	glUseProgram(shaderProgram); //Restore shader program and buffer's to Viewer's after drawing Bullet debug

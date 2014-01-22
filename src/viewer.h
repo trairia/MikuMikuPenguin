@@ -26,8 +26,11 @@ enum Uniform_IDs {
 	uTextureSampler,uSphereSampler,uToonSampler,
 	NumUniforms };
 
-struct PMXInfo;
-struct VMDInfo;
+namespace ClosedMMDFormat
+{
+	struct PMXInfo;
+	struct VMDInfo;
+}
 class VMDMotionController;
 class BulletPhysics;
 class MMDPhysics;
@@ -65,8 +68,8 @@ class Viewer
 
 	GLuint MVP_loc;
 
-	PMXInfo *pmxInfo;
-	VMDInfo *vmdInfo;
+	ClosedMMDFormat::PMXInfo *pmxInfo;
+	ClosedMMDFormat::VMDInfo *vmdInfo;
 	VMDMotionController *motionController;
 
 	BulletPhysics *bulletPhysics;
