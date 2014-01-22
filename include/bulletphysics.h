@@ -99,17 +99,18 @@ class BulletPhysics
 	 * @param c_r1 Rotation limiter 1
 	 * @param c_r2 Rotation limiter 2
 	 * @param stiffness Spring stiffness (Translation x, y, z, Rotation x, y, z, a total of 6 elements) \endif
+	 * 
+	 * \if JAPANESE \brief 6軸ジョイントを追加
+	 * @param bodyA 剛体A
+	 * @param bodyB 剛体B
+	 * @param frameInA ジョイントのワールド変換行列(剛体Aローカル座標系)
+	 * @param frameInB ジョイントのワールド変換行列(剛体Bローカル座標系)
+	 * @param c_p1 移動制限1
+	 * @param c_p2 移動制限2
+	 * @param c_r1 回転制限1
+	 * @param c_r2 回転制限2
+	 * @param stiffness バネ剛性(平行移動x, y, z, 回転移動x, y, zの順の6要素) \endif
 	*/
-	/// \if JAPANESE \brief 6軸ジョイントを追加
-	/// @param bodyA 剛体A
-	/// @param bodyB 剛体B
-	/// @param frameInA ジョイントのワールド変換行列(剛体Aローカル座標系)
-	/// @param frameInB ジョイントのワールド変換行列(剛体Bローカル座標系)
-	/// @param c_p1 移動制限1
-	/// @param c_p2 移動制限2
-	/// @param c_r1 回転制限1
-	/// @param c_r2 回転制限2
-	/// @param stiffness バネ剛性(平行移動x, y, z, 回転移動x, y, zの順の6要素) \endif
 	void Add6DofSpringConstraint(btRigidBody* bodyA, btRigidBody* bodyB, const glm::mat4& frameInA, const glm::mat4& frameInB,
 								const glm::vec3& c_p1, const glm::vec3& c_p2, const glm::vec3& c_r1, const glm::vec3& c_r2, std::vector<float> stiffness);
 	void Add6DofSpringConstraint(btRigidBody* bodyB, const glm::mat4& frameInBDX,
