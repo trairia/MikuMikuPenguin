@@ -119,7 +119,7 @@ class BulletPhysics
 	//Step simulation 1/60s forward
 	void StepSimulation();
 	
-	void setDebugMode(int mode);
+	void SetDebugMode(int mode);
 	void DebugDrawWorld();
 
 	glm::mat4 GetWorld(btRigidBody* body); //Get the resulting World Matrix

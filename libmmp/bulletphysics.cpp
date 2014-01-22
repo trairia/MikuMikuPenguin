@@ -134,7 +134,7 @@ void BulletPhysics::StepSimulation()
 	dynamicsWorld->stepSimulation(1.0f/60.0f, 10);
 }
 
-void BulletPhysics::setDebugMode(int mode)
+void BulletPhysics::SetDebugMode(int mode)
 {
 	dynamicsWorld->getDebugDrawer()->setDebugMode(mode);
 }
