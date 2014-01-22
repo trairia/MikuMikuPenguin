@@ -125,7 +125,7 @@ class BulletPhysics
 	glm::mat4 GetWorld(btRigidBody* body); //Get the resulting World Matrix
 	
 	
-	DebugDrawer *debugDrawer;
+	BulletDebugDrawer *debugDrawer;
 	private:
 	btDefaultCollisionConfiguration *collisionConfiguration;
 	btCollisionDispatcher *dispatcher;

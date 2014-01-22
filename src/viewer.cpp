@@ -28,6 +28,7 @@
 //#define MODELDUMP true
 
 using namespace std;
+using namespace ClosedMMDFormat;
 
 
 Viewer::Viewer(string modelPath, string motionPath,string musicPath)

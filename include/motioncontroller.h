@@ -44,7 +44,7 @@ class VMDMotionController
 	 * @param shaderProgram Uniform変数「Bones」を取得出来るシェーダープログラム。
 	 * \endif
 	*/
-	VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuint shaderProgram);			
+	VMDMotionController(ClosedMMDFormat::PMXInfo &pmxInfo,ClosedMMDFormat::VMDInfo &vmdInfo,GLuint shaderProgram);			
 	~VMDMotionController();
 	void updateVertexMorphs(); 			//!< \if ENGLISH \brief A function used to update the Vertices of a model based on Vertex Morph animation parameters. \endif
 										//!< \if JAPANESE \brief 頂点モーフのモーションパラメータを利用してモデルの頂点を更新する為の関数。 \endif
@@ -68,31 +68,34 @@ class VMDMotionController
 	private:
 	int time;
 	
-	void updateChildren(PMXBone *linkBone);
+	void updateChildren(ClosedMMDFormat::PMXBone *linkBone);
 	void updateIK();
-	void solveIK(PMXBone *joint, int effector, glm::vec3 targetPos, int numIteration, int numBones, int numMaxBones);
+	void solveIK(ClosedMMDFormat::PMXBone *joint, int effector, glm::vec3 targetPos, int numIteration, int numBones, int numMaxBones);
 	
 	
-	PMXInfo &pmxInfo;
-	VMDInfo &vmdInfo;
+	ClosedMMDFormat::PMXInfo &pmxInfo;
+	ClosedMMDFormat::VMDInfo &vmdInfo;
 	
 	private:
 	GLuint Bones_loc; //uniform variable location for Bones[] in shader
 	
 	//***BONE TRANSFORMATION VARIABLES
-	std::vector<std::list<BoneFrame>> boneKeyFrames;				//Hold a list of keyframes for each Bone
-	std::vector<std::list<BoneFrame>::iterator> ite_boneKeyFrames;	//Keyframe iterator
+	std::vector<std::list<ClosedMMDFormat::VMDBoneFrame>> boneKeyFrames;				//Hold a list of keyframes for each Bone
+	std::vector<std::list<ClosedMMDFormat::VMDBoneFrame>::iterator> ite_boneKeyFrames;	//Keyframe iterator
 	
 	std::vector<glm::quat> boneRot;
 	std::vector<glm::vec3> bonePos;	
 	
 	//***VERTEX MORPH VARIABLES
-	std::vector<std::list<MorphFrame>> morphKeyFrames;				//Hold a list of keyframes for each vertex morph
-	std::vector<std::list<MorphFrame>::iterator> ite_morphKeyFrames;	//Keyframe iterator
+	std::vector<std::list<ClosedMMDFormat::VMDMorphFrame>> morphKeyFrames;				//Hold a list of keyframes for each vertex morph
+	std::vector<std::list<ClosedMMDFormat::VMDMorphFrame>::iterator> ite_morphKeyFrames;	//Keyframe iterator
 	
 	std::vector<float> vMorphWeights;
 };
 
+/*! \struct VertexData
+ * \if ENGLISH \brief Struct for MMD Model Vertex Information. \endif
+ * \if JAPANESE \brief MMDモデルの頂点情報を持つ為のストラクト。 \endif　*/
 struct VertexData
 {
 	glm::vec4 position;

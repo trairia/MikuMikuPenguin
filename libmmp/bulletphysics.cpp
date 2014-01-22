@@ -1,6 +1,9 @@
 #include "bulletphysics.h"
+#include "pmx.h"
 
 #include <vector>
+
+using namespace ClosedMMDFormat;
 
 BulletPhysics::BulletPhysics(GLuint shaderProgram)
 {
@@ -22,7 +25,7 @@ BulletPhysics::BulletPhysics(GLuint shaderProgram)
 	
 	if(shaderProgram!=0)
 	{
-		debugDrawer=new DebugDrawer(shaderProgram);
+		debugDrawer=new BulletDebugDrawer(shaderProgram);
 		dynamicsWorld->setDebugDrawer(debugDrawer);
 		dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 	}

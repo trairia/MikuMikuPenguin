@@ -22,6 +22,7 @@
 #endif
 
 using namespace std;
+using namespace ClosedMMDFormat;
 
 VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuint shaderProgram):pmxInfo(pmxInfo),vmdInfo(vmdInfo)
 {	

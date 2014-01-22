@@ -9,6 +9,26 @@
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
+
+/*! \struct BezierParameters
+ * \if ENGLISH \brief Struct for holding Bezier Curve Interpolation Information. \endif
+ * \if JAPANESE \brief ベジェ曲線情報を持つ為のストラクト。 \endif　*/
+struct BezierParameters
+{
+	//See "On VMD Interpolation Parameters.txt" in DOCs for information concerning bezier parameters.
+	glm::vec2 X1;
+	glm::vec2 X2;
+	
+	glm::vec2 Y1;
+	glm::vec2 Y2;
+	
+	glm::vec2 Z1;
+	glm::vec2 Z2;
+	
+	glm::vec2 R1;
+	glm::vec2 R2;
+};
+
 float bezier(float X, float x1,float y1, float x2,float y2);
 
 glm::fquat Slerp(glm::quat &v0, glm::quat &v1, float alpha);
