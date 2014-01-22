@@ -23,7 +23,7 @@ struct VertexData;
  * \endif
  * 
  * \if JAPANESE
- * \brief VMDモーションデーターでPMXモデルを動かす為のclass。
+ * \brief VMDモーションデーターでPMXモデルを動かす為のクラス。
  * 
  * 詳細はここに（VMDMotionController）。
  * \endif

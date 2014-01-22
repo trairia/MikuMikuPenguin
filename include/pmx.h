@@ -54,7 +54,7 @@ PMXInfo &readPMX(std::string foldername,std::string filename);
  * \endif
  * 
  * \if JAPANESE
- * \brief PMXファイルに入っている頂点情報を格納する為のstruct。
+ * \brief PMXファイルに入っている頂点情報を格納する為のストラクト。
  * 
  * 詳細はここに（PMXVertex）。
  * \endif

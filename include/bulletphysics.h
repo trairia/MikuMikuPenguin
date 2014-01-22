@@ -33,22 +33,45 @@ class BulletPhysics
 	~BulletPhysics();
 	
 	
-	/*! \if ENGLISH \brief Creates a Rigid Body Box.
+	/*! \if ENGLISH　@name Rigid Body Creation
+	 * \brief Creates a Rigid Body Object.
 	 * 
-	 * When mass is 0 and kinematic is false, the box created becomes a static rigid body. \n
-	 * When mass is 0 and kinematic is true, the box can be moved manually, but it becomes a kinematic rigid body that isn't effected by physics calculation.
-	 * \param width The box's width (x-length).
-	 * \param height The box's height (y-length).
-	 * \param depth The box's depth (z-length)
-	 * \param world A pointer to the 
+	 * When mass is 0 and kinematic is false, the object created becomes a static rigid body. \n
+	 * When mass is 0 and kinematic is true, the object can be moved manually, but it becomes a kinematic rigid body that isn't effected by physics calculation.
+	 * @param width The object's width (x-length).
+	 * @param height The object's height (y-length).
+	 * @param depth The object's depth (z-length).
+	 * @param radius The object's radius (round objects only).
+	 * @param world A pointer to the object's world transformation matrix. The center axis is the Z-axis.
+	 * @param mass The object's mass.
+	 * @param restitution The tendency of the object to return to its former shape after elastic deformation.
+	 * @param friction The amount of friction this object produces.
+	 * @param linear_damp Amount of linear movement decay.
+	 * @param angular_damp Amount of angular movement decay.
+	 * @param kinematic Whether the object is static or kinematic.
+	 * @param group The group this rigid body is associated with.
+	 * @param mask No collision group flag goes here??? (Clarification needed)
 	 * \endif
-	 * \if JAPANESE \brief 剛体箱を作る関数。
-	 * massが0、kinematicがfalseだった場合、箱がstatic剛体になる。 \n
-	 * massが0、kinematicがfalseだった場合、箱が手動で動かせるのだが、物理演算の影響を受けないKinematic剛体になる。
-	 * \param width 箱の幅さ（X軸の長さ）。
-	 * \param height 箱の高さ（Y軸の長さ）。
-	 * \param depth 箱の深さ（Z軸の長さ）。
+	 * \if JAPANESE　@name 剛体生成
+	 * \brief 剛体箱を作る関数。
+	 * 
+	 * massが0、kinematicがfalseだった場合、オブジェがstatic剛体になる。\n
+	 * massが0、kinematicがtrueだった場合、オブジェが手動で動かせるのだが、物理演算の影響を受けないKinematic剛体になる。
+	 * @param width オブジェの幅さ（X軸の長さ）。
+	 * @param height オブジェの高さ（Y軸の長さ）。
+	 * @param depth オブジェの深さ（Z軸の長さ）。
+	 * @param radius オブジェの半径（丸いオブジェだけ）
+	 * @param world オブジェのワールド変形行列へのポインター。
+	 * @param mass オブジェの質量。
+	 * @param restitution エラスティック変形の後のオブジェの「元の形に戻る」傾向。
+	 * @param friction このオブジェが生じる摩擦。
+	 * @param linear_damp 線形モーションの廃退量。
+	 * @param angular_damp 鋭角的なモーションの廃退量。
+	 * @param kinematic このオブジェはstaticかkinematicか。
+	 * @param group この剛体が入ってるグループ。
+	 * @param mask 非衝突グループフラグをここに？（解明が必要）
 	*/
+	//@{
 	btRigidBody* CreateBox(float width, float height, float depth, const glm::mat4* world, 
 		float mass = 0, float restitution = 0, float friction = 0.5f, float linear_damp = 0, float angular_damp = 0, bool kinematic = 0, unsigned short group = 1, unsigned short mask = 0xFFFF);
 	btRigidBody* CreateSphere(float radius, const glm::mat4* world, 
@@ -57,6 +80,7 @@ class BulletPhysics
 		float mass = 0, float restitution = 0, float friction = 0.5f, float linear_damp = 0, float angular_damp = 0, bool kinematic = 0, unsigned short group = 1, unsigned short mask = 0xFFFF);
 	btRigidBody* CreateCapsule(float radius, float height, const glm::mat4* world,	//The center axis is the Z-axis. The height is the distance to the sphere's center.
 		float mass = 0, float restitution = 0, float friction = 0.5f, float linear_damp = 0, float angular_damp = 0, bool kinematic = 0, unsigned short group = 1, unsigned short mask = 0xFFFF);
+	//@}
 		
 	void MoveRigidBody(btRigidBody* body, const glm::mat4* world);
 	
