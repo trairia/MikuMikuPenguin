@@ -177,8 +177,6 @@ void Viewer::render()
 	glBindBuffer(GL_ARRAY_BUFFER, Buffers[VertexArrayBuffer]);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Buffers[VertexIndexBuffer]);
 	
-	//drawIKMarkers();
-
 	//glFinish();
 	//glDrawBuffer(RecordBuffer,Buffers);
 	//glReadPixels(0,0,1920,1080,GL_RGB,
@@ -301,78 +299,6 @@ void Viewer::drawModel(bool drawEdges)
 		glDrawElements(GL_TRIANGLES, (pmxInfo->materials[m]->hasFaceNum), GL_UNSIGNED_INT, BUFFER_OFFSET(sizeof(GLuint)*faceCount));
 		faceCount+=pmxInfo->materials[m]->hasFaceNum;
 	}
-}
-
-void Viewer::drawIKMarkers()
-{
-	glBindVertexArray(VAOs[IKDebugVertices]);
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[IKVertexArrayBuffer]);
-	
-	
-	vector<int> targetBoneIndices;
-	
-	for(int i=0; i<pmxInfo->bone_continuing_datasets; ++i)
-	{
-		PMXBone *b=pmxInfo->bones[i];
-	
-		glm::mat4 tmpMatrix=b->calculateGlobalMatrix();
-		IKVertexData[i].position.x=tmpMatrix[3][0];
-		IKVertexData[i].position.y=tmpMatrix[3][1];
-		IKVertexData[i].position.z=tmpMatrix[3][2];
-		IKVertexData[i].position.w=tmpMatrix[3][3];
-		
-		//IKVertexData[i].position.x=b->Global[3][0];
-		//IKVertexData[i].position.y=b->Global[3][1];
-		//IKVertexData[i].position.z=b->Global[3][2];
-		//IKVertexData[i].position.w=b->Global[3][3];
-
-		IKVertexData[i].UV.x=0;
-		IKVertexData[i].UV.y=0;
-		
-		if(b->IK)
-		{
-			targetBoneIndices.push_back(b->IKTargetBoneIndex);
-			
-			IKVertexData[i].normal.x=1;
-			IKVertexData[i].normal.y=0;
-			IKVertexData[i].normal.z=0;
-		}
-		else
-		{
-			IKVertexData[i].normal.x=0;
-			IKVertexData[i].normal.y=0;
-			IKVertexData[i].normal.z=0;
-		}
-
-		IKVertexData[i].weightFormula=4;
-
-		IKVertexData[i].boneIndex1=0;
-		IKVertexData[i].boneIndex2=0;
-		IKVertexData[i].boneIndex3=0;
-		IKVertexData[i].boneIndex4=0;
-
-		IKVertexData[i].weight1=0;
-		IKVertexData[i].weight2=0;
-		IKVertexData[i].weight3=0;
-		IKVertexData[i].weight4=0;
-		
-	}
-	
-	for(int i=0; i<targetBoneIndices.size(); ++i)
-	{
-		IKVertexData[ targetBoneIndices[i] ].normal.x=0;
-		IKVertexData[ targetBoneIndices[i] ].normal.y=1;
-		IKVertexData[ targetBoneIndices[i] ].normal.z=0;
-	}
-	
-	glBufferData(GL_ARRAY_BUFFER, pmxInfo->bone_continuing_datasets*sizeof(VertexData), IKVertexData, GL_DYNAMIC_DRAW);
-	
-	GLuint Bones_loc=glGetUniformLocation(shaderProgram,"Bones");
-	glm::mat4 tmpSkinMatrix[pmxInfo->bone_continuing_datasets];
-	
-	glUniformMatrix4fv(Bones_loc, pmxInfo->bone_continuing_datasets, GL_FALSE, (const GLfloat*)&tmpSkinMatrix);
-	
-	glDrawArrays(GL_POINTS, 0, pmxInfo->bone_continuing_datasets);
 }
 
 
