@@ -15,8 +15,8 @@
 
 #define BUFFER_OFFSET(offset) ((void *) (offset))
 
-enum VAO_IDs { Vertices, IKDebugVertices, RigidDebugVertices, NumVAOs };
-enum Buffer_IDs { VertexArrayBuffer, VertexIndexBuffer, IKVertexArrayBuffer, RecordBuffer, NumBuffers };
+enum VAO_IDs { Vertices, NumVAOs };
+enum Buffer_IDs { VertexArrayBuffer, VertexIndexBuffer, RecordBuffer, NumBuffers };
 enum Attrib_IDs { vPosition, vUV, vNormal, vBoneIndices, vBoneWeights, vWeightFormula };
 enum Uniform_IDs { 
 	uAmbient,uDiffuse,uSpecular,uShininess,
@@ -74,11 +74,7 @@ class Viewer
 
 	std::vector<GLuint> textures;
 	
-	GLuint shaderProgram;
-	
-	VertexData *IKVertexData;
-	VertexData *RigidVertexData;
-	
+	GLuint shaderProgram;	
 	
 	//***Timing Variables
 	double startTime;

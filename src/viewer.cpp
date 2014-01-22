@@ -373,32 +373,6 @@ void Viewer::initBuffers()
 	
 	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*9));
 	glBindAttribLocation(shaderProgram, vWeightFormula, "vWeightFormula");
-	glEnableVertexAttribArray(vWeightFormula);	
-	
-	
-	//Initialize IK Debug buffers
-	IKVertexData = (VertexData*)malloc(pmxInfo->bone_continuing_datasets*sizeof(VertexData));
-
-	glBindVertexArray(VAOs[IKDebugVertices]);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, Buffers[IKVertexArrayBuffer]);
-	
-	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(0)); //4=number of components updated per vertex
-	glEnableVertexAttribArray(vPosition);
-	
-	glVertexAttribPointer(vUV, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*4));
-	glEnableVertexAttribArray(vUV);
-	
-	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*6));
-	glEnableVertexAttribArray(vNormal);
-	
-	glVertexAttribPointer(vBoneIndices, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*10));
-	glEnableVertexAttribArray(vBoneIndices);
-	
-	glVertexAttribPointer(vBoneWeights, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*14));
-	glEnableVertexAttribArray(vBoneWeights);
-	
-	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*9));
 	glEnableVertexAttribArray(vWeightFormula);
 }
 
