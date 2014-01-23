@@ -1,4 +1,4 @@
-#version 130
+#version 410
 
 //Vertex Properties
 //layout(location = #) if version is 330 or greater
