@@ -57,21 +57,22 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	ifstream test("shaders/model.vert");
 	if(!test.is_open())
 	{
-		shaderProgram=loadShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
+		shaderProgram=compileShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
 	}
 	else
 	{
-		shaderProgram=loadShaders("shaders/model.vert","shaders/model.frag");
+		shaderProgram=compileShaders("shaders/model.vert","shaders/model.frag");
 	}
 	test.close();
 	
 	
 	
-	glUseProgram(shaderProgram);
 	loadTextures();
+	
 	initBuffers();
-	glLinkProgram(shaderProgram); //Re-link shader program to update attribute locations
+	linkShaders(shaderProgram);
 	glUseProgram(shaderProgram);
+	
 	initUniformVarLocations();
 	
 	MVP_loc = glGetUniformLocation(shaderProgram, "MVP");
@@ -93,21 +94,21 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	motionController=new VMDMotionController(*pmxInfo,*vmdInfo,shaderProgram);
 	
 	
+	initSound(musicPath);
+	
+	string vertPath,fragPath; //vertex/fragment shader file paths
 	ifstream test2("shaders/bulletDebug.vert");
-	GLuint btDebugShaderProgram;
 	if(!test2.is_open())
 	{
-		btDebugShaderProgram=loadShaders(DATA_PATH"/shaders/bulletDebug.vert",DATA_PATH"/shaders/bulletDebug.frag");
+		vertPath=DATA_PATH"/shaders/bulletDebug.vert";
+		fragPath=DATA_PATH"/shaders/bulletDebug.frag";
 	}
 	else
 	{
-		btDebugShaderProgram=loadShaders("shaders/bulletDebug.vert","shaders/bulletDebug.frag");
+		vertPath="shaders/bulletDebug.vert";
+		fragPath="shaders/bulletDebug.frag";
 	}
-	//GLuint btDebugShaderProgram=loadShaders(DATA_PATH"/shaders/bulletDebug.vert",DATA_PATH"/shaders/bulletDebug.frag");
-	
-	initSound(musicPath);
-	
-	bulletPhysics = new BulletPhysics(btDebugShaderProgram);
+	bulletPhysics = new BulletPhysics(vertPath,fragPath);
 	glUseProgram(shaderProgram); //restore GL shader program to Viewer's shader program after initializing BulletPhysic's debugDrawer
 	mmdPhysics = new MMDPhysics(*pmxInfo,motionController,bulletPhysics);
 	

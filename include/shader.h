@@ -7,8 +7,7 @@
 #define GLFW_INCLUDE_GLU
 #include <GL/glfw.h>
 
-const GLchar* ReadShader(const char* filename);
-GLuint compileShader(GLenum type, const GLchar *filename);
-GLuint loadShaders(std::string vertShaderName, std::string fragShaderName);
+GLuint compileShaders(std::string vertShaderName, std::string fragShaderName);
+void linkShaders(GLuint program);
 
 #endif

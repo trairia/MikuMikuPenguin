@@ -9,10 +9,9 @@ using namespace std;
 
 #define BUFFER_OFFSET(offset) ((void *) (offset))
 
-BulletDebugDrawer::BulletDebugDrawer(GLuint shaderProgram): m_debugMode(0)
+BulletDebugDrawer::BulletDebugDrawer(string vertexShaderPath, string fragmentShaderPath): m_debugMode(0)
 {
-	this->shaderProgram=shaderProgram;
-	glUseProgram(shaderProgram);
+	shaderProgram=compileShaders(vertexShaderPath,fragmentShaderPath);
 	
 	MVPLoc = glGetUniformLocation(shaderProgram, "MVP");
 	
@@ -31,6 +30,9 @@ BulletDebugDrawer::BulletDebugDrawer(GLuint shaderProgram): m_debugMode(0)
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*8, BUFFER_OFFSET(sizeof(GLfloat)*4));
 	glBindAttribLocation(shaderProgram, 1, "vColor");
 	glEnableVertexAttribArray(1);
+	
+	linkShaders(shaderProgram);
+	glUseProgram(shaderProgram);
 }
 
 void BulletDebugDrawer::drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color)

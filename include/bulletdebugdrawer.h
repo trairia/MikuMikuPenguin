@@ -6,6 +6,7 @@
 #include "btBulletDynamicsCommon.h"
 
 #include <vector>
+#include <string>
 
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtx/transform.hpp>
@@ -41,7 +42,7 @@ class BulletDebugDrawer: public btIDebugDraw
 	 * 
 	 * @param shaderProgram Bulletのデバッグ情報を描くシェ－ダープログラムのID（OpenGLから取得） \endif
 	*/
-	BulletDebugDrawer(GLuint shaderProgram);
+	BulletDebugDrawer(std::string vertexShaderPath, std::string fragmentShaderPath);
 	
 	/*! \if ENGLISH \brief Draws a line from Bullet.
 	 * 

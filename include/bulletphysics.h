@@ -29,7 +29,7 @@
 class BulletPhysics
 {
 	public:
-	BulletPhysics(GLuint shaderProgram=0);
+	BulletPhysics(std::string vertexShaderPath, std::string fragmentShaderPath);
 	~BulletPhysics();
 	
 	
