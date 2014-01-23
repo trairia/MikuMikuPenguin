@@ -17,7 +17,7 @@ struct btDebugVertexData;
 
 
 /*! \class BulletDebugDrawer
- * \if ENGLISH \brief A class for drawing debug info provided by Bullet.
+ * \if ENGLISH \brief Class for drawing debug info provided by Bullet.
  * 
  * You can learn more about Bullet's debug drawing <a href=http://bulletphysics.org/Bullet/BulletFull/classbtIDebugDraw.html>here</a>
  * \endif
@@ -113,12 +113,14 @@ class BulletDebugDrawer: public btIDebugDraw
 };
 
 /*! \struct btDebugVertexData
- * \if ENGLISH \brief Struct for holding　Bullet Debug Vertex Information. \endif
- * \if JAPANESE \brief Bulletデバッグの頂点情報を持つ為のストラクト。 \endif　*/
+ * \if ENGLISH \brief Struct for holding Bullet Debug Vertex Information. \endif
+ * \if JAPANESE \brief Bulletデバッグの頂点情報を持つ為の構造体。 \endif　*/
 struct btDebugVertexData
 {
-	glm::vec4 position;
-	glm::vec4 color;
+	glm::vec4 position;	//!< \if ENGLISH \brief The vertex's position. \endif
+				//!< \if JAPANESE \brief 頂点の位置。 \endif
+	glm::vec4 color;	//!< \if ENGLISH \brief The vertex's color(RGBA) \endif
+				//!< \if JAPANESE \brief 頂点の色（RGBA） \endif
 };
 
 

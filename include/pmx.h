@@ -64,7 +64,7 @@ namespace ClosedMMDFormat
 	 * \endif
 	 * 
 	 * \if JAPANESE
-	 * \brief PMXファイルに入っている頂点情報を格納する為のストラクト。
+	 * \brief PMXファイルに入っている頂点情報を格納する為の構造体。
 	 * 
 	 * 詳細はここに（PMXVertex）。
 	 * \endif
@@ -365,69 +365,114 @@ namespace ClosedMMDFormat
 		//VARIABLES I ADDED BELOW THIS POINT
 		glm::mat4 Local; //joint matrix, local to relatedRigidBodyA
 	};
-
+	
+	
+	/*!  \class PMXInfo
+	 * \if ENGLISH
+	 * \brief Class for loading/storing info about a PMX model.
+	 * 
+	 * \endif
+	 * 
+	 * \if JAPANESE
+	 * \brief PMXモデルを読み込む／格納する為のクラス。
+	 * 
+	* \endif
+	*/
 	struct PMXInfo
 	{
 		//For more info, see the PMX documentation included with PMDEditor (Hopefully also included with this source code)
 		//also http://gulshan-i-raz.geo.jp/labs/2012/10/17/pmx-format1/
 		
 		//Header
-		char header_str[4]; //Should read 'PMX ' for 2.0+
-		float ver; //version number
+		char header_str[4]; 							//!< \if ENGLISH \brief PMX Header string. Should read 'PMX ' for versions 2.0+, 'Pmx ' for version 1.0. \endif
+														//!< \if JAPANESE \brief PMXのヘッダー文字列。バージョン2.0+なら「PMX 」、バージョン1.0なら「Pmx 」であるべき。 \endif
+		float ver; 										//!< \if ENGLISH \brief PMX Version Number. \endif
+														//!< \if JAPANESE \brief PMXバージョン番号。 \endif
 		
-		uint8_t line_size; //number of bytes per line
-		bool unicode_type;
+		uint8_t line_size; 								//!< \if ENGLISH \brief The size (in bytes) of the next line in the PMX file that contains various flags. \endif
+														//!< \if JAPANESE \brief 様々なフラグが格納されている次の列のサイズ（バイト数）。 \endif
+		bool unicode_type;								//!< \if ENGLISH \brief The unicode encoding for text in the PMX file (0:UTF16, 1:UTF8) \endif
+														//!< \if JAPANESE \brief PMXファイルのエンコーディング式（0：UTF16、1:UTF8） \endif
 		
-		uint8_t extraUVCount;
+		uint8_t extraUVCount;							//!< \if ENGLISH \brief  Extra UV coordinates (range of 0~4) \endif
+														//!< \if JAPANESE \brief 追加UVの数（0~4） \endif
 		
-		uint8_t vertexIndexSize;
-		uint8_t textureIndexSize;
-		uint8_t materialIndexSize;
-		uint8_t boneIndexSize;
-		uint8_t morphIndexSize;
-		uint8_t rigidBodyIndexSize;
+		uint8_t vertexIndexSize;						//!< \if ENGLISH \brief  The size of an index that references a tertex (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief 頂点を参照するインデクスのサイズ（1,2,4バイト）。 \endif
+		uint8_t textureIndexSize;						//!< \if ENGLISH \brief  The size of an index that references a texture (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief 頂点を参照するインデクスのサイズ（1,2,4バイト）。 \endif
+		uint8_t materialIndexSize;						//!< \if ENGLISH \brief  The size of an index that references a material (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief マテリアルを参照するインデクスのサイズ（1,2,4バイト）。 \endif
+		uint8_t boneIndexSize;							//!< \if ENGLISH \brief  The size of an index that references a bone (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief ボーンを参照するインデクスのサイズ（1,2,4バイト）。 \endif
+		uint8_t morphIndexSize;							//!< \if ENGLISH \brief  The size of an index that references a morph (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief モーフを参照するインデクスのサイズ（1,2,4バイト）。 \endif
+		uint8_t rigidBodyIndexSize;						//!< \if ENGLISH \brief  The size of an index that references a rigidbody (1,2,4 bytes). \endif
+														//!< \if JAPANESE \brief 剛体を参照するインデクスのサイズ（1,2,4バイト）。 \endif
 		
 		//Model Info
-		std::string modelName;
-		std::string modelNameEnglish;
-		std::string comment;
-		std::string commentEnglish;
+		std::string modelName;							//!< \if ENGLISH \brief  The name of the model (in Japanese) \endif
+														//!< \if JAPANESE \brief モデルの名前（日本語で）。 \endif
+		std::string modelNameEnglish;					//!< \if ENGLISH \brief  The name of the model (in English) \endif
+														//!< \if JAPANESE \brief モデルの名前（英語で）。 \endif
+		std::string comment;							//!< \if ENGLISH \brief  Comments about the model (in Japanese) \endif
+														//!< \if JAPANESE \brief モデルに関するコメント（日本語で）。 \endif
+		std::string commentEnglish;						//!< \if ENGLISH \brief  Comments about the model (in English) \endif
+														//!< \if JAPANESE \brief モデルに関するコメント（英語で）。 \endif
 		
 		//Vertex
-		int vertex_continuing_datasets; //Number of continuing Vertex Datasets
-		std::vector<PMXVertex*> vertices;
+		int vertex_continuing_datasets; 				//!< \if ENGLISH \brief  The number of vertices in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されている頂点の数。 \endif
+		std::vector<PMXVertex*> vertices;				//!< \if ENGLISH \brief  A vector containing the vertices. \endif
+														//!< \if JAPANESE \brief 頂点の配列（vector式） \endif
 		
 		//Face
-		int face_continuing_datasets;
-		std::vector<PMXFace*> faces;
+		int face_continuing_datasets;					//!< \if ENGLISH \brief  The number of faces in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されている面の数。 \endif
+		std::vector<PMXFace*> faces;					//!< \if ENGLISH \brief  A vector containing the faces. \endif
+														//!< \if JAPANESE \brief 面の配列（vector式） \endif
 		
 		//Texture
-		int texture_continuing_datasets;
-		std::string *texturePaths;
+		int texture_continuing_datasets;				//!< \if ENGLISH \brief  The number of textures in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されているテクスチャの数。 \endif
+		std::string *texturePaths;						//!< \if ENGLISH \brief  A pointer containing an array texture paths. \endif
+														//!< \if JAPANESE \brief テクスチャのパスの配列へのポインター。 \endif
 		
 		//Material
-		int material_continuing_datasets;
-		std::vector<PMXMaterial*> materials;
+		int material_continuing_datasets;				//!< \if ENGLISH \brief  The number of materials in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されているマテリアルの数。 \endif
+		std::vector<PMXMaterial*> materials;			//!< \if ENGLISH \brief  A vector containing the materials. \endif
+														//!< \if JAPANESE \brief マテリアルの配列（vector式） \endif
 		
 		//Bone
-		int bone_continuing_datasets;
-		std::vector<PMXBone*> bones;
+		int bone_continuing_datasets;					//!< \if ENGLISH \brief  The number of bones in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されているボーンの数。 \endif
+		std::vector<PMXBone*> bones;					//!< \if ENGLISH \brief  A vector containing the bones. \endif
+														//!< \if JAPANESE \brief ボーンの配列（vector式） \endif
 		
 		//Morph (Emotion data)
-		int morph_continuing_datasets;
-		std::vector<PMXMorph*> morphs;
+		int morph_continuing_datasets;					//!< \if ENGLISH \brief  The number of morphs in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されているモーフの数。 \endif
+		std::vector<PMXMorph*> morphs;					//!< \if ENGLISH \brief  A vector containing the bones. \endif
+														//!< \if JAPANESE \brief モーフの配列（vector式） \endif
 		
 		//Display Frame
-		int display_frame_continuing_datasets;
-		std::vector<PMXDisplayFrame*> displayFrames;
+		int display_frame_continuing_datasets;			//!< \if ENGLISH \brief  The number of display frames in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されている表示枠の数。 \endif
+		std::vector<PMXDisplayFrame*> displayFrames;	//!< \if ENGLISH \brief  A vector containing the display frames. \endif
+														//!< \if JAPANESE \brief 表示枠の配列（vector式） \endif
 		
 		//Rigid Body
-		int rigid_body_continuing_datasets;
-		std::vector<PMXRigidBody*> rigidBodies;
+		int rigid_body_continuing_datasets;				//!< \if ENGLISH \brief  The number of rigidbodies in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されている剛体の数。 \endif
+		std::vector<PMXRigidBody*> rigidBodies;			//!< \if ENGLISH \brief  A vector containing the rigidbodies. \endif
+														//!< \if JAPANESE \brief 剛体の配列（vector式） \endif
 		
 		//Joint
-		int joint_continuing_datasets;
-		std::vector<PMXJoint*> joints;
+		int joint_continuing_datasets;					//!< \if ENGLISH \brief  The number of joints in the PMX model. \endif
+														//!< \if JAPANESE \brief PMXモデルに格納されているジョイントの数。 \endif
+		std::vector<PMXJoint*> joints;					//!< \if ENGLISH \brief  A vector containing the joints. \endif
+														//!< \if JAPANESE \brief ジョイントの配列（vector式） \endif
 	};
 
 }

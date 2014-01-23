@@ -70,7 +70,19 @@ namespace ClosedMMDFormat
 	struct VMDSelfShadowFrame
 	{
 	};
-
+	
+	
+	/*!  \class VMDInfo
+	 * \if ENGLISH
+	 * \brief Class for loading/storing info about a VMD motion file.
+	 * 
+	 * \endif
+	 * 
+	 * \if JAPANESE
+	 * \brief VMDモーションを読み込む／格納する為のクラス。
+	 * 
+	* \endif
+	*/
 	struct VMDInfo
 	{
 		char headerStr[30];
