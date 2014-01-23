@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.64])
 AC_INIT([MikuMikuPenguin], [0.2], [ibenrunnin@gmail.com])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([foreign])
 LT_PREREQ([2.2])
 LT_INIT([dlopen])
 AC_CONFIG_MACRO_DIR([m4])
