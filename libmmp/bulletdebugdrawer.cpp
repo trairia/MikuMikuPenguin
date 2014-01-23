@@ -13,8 +13,6 @@ BulletDebugDrawer::BulletDebugDrawer(string vertexShaderPath, string fragmentSha
 {
 	shaderProgram=compileShaders(vertexShaderPath,fragmentShaderPath);
 	
-	MVPLoc = glGetUniformLocation(shaderProgram, "MVP");
-	
 	glGenVertexArrays(1,&VAO);
 	glBindVertexArray(VAO);
 	
@@ -33,6 +31,8 @@ BulletDebugDrawer::BulletDebugDrawer(string vertexShaderPath, string fragmentSha
 	
 	linkShaders(shaderProgram);
 	glUseProgram(shaderProgram);
+	
+	MVPLoc = glGetUniformLocation(shaderProgram, "MVP");
 }
 
 void BulletDebugDrawer::drawLine(const btVector3 &from, const btVector3 &to, const btVector3 &color)
