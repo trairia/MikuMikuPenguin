@@ -1,9 +1,10 @@
-WARNING: THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
-（注意：このファイルはSJISではなくUTF-8でエンコードされています！！！）
+**WARNING** THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
+**注意** このファイルはSJISではなくUTF-8でエンコードされています！！！
 
-LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
+# LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
 
-(English translation is available below)
+English translation is [available](http://github.com/sn0w75/mikumikupenguin/blob/master/README.en.md).
+
 どうも初めまして。sn0w75です。
 
 自分の好きなOSでミクミクしたくて、それを出来る為のライブラリやプログラムを作ってみました。
@@ -13,51 +14,64 @@ LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
 最新のコードは以下のリンクで手に入れます：
 https://github.com/sn0w75/MikuMikuPenguin/
 
+## ディレクトリ構成
 中身はこんな感じです：
-COPYING　-　このコードのライセンス
-doc　-　ドキュメンテーションを入れる為のフォルダですが、現時点では得に何も入ってません。
-include -　LibMikuMikuPenguinのヘッダ（.h）ファイルがここに入ってます。
-INSTALL　-　このコードのインストール仕方（英語のみ）
-libmmp　-　LibMikuMikuPenguinのソース（.cpp）ファイルがここに入ってます。
-shaders　-　PMXViewerのシェーダーがここに入ってます。
-src　-　PMXViewerのソースコード（.cpp、.h）がここに入ってます。
-data　-　必要なテクスチャ等が入ってます。
 
+COPYING
+: このコードのライセンス
+doc
+: ドキュメンテーションを入れる為のフォルダですが、現時点では得に何も入ってません。
+include
+: LibMikuMikuPenguinのヘッダ（.h）ファイルがここに入ってます。
+INSTALL
+: このコードのインストール仕方（英語のみ）
+libmmp
+: LibMikuMikuPenguinのソース（.cpp）ファイルがここに入ってます。
+shaders
+: PMXViewerのシェーダーがここに入ってます。
+src
+: PMXViewerのソースコード（.cpp、.h）がここに入ってます。
+data
+: 必要なテクスチャ等が入ってます。
+
+## 依存ライブラリ
 LibMikuMikuPenguinにはlibglfw, libglew,libglm,libBulletが必要です。
 PMXViewerにはlibmmp、libSOILが必要です。VMDと一緒に音楽を再生したい場合は、SDL2、SDL2_mixerも必要です。（なくてもコンパイル出来ます）
 
-ライブラリの詳細（2014年1月20日）：
+### ライブラリの詳細（2014年1月20日）：
 
-libglfw- 現在では2.7が必要です。3.0+は2.xと非対応です。
-libglm- 現在では0.9.4(0.9.2、 0.9.3でも大丈夫かもしれません）が必要です。0.9.5+は0.9.4と非対応です。
+libglfw
+: 現在では2.7が必要です。3.0+は2.xと非対応です。
+libglm
+: 現在では0.9.4(0.9.2、 0.9.3でも大丈夫かもしれません）が必要です。0.9.5+は0.9.4と非対応です。
 
-＊＊＊＊＊＊＊注意＊＊＊＊＊＊！！！！！GLM 0.9.3（<=0.9.2もそうかもしれない）ではバグがあります：
-https://github.com/g-truc/glm/issues/15
+**注意！！！！！**
+GLM 0.9.3（<=0.9.2もそうかもしれない）ではバグがあります： g-truc/glm#15
 このバグを回避する為には、-fpermissiveを使う必要があります。
 例えば：
-export CXXFLAGS="-fpermissive"
-autoreconf -i
-./configure
-make install
+    $ export CXXFLAGS="-fpermissive"
+    $ autoreconf -i
+    $ ./configure
+    # make install
 みたいな感じです。
 
+## インストール
 このソースコードはautotoolsを利用していますので、コンパイルやインストールは簡単です：
 コンパイルするにはターミナルで：
-autoreconf -i
-./configure
-make
+    $ autoreconf -i
+    $ ./configure
+    $ make
 をすれば大丈夫です。
 またシステムにインストールしたい場合は：
-sudo make install
+    $ sudo make install
 みたいな感じで大丈夫です。
 
 他に質問がありました、気軽にメッセージ飛ばしてください。喜んで手伝います：
-Twitter- http://twitter.com/sn0w75
-E-mail- ibenrunnin@gmail.com
+* Twitter [@sn0w75](http://twitter.com/sn0w75)
+* E-mail <ibenrunnin@gmail.com>
 
-それではまた。
 
-LibMikuMikuPenguin(libmmp) v0.1 Readme (English)
+# LibMikuMikuPenguin(libmmp) v0.1 Readme (English)
 Hello.
 
 I wanted to MikuMiku on my favorite operating system, so I wrote a program to do just that.
@@ -67,6 +81,7 @@ However, I hope that this becomes a starting point for the development of MMD on
 You should be able to get the latest version of the source code here:
 https://github.com/sn0w75/MikuMikuPenguin/
 
+## Contents
 The contents are listed below:
 COPYING - This license for MikuMikuPenguin is included in here.
 doc - This is a folder for putting various documentation into, but there's nothing in here in particular at this point in time.
@@ -77,33 +92,34 @@ shaders - PMXViewer's shaders are in this folder.
 src - PMXViewer's source code (.cpp, .h) are in this folder.
 data - Required textures and other data files are in this folder.
 
+## Requirements
 For LibMikuMikuPenguin, libglfw, libglew, libglm, and libBullet are needed.
 For PMXViewer, libmmp and libSOIL are needed. If you want to play music along with the VMD motion, you'll need SDL2 and SDL2_mixer. (You can compile the code without music playback support)
 
-Details about libraries (1/20/2014):
+### Details about libraries (1/20/2014):
 libglfw- At the time of writing 2.7 is needed. Versions 3.0+ are not supported.
 libglm- At the time of writing 0.9.4 (0.9.2 and 0.9.3 may also be acceptable) is needed. Versions 0.9.5+ are not supported.
 
-*********WARNING******！！！！！In GLM 0.9.3（perhaps also <=0.9.2）there's a bug:
-https://github.com/g-truc/glm/issues/15
+**WARNING!!!!!**
+In GLM 0.9.3（perhaps also <=0.9.2）there's a bug: g-truc/glm#15
 To avoid this bug, you must use the -fpermissive flag.
 So like this:
-export CXXFLAGS="-fpermissive"
-autoreconf -i
-./configure
-make install
+    $ export CXXFLAGS="-fpermissive"
+    $ autoreconf -i
+    $ ./configure
+    # make install
 
+## Installation
 This source code uses autotools, so compiling the code is very simple:
 To compile, run the following commands in a terminal:
-autoreconf -i
-./configure
-make
+    $ autoreconf -i
+    $ ./configure
+    $ make
 To install libmmp and PMXViewer on your system, run:
-sudo make install
+    $ sudo make install
 (There may be an alternative to 'sudo' you need to use depending on your distro to run a process with admin privileges.)
 
 If you have any other questions, please toss me a message. I'll gladly help you out.
-Twitter- http://twitter.com/sn0w75
-E-mail- ibenrunnin@gmail.com
-
+* Twitter [@sn0w75](http://twitter.com/sn0w75)
+* E-mail <ibenrunnin@gmail.com>
 
