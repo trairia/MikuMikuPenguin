@@ -53,6 +53,7 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	
 	initGLFW();
 	
+	//initBuffers(); // move from line 72
 	ifstream test("shaders/model.vert");
 	if(!test.is_open())
 	{
@@ -68,13 +69,15 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	
 	glUseProgram(shaderProgram);
 	loadTextures();
-	initBuffers();
+	initBuffers(); // move to line 57 like
+glLinkProgram(shaderProgram); //Re-link shader program to update attribute locations
+//glUseProgram(shaderProgram);
 	initUniformVarLocations();
 	
 	MVP_loc = glGetUniformLocation(shaderProgram, "MVP");
     
 	//Set OpenGL render settings
-    glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -354,24 +357,24 @@ void Viewer::initBuffers()
 	glVertexAttribPointer(vPosition, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(0)); //4=number of components updated per vertex
 	glBindAttribLocation(shaderProgram, vPosition, "vPosition"); //Explicit vertex attribute index specification for older OpenGL version support. (Newer method is layout qualifier in vertex shader)
 	glEnableVertexAttribArray(vPosition);
-	
-	glVertexAttribPointer(vUV, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*4));
+
+	glVertexAttribPointer(vUV, 2, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(glm::vec4)));
 	glBindAttribLocation(shaderProgram, vUV, "vUV");
 	glEnableVertexAttribArray(vUV);
-	
-	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*6));
+
+	glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(glm::vec4)+sizeof(glm::vec2)));
 	glBindAttribLocation(shaderProgram, vNormal, "vNormal");
 	glEnableVertexAttribArray(vNormal);
-	
-	glVertexAttribPointer(vBoneIndices, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*10));
+
+	glVertexAttribPointer(vBoneIndices, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(glm::vec4)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(GLfloat)));
 	glBindAttribLocation(shaderProgram, vBoneIndices, "vBoneIndices");
 	glEnableVertexAttribArray(vBoneIndices);
-	
-	glVertexAttribPointer(vBoneWeights, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*14));
+
+	glVertexAttribPointer(vBoneWeights, 4, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(glm::vec4)+sizeof(glm::vec2)+sizeof(glm::vec3)+sizeof(GLfloat)*5));
 	glBindAttribLocation(shaderProgram, vBoneWeights, "vBoneWeights");
 	glEnableVertexAttribArray(vBoneWeights);
-	
-	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(GLfloat)*9));
+
+	glVertexAttribPointer(vWeightFormula, 1, GL_FLOAT, GL_FALSE, sizeof(VertexData), BUFFER_OFFSET(sizeof(glm::vec4)+sizeof(glm::vec2)+sizeof(glm::vec3)));
 	glBindAttribLocation(shaderProgram, vWeightFormula, "vWeightFormula");
 	glEnableVertexAttribArray(vWeightFormula);
 }
@@ -603,14 +606,14 @@ void Viewer::initGLFW()
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
 	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 2); //2x antialiasing
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	//glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-	//glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
-	//glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4); //OpenGL version
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
+	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
 	
  
 	//Open a window and create its OpenGL context
-	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+	if( !glfwOpenWindow( 1920 / 2, 1080 / 2, 0,0,0,0, 0,0, GLFW_WINDOW ) )
 	{
 		cout<<"Failed to open GLFW window"<<endl;
 		cout<<"Going to attempt to open GLFW window without any OpenGL version hints"<<endl;
