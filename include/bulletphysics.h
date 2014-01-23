@@ -15,7 +15,7 @@
 
 /*!  \class BulletPhysics
  * \if ENGLISH
- * \brief A class for handling a Rigid Body physics environment using Bullet.
+ * \brief Class for handling a Rigid Body physics environment using Bullet.
  * 
  * Detailed description starts here(BulletPhysics).
  * \endif

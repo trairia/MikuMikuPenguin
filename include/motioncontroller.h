@@ -17,7 +17,7 @@ struct VertexData;
 
 /*!  \class VMDMotionController
  * \if ENGLISH
- * \brief A class for animating a PMX model using motion data from a VMD file.
+ * \brief Class for animating a PMX model using motion data from a VMD file.
  * 
  * Detailed description starts here(VMDMotionController).
  * \endif
@@ -31,15 +31,15 @@ struct VertexData;
 class VMDMotionController
 {
 	public:
-	/*! \if ENGLISH \brief Constructs a VMDMotionController object.
+	/*! \if ENGLISH \brief Constructs a VMDMotionController instance.
 	 * 
 	 * @param pmxInfo The PMX Model to be animated.
 	 * @param vmdInfo The VMD Motion to animate the model with.
 	 * @param shaderProgram The shader program from which to pull the location for the uniform variable 'Bones' from.
 	 * \endif
-	 * \if JAPANESE \brief VMDモーションデーターでPMXモデルを動かす為のclass。
+	 * \if JAPANESE \brief VMDMotionControllerのコンストラクタ。
 	 * 
-	 * @param pmxInfo 動かされるPMXモデル。 The PMX Model to be animated.
+	 * @param pmxInfo 動かされるPMXモデル。
 	 * @param vmdInfo モデルを動かすVMDモーション。
 	 * @param shaderProgram Uniform変数「Bones」を取得出来るシェーダープログラム。
 	 * \endif
@@ -53,7 +53,7 @@ class VMDMotionController
 	void updateBoneAnimation();			//!< \if ENGLISH \brief A function used to update the model's bone transformation matrices with the current frame of animation. \endif
 										//!< \if JAPANESE \brief モデルのボーン変形行列の配列を更新する為の関数。 \endif
 	void advanceTime();					//!< \if ENGLISH \brief A function used to move on to the next frame in the animation. \endif
-										//!< \if JAPANESE \brief モーションの次のフレームへと進む為の関数です。 \endif
+										//!< \if JAPANESE \brief モーションの次のフレームへと進む為の関数。 \endif
 	
 	
 	//public variables
@@ -94,8 +94,8 @@ class VMDMotionController
 };
 
 /*! \struct VertexData
- * \if ENGLISH \brief Struct for MMD Model Vertex Information. \endif
- * \if JAPANESE \brief MMDモデルの頂点情報を持つ為のストラクト。 \endif　*/
+ * \if ENGLISH \brief Struct for holding MMD Model Vertex Information. \endif
+ * \if JAPANESE \brief MMDモデルの頂点情報を持つ為の構造体。 \endif　*/
 struct VertexData
 {
 	glm::vec4 position;
