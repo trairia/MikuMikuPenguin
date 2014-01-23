@@ -109,7 +109,7 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 		fragPath="shaders/bulletDebug.frag";
 	}
 	bulletPhysics = new BulletPhysics(vertPath,fragPath);
-	glUseProgram(shaderProgram); //restore GL shader program to Viewer's shader program after initializing BulletPhysic's debugDrawer
+	glUseProgram(shaderProgram); //restore GL shader program binding to Viewer's shader program after initializing BulletPhysic's debugDrawer
 	mmdPhysics = new MMDPhysics(*pmxInfo,motionController,bulletPhysics);
 	
 	motionController->updateVertexMorphs();
