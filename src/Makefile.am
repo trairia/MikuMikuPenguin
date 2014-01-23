@@ -6,7 +6,7 @@ __top_builddir__pmx_LDADD = ../libmmp/libmmp.la -lm @opengl_LIBS@ -lSOIL -lBulle
 # this lists the binaries to produce, the (non-PHONY, binary) targets in
 # the previous manual Makefile
 bin_PROGRAMS = $(top_builddir)/pmx
-__top_builddir__pmx_SOURCES = main.cpp pmxvLogger.cpp viewer.cpp viewer.h pmxvLogger.h
+__top_builddir__pmx_SOURCES = main.cpp pmxvLogger.cpp viewer.cpp viewer.h pmxvLogger.h glfw_func_callbacks.cpp glfw_func_callbacks.h
 
 
 if ENABLE_SOUND

@@ -1,8 +1,10 @@
 #include "mmdphysics.h"
+#include "pmx.h"
 
 #include <iostream>
 
 using namespace std;
+using namespace ClosedMMDFormat;
 
 MMDPhysics::MMDPhysics(PMXInfo &pmxInfo, VMDMotionController *motionController, BulletPhysics* bulletPhysics):pmxInfo(pmxInfo),motionController(motionController)
 {

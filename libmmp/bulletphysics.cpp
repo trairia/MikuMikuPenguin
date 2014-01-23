@@ -1,8 +1,12 @@
 #include "bulletphysics.h"
+#include "pmx.h"
 
 #include <vector>
+#include <string>
 
-BulletPhysics::BulletPhysics(GLuint shaderProgram)
+using namespace ClosedMMDFormat;
+
+BulletPhysics::BulletPhysics(std::string vertexShaderPath, std::string fragmentShaderPath)
 {
 	//Use default collision configuration
 	collisionConfiguration=new btDefaultCollisionConfiguration();
@@ -20,9 +24,9 @@ BulletPhysics::BulletPhysics(GLuint shaderProgram)
 	
 	dynamicsWorld->setGravity(btVector3(0,-10,0));
 	
-	if(shaderProgram!=0)
+	if(vertexShaderPath!="" && fragmentShaderPath!="")
 	{
-		debugDrawer=new DebugDrawer(shaderProgram);
+		debugDrawer=new BulletDebugDrawer(vertexShaderPath, fragmentShaderPath);
 		dynamicsWorld->setDebugDrawer(debugDrawer);
 		dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 	}
@@ -134,7 +138,7 @@ void BulletPhysics::StepSimulation()
 	dynamicsWorld->stepSimulation(1.0f/60.0f, 10);
 }
 
-void BulletPhysics::setDebugMode(int mode)
+void BulletPhysics::SetDebugMode(int mode)
 {
 	dynamicsWorld->getDebugDrawer()->setDebugMode(mode);
 }

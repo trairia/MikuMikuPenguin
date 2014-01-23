@@ -10,105 +10,101 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-struct VMDInfo;
-
-//VMD related functions
-
-VMDInfo &readVMD(std::string filename);
-
+#include "interpolation.h"
 //VMD related structs
 
-struct BezierParameters
+namespace ClosedMMDFormat
 {
-	//See "On VMD Interpolation Parameters.txt" in DOCs for information concerning bezier parameters.
-	
-	glm::vec2 X1;
-	glm::vec2 X2;
-	
-	glm::vec2 Y1;
-	glm::vec2 Y2;
-	
-	glm::vec2 Z1;
-	glm::vec2 Z2;
-	
-	glm::vec2 R1;
-	glm::vec2 R2;
-};
+	struct VMDInfo;
+	VMDInfo &readVMD(std::string filename);
 
-struct BoneFrame
-{
-	std::string name; //char[15] before UTF8 conversion
-	
-	unsigned int frame;
-	
-	glm::vec3 translation; //values will be 0 when there's no position
-	glm::quat rotation; //values will be 0 when there's no position (w will be 1.0)
-	
-	BezierParameters bezier;
-	
-	bool operator < (const BoneFrame &k) const
+	struct VMDBoneFrame
 	{
-		//Comparison by frame number
-		return frame < k.frame;
-	}
-};
+		std::string name; //char[15] before UTF8 conversion
+		
+		unsigned int frame;
+		
+		glm::vec3 translation; //values will be 0 when there's no position
+		glm::quat rotation; //values will be 0 when there's no position (w will be 1.0)
+		
+		BezierParameters bezier;
+		
+		bool operator < (const VMDBoneFrame &k) const
+		{
+			//Comparison by frame number
+			return frame < k.frame;
+		}
+	};
 
-struct MorphFrame
-{
-	std::string name; //char[15] before UTF8 conversion
-	unsigned int frame;
-	float value;
-	
-	bool operator < (const MorphFrame &k) const
+	struct VMDMorphFrame
 	{
-		//Comparison by frame number
-		return frame < k.frame;
-	}
-};
+		std::string name; //char[15] before UTF8 conversion
+		unsigned int frame;
+		float value;
+		
+		bool operator < (const VMDMorphFrame &k) const
+		{
+			//Comparison by frame number
+			return frame < k.frame;
+		}
+	};
 
-struct CameraFrame
-{
-	unsigned int frame;
-	
-	float distance; //Distance between the camera and pt of interest (the camera is negative when in front of the object)
-	glm::vec3 position;
-	glm::vec3 rotation;
-	
-	std::string interpolationParameters; //char[24] before UTF8 conversion
-	
-	unsigned int viewAngle; //viewing angle in degrees
-	bool perspective; //0:ON 1:OFF
-};
+	struct VMDCameraFrame
+	{
+		unsigned int frame;
+		
+		float distance; //Distance between the camera and pt of interest (the camera is negative when in front of the object)
+		glm::vec3 position;
+		glm::vec3 rotation;
+		
+		std::string interpolationParameters; //char[24] before UTF8 conversion
+		
+		unsigned int viewAngle; //viewing angle in degrees
+		bool perspective; //0:ON 1:OFF
+	};
 
-struct LightFrame
-{
-};
+	struct VMDLightFrame
+	{
+	};
 
-struct SelfShadowFrame
-{
-};
-
-struct VMDInfo
-{
-	char headerStr[30];
-	std::string modelName;
+	struct VMDSelfShadowFrame
+	{
+	};
 	
-	//Bone Frames
-	int boneCount; //number of continuing bone datasets
-	BoneFrame *boneFrames;
 	
-	//Morph Frames (Emotion data)
-	int morphCount;
-	MorphFrame *morphFrames;
-	
-	int cameraCount;
-	CameraFrame *cameraFrames;
-	
-	int lightCount;
-	LightFrame *lightFrames;
-	
-	int selfShadowCount;
-	SelfShadowFrame *selfShadowFrames;
-};
+	/*!  \class VMDInfo
+	 * \if ENGLISH
+	 * \brief Class for loading/storing info about a VMD motion file.
+	 * 
+	 * \endif
+	 * 
+	 * \if JAPANESE
+	 * \brief VMDモーションを読み込む／格納する為のクラス。
+	 * 
+	* \endif
+	*/
+	struct VMDInfo
+	{
+		char headerStr[30];
+		std::string modelName;
+		
+		//Bone Frames
+		int boneCount; //number of continuing bone datasets
+		VMDBoneFrame *boneFrames;
+		
+		//Morph Frames (Emotion data)
+		int morphCount;
+		VMDMorphFrame *morphFrames;
+		
+		int cameraCount;
+		VMDCameraFrame *cameraFrames;
+		
+		int lightCount;
+		VMDLightFrame *lightFrames;
+		
+		int selfShadowCount;
+		VMDSelfShadowFrame *selfShadowFrames;
+	};
+}
 
 #endif

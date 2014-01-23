@@ -28,6 +28,7 @@
 //#define MODELDUMP true
 
 using namespace std;
+using namespace ClosedMMDFormat;
 
 
 Viewer::Viewer(string modelPath, string motionPath,string musicPath)
@@ -57,21 +58,24 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	ifstream test("shaders/model.vert");
 	if(!test.is_open())
 	{
-		shaderProgram=loadShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
+		shaderProgram=compileShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
 	}
 	else
 	{
-		shaderProgram=loadShaders("shaders/model.vert","shaders/model.frag");
+		shaderProgram=compileShaders("shaders/model.vert","shaders/model.frag");
 	}
 	test.close();
 	
 	
 	
-	glUseProgram(shaderProgram);
 	loadTextures();
-	initBuffers(); // move to line 57 like
-glLinkProgram(shaderProgram); //Re-link shader program to update attribute locations
-//glUseProgram(shaderProgram);
+
+	
+	initBuffers();
+	linkShaders(shaderProgram);
+	glUseProgram(shaderProgram);
+	
+
 	initUniformVarLocations();
 	
 	MVP_loc = glGetUniformLocation(shaderProgram, "MVP");
@@ -93,22 +97,22 @@ glLinkProgram(shaderProgram); //Re-link shader program to update attribute locat
 	motionController=new VMDMotionController(*pmxInfo,*vmdInfo,shaderProgram);
 	
 	
+	initSound(musicPath);
+	
+	string vertPath,fragPath; //vertex/fragment shader file paths
 	ifstream test2("shaders/bulletDebug.vert");
-	GLuint btDebugShaderProgram;
 	if(!test2.is_open())
 	{
-		btDebugShaderProgram=loadShaders(DATA_PATH"/shaders/bulletDebug.vert",DATA_PATH"/shaders/bulletDebug.frag");
+		vertPath=DATA_PATH"/shaders/bulletDebug.vert";
+		fragPath=DATA_PATH"/shaders/bulletDebug.frag";
 	}
 	else
 	{
-		btDebugShaderProgram=loadShaders("shaders/bulletDebug.vert","shaders/bulletDebug.frag");
+		vertPath="shaders/bulletDebug.vert";
+		fragPath="shaders/bulletDebug.frag";
 	}
-	//GLuint btDebugShaderProgram=loadShaders(DATA_PATH"/shaders/bulletDebug.vert",DATA_PATH"/shaders/bulletDebug.frag");
-	
-	initSound(musicPath);
-	
-	bulletPhysics = new BulletPhysics(btDebugShaderProgram);
-	glUseProgram(shaderProgram); //restore GL shader program to Viewer's shader program after initializing BulletPhysic's debugDrawer
+	bulletPhysics = new BulletPhysics(vertPath,fragPath);
+	glUseProgram(shaderProgram); //restore GL shader program binding to Viewer's shader program after initializing BulletPhysic's debugDrawer
 	mmdPhysics = new MMDPhysics(*pmxInfo,motionController,bulletPhysics);
 	
 	motionController->updateVertexMorphs();
@@ -157,22 +161,22 @@ void Viewer::render()
 	
 	if(glfwGetKey('S')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawWireframe);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('D')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawAabb);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawAabb);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('F')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawConstraints);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawConstraints);
 		bulletPhysics->DebugDrawWorld();
 	}
 	else if(glfwGetKey('G')==GLFW_PRESS)
 	{
-		bulletPhysics->setDebugMode(btIDebugDraw::DBG_DrawConstraintLimits);
+		bulletPhysics->SetDebugMode(btIDebugDraw::DBG_DrawConstraintLimits);
 		bulletPhysics->DebugDrawWorld();
 	}
 	glUseProgram(shaderProgram); //Restore shader program and buffer's to Viewer's after drawing Bullet debug
