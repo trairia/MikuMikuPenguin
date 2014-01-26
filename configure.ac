@@ -26,7 +26,7 @@ PLATFORM_STRING="Linux"
 AC_MSG_WARN([Hello])
 AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
 bullet_CXXFLAGS="-stdlib=libc++ -I/usr/local/include/bullet"
-opengl_LIBS="-framework AGL -framework OpenGL"
+opengl_LIBS="-framework AGL -framework OpenGL -lglfw -lglew"
 PLATFORM_STRING="Apple"
 #AC_SUBST(CXXFLAGS, "-stdlib=libc++ -I/usr/local/include/bullet")
 #AC_SUBST(LDFLAGS, "-L/System/Library/Frameworks/OpenGL.framework/Libraries")
