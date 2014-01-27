@@ -174,6 +174,8 @@ namespace ClosedMMDFormat
 		vmdInfo.selfShadowFrames=new SelfShadowFrame[vmdInfo.selfShadowCount];*/
 		//cout<<"SelfShadow Count: "<<vmdInfo.selfShadowCount<<endl;
 		
+		cout<<endl;
+		
 		return vmdInfo;
 		
 		//exit(EXIT_SUCCESS);

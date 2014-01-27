@@ -48,6 +48,7 @@ class Viewer
 	
 	private:
 	void initGLFW();
+	void hackShaderFiles(); //modify #version lines in shader files to match GL version
 	void initUniformVarLocations();
 	void loadTextures();
 	void initBuffers();
@@ -77,7 +78,12 @@ class Viewer
 
 	std::vector<GLuint> textures;
 	
-	GLuint shaderProgram;	
+	//The OpenGL Version hints used that successfully opened the window
+	int GLVersionHintMajor,GLVersionHintMinor;
+	//The actual OpenGL Version recieved
+	int GLVersionMajor,GLVersionMinor,GLVersionRevision;
+	
+	GLuint shaderProgram;
 	
 	//***Timing Variables
 	double startTime;

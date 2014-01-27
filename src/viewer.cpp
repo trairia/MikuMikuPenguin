@@ -601,42 +601,85 @@ void Viewer::loadTextures()
 	//FreeImage_DeInitialise();
 }
 
+void hackShaderFile(string filename,int GLVersionMajor,int GLVersionMinor)
+{
+	/*ifstream shaderFile(filename);
+	
+	string line;
+	getline(shaderFile,line);*/
+	
+}
+
+void Viewer::hackShaderFiles()
+{	
+	/*if(GLVersionMajor==3 && GLVersionMinor==0)
+	{
+		cout<<"Going to hack shader files for OpenGL 3.0 (assuming GLSL version 130)"<<endl;
+		
+		
+		string vertPath,fragPath; //vertex/fragment shader file paths
+		ifstream test2("shaders/bulletDebug.vert");
+		if(!test2.is_open())
+		{
+			vertPath=DATA_PATH"/shaders/bulletDebug.vert";
+			fragPath=DATA_PATH"/shaders/bulletDebug.frag";
+		}
+		else
+		{
+			vertPath="shaders/bulletDebug.vert";
+			fragPath="shaders/bulletDebug.frag";
+		}
+		hackShaderFile(vertPath);
+		
+	}*/
+}
 
 void Viewer::initGLFW()
 {
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
-	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 2); //2x antialiasing
-	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3); //OpenGL version
-	//glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 2);
-	//glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
-	//glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	//glfwOpenWindow variables, feel free to modify if glfwOpenWindow() fails
+	static const int SCREEN_WIDTH=1920,SCREEN_HEIGHT=1080;
+	static const int redBits=0,greenBits=0,blueBits=0,alphaBits=0,depthBits=32,stencilBits=0;
 	
- 
+	
+	//First, try to start in OpenGL 3.2+ mode
+	GLVersionHintMajor=3,GLVersionHintMinor=2;
+	glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 2); //2x antialiasing
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, GLVersionHintMajor); //OpenGL version
+	glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, GLVersionHintMinor);
+	glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //Don't want old OpenGL
+	
+	cout<<"Attempting to open GLFW window (OpenGL "<<GLVersionHintMajor<<"."<<GLVersionHintMinor<<")...";
 	//Open a window and create its OpenGL context
-	if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+	if( !glfwOpenWindow( SCREEN_WIDTH, SCREEN_HEIGHT, redBits,greenBits,blueBits,alphaBits, depthBits,stencilBits, GLFW_WINDOW ) )
 	{
 		cout<<"Failed to open GLFW window"<<endl;
-		cout<<"Going to attempt to open GLFW window without any OpenGL version hints"<<endl;
 		
-		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 0);
-		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);
-		glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+		GLVersionHintMajor=3,GLVersionHintMinor=0;
+		
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, GLVersionHintMajor);
+		glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, GLVersionHintMinor);
+		glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 		glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0);
 		
-		if( !glfwOpenWindow( 1920, 1080, 0,0,0,0, 32,0, GLFW_WINDOW ) )
+		cout<<"Attempting to open GLFW window (OpenGL "<<GLVersionHintMajor<<"."<<GLVersionHintMinor<<")...";
+		if( !glfwOpenWindow( SCREEN_WIDTH, SCREEN_HEIGHT, redBits,greenBits,blueBits,alphaBits, depthBits,stencilBits, GLFW_WINDOW ) )
 		{
 			cout<<"FATAL ERROR: Failed to open GLFW window"<<endl;
 			glfwTerminate();
 			exit(EXIT_FAILURE);
 		}
-		else
-		{
-			cout<<"glfwOpenWindow() successful"<<endl;
-		}
 	}
+	cout<<"done"<<endl;
 	
+	glfwGetGLVersion(&GLVersionMajor, &GLVersionMinor, &GLVersionRevision);
+	cout<<"(GLFW) OpenGL version recieved: "<<GLVersionMajor<<"."<<GLVersionMinor<<" (Revision "<<GLVersionRevision<<")"<<endl;
 	cout<<"OpenGL version info: "<<glGetString(GL_VERSION)<<endl;
+	cout<<"GLSL version info: "<<glGetString(GL_SHADING_LANGUAGE_VERSION)<<endl<<endl;
+	
+	//hackShaderFiles();
 
 	// Initialize GLEW
 	glewExperimental=true; //Needed in core profile
