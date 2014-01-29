@@ -62,21 +62,21 @@ namespace ClosedMMDFormat
 		if (indexSize == 1)
 		{
 			int8_t tmpIndex;
-			miku.read((char*)&tmpIndex,(int)indexSize);
+			miku.read((char*)&tmpIndex, (int)indexSize);
 			
 			index = (int)tmpIndex;
 		}
 		else if (indexSize == 2)
 		{
 			int16_t tmpIndex;
-			miku.read((char*)&tmpIndex,(int)indexSize);
+			miku.read((char*)&tmpIndex, (int)indexSize);
 			
 			index = (int)tmpIndex;
 		}
 		else if (indexSize == 4)
 		{
 			int tmpIndex;
-			miku.read((char*)&tmpIndex,(int)indexSize);
+			miku.read((char*)&tmpIndex, (int)indexSize);
 			
 			index = (int)tmpIndex;
 		}
@@ -85,7 +85,7 @@ namespace ClosedMMDFormat
 	void getPMXText(ifstream &miku, PMXInfo &pmxInfo, string &result, bool debug)
 	{
 		uint32_t text_size;
-		miku.read((char*)&text_size,4);
+		miku.read((char*)&text_size, 4);
 
 		if (!text_size)
 			return;
@@ -93,8 +93,8 @@ namespace ClosedMMDFormat
 		if (pmxInfo.unicode_type == PMX_ENCODE_UTF16)
 		{
 			//WARNING: UTF-16 text-pulling code does NOT support the extra (multi-byte) codesets of UTF-16!!!!             
-			unsigned short c16[text_size/2+1];
-			memset(c16, 0, text_size+2);
+			unsigned short c16[text_size / 2 + 1];
+			memset(c16, 0, text_size + 2);
 			miku.read((char*)c16, text_size);
 
 			result = UTF16to8(c16);
@@ -115,7 +115,7 @@ namespace ClosedMMDFormat
 		{
 			//WARNING: Loading UTF-8 encoded PMX files is untested
 			char c8[text_size];
-			miku.read((char*)&c8,text_size);
+			miku.read((char*)&c8, text_size);
 
 			result = c8;
 		}
@@ -123,12 +123,12 @@ namespace ClosedMMDFormat
 
 	void printDebugInfo(PMXInfo &pmxInfo);
 
-	PMXInfo &readPMX(string foldername,string filename)
+	PMXInfo &readPMX(string foldername, string filename)
 	{
 		PMXInfo *pInfo = new PMXInfo();
 		PMXInfo &pmxInfo = *pInfo;
 		
-		string fname = foldername+filename;
+		string fname = foldername + filename;
 		
 		//ifstream miku("apimiku/Appearance Miku.pmx", ios::in | ios::binary);
 		ifstream miku(fname.c_str(), ios::in | ios::binary);
@@ -139,8 +139,8 @@ namespace ClosedMMDFormat
 		}
 		
 		//***Extract header info***
-		miku.read(pmxInfo.header_str,4);
-		miku.read((char*)&pmxInfo.ver,4);
+		miku.read(pmxInfo.header_str, 4);
+		miku.read((char*)&pmxInfo.ver, 4);
 		
 		/*if(string(pmxInfo.header_str).find("PMX ")==-1)
 		{
@@ -155,15 +155,15 @@ namespace ClosedMMDFormat
 		}
 		cout<<"PMX Ver. "<<pmxInfo.ver<<endl;
 		
-		miku.read((char*)&pmxInfo.line_size,1);
-		miku.read((char*)&pmxInfo.unicode_type,1);
-		miku.read((char*)&pmxInfo.extraUVCount,1);
-		miku.read((char*)&pmxInfo.vertexIndexSize,1);
-		miku.read((char*)&pmxInfo.textureIndexSize,1);
-		miku.read((char*)&pmxInfo.materialIndexSize,1);
-		miku.read((char*)&pmxInfo.boneIndexSize,1);
-		miku.read((char*)&pmxInfo.morphIndexSize,1);
-		miku.read((char*)&pmxInfo.rigidBodyIndexSize,1);
+		miku.read((char*)&pmxInfo.line_size,          1);
+		miku.read((char*)&pmxInfo.unicode_type,       1);
+		miku.read((char*)&pmxInfo.extraUVCount,       1);
+		miku.read((char*)&pmxInfo.vertexIndexSize,    1);
+		miku.read((char*)&pmxInfo.textureIndexSize,   1);
+		miku.read((char*)&pmxInfo.materialIndexSize,  1);
+		miku.read((char*)&pmxInfo.boneIndexSize,      1);
+		miku.read((char*)&pmxInfo.morphIndexSize,     1);
+		miku.read((char*)&pmxInfo.rigidBodyIndexSize, 1);
 		
 
 		if (pmxInfo.unicode_type == PMX_ENCODE_UTF8)
@@ -178,11 +178,11 @@ namespace ClosedMMDFormat
 		getPMXText(miku, pmxInfo, pmxInfo.commentEnglish);
 		
 		//***Pull Vertex Info***
-		miku.read((char*)&pmxInfo.vertex_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.vertex_continuing_datasets, 4);
 		
 		//exit(EXIT_SUCCESS);
 		cout<<"Loading vertices...";
-		for(int i=0; i<pmxInfo.vertex_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.vertex_continuing_datasets; ++i)
 		{
 			
 			PMXVertex *vertex = new PMXVertex();
@@ -192,24 +192,24 @@ namespace ClosedMMDFormat
 			float *y = (float*) malloc(sizeof(float));
 			float *z = (float*) malloc(sizeof(float));
 		
-			miku.read((char*)x,4);
-			miku.read((char*)y,4);
-			miku.read((char*)z,4);
+			miku.read((char*)x, 4);
+			miku.read((char*)y, 4);
+			miku.read((char*)z, 4);
 		
 			vertex->pos = glm::vec3(*x,*y,-*z);
 		
 			//***Pull normal vector info***
-			miku.read((char*)x,4);
-			miku.read((char*)y,4);
-			miku.read((char*)z,4);
+			miku.read((char*)x, 4);
+			miku.read((char*)y, 4);
+			miku.read((char*)z, 4);
 		
-			vertex->normal = glm::vec3(*x,*y,-*z);
+			vertex->normal = glm::vec3(*x, *y, -*z);
 		
 			//***Pull unit vector info***
-			miku.read((char*)x,4);
-			miku.read((char*)y,4);
+			miku.read((char*)x, 4);
+			miku.read((char*)y, 4);
 		
-			vertex->UV = glm::vec2(*x,*y);
+			vertex->UV = glm::vec2(*x, *y);
 		
 			if (pmxInfo.extraUVCount > 0)
 			{
@@ -218,57 +218,57 @@ namespace ClosedMMDFormat
 			}
 		
 		
-			miku.read((char*)&vertex->weight_transform_formula,1);
+			miku.read((char*)&vertex->weight_transform_formula, 1);
 		
 			if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF1)
 			{
-				getPMXIndex(miku, vertex->boneIndex1,pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
 			}
 			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF2)
 			{
-				getPMXIndex(miku, vertex->boneIndex1,pmxInfo.boneIndexSize);
-				getPMXIndex(miku, vertex->boneIndex2,pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
 				
-				miku.read((char*)&vertex->weight1,4);
+				miku.read((char*)&vertex->weight1, 4);
 				vertex->weight2 = 1.0 - vertex->weight1; //For BDEF2: weight of bone2=1.0-weight1
 			}
 			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF4)
 			{			
-				getPMXIndex(miku, vertex->boneIndex1,pmxInfo.boneIndexSize);
-				getPMXIndex(miku, vertex->boneIndex2,pmxInfo.boneIndexSize);
-				getPMXIndex(miku, vertex->boneIndex3,pmxInfo.boneIndexSize);
-				getPMXIndex(miku, vertex->boneIndex4,pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex3, pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex4, pmxInfo.boneIndexSize);
 				
-				miku.read((char*)&vertex->weight1,4);
-				miku.read((char*)&vertex->weight2,4);
-				miku.read((char*)&vertex->weight3,4);
-				miku.read((char*)&vertex->weight4,4);
+				miku.read((char*)&vertex->weight1, 4);
+				miku.read((char*)&vertex->weight2, 4);
+				miku.read((char*)&vertex->weight3, 4);
+				miku.read((char*)&vertex->weight4, 4);
 			}
 			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_SDEF)
 			{			
-				getPMXIndex(miku, vertex->boneIndex1,pmxInfo.boneIndexSize);
-				getPMXIndex(miku, vertex->boneIndex2,pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
+				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
 				
-				miku.read((char*)&vertex->weight1,4);
-				//vertex->weight2=1.0-vertex->weight1; //For BDEF2 and SDEF: weight of bone2=1.0-weight1
+				miku.read((char*)&vertex->weight1, 4);
+				//vertex->weight2 = 1.0 - vertex->weight1; //For BDEF2 and SDEF: weight of bone2=1.0-weight1
 				
-				miku.read((char*)x,4);
-				miku.read((char*)y,4);
-				miku.read((char*)z,4);
+				miku.read((char*)x, 4);
+				miku.read((char*)y, 4);
+				miku.read((char*)z, 4);
 				
-				//vertex->C=glm::vec3(*x,*y,*z);
+				//vertex->C = glm::vec3(*x, *y, *z);
 				
-				miku.read((char*)x,4);
-				miku.read((char*)y,4);
-				miku.read((char*)z,4);
+				miku.read((char*)x, 4);
+				miku.read((char*)y, 4);
+				miku.read((char*)z, 4);
 				
-				//vertex->R0=glm::vec3(*x,*y,*z);
+				//vertex->R0 = glm::vec3(*x, *y, *z);
 				
-				miku.read((char*)x,4);
-				miku.read((char*)y,4);
-				miku.read((char*)z,4);
+				miku.read((char*)x, 4);
+				miku.read((char*)y, 4);
+				miku.read((char*)z, 4);
 				
-				//vertex->R1=glm::vec3(*x,*y,*z);
+				//vertex->R1 = glm::vec3(*x, *y, *z);
 				
 				//cerr<<"ERROR: SDEF unsupported in shader currently, please add support!"<<endl;
 				//cerr<<"(The program is being forcibly closed because lack of SDEF support is suspected to cause issues in basic model loading and animation"<<endl;
@@ -280,7 +280,7 @@ namespace ClosedMMDFormat
 				exit(EXIT_FAILURE);
 			}
 		
-			miku.read((char*)&vertex->edgeScale,4);
+			miku.read((char*)&vertex->edgeScale, 4);
 			
 			pmxInfo.vertices.push_back(vertex);
 			
@@ -291,37 +291,37 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Pull Face Info***
-		miku.read((char*)&pmxInfo.face_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.face_continuing_datasets, 4);
 		
 		cout<<"Loading faces...";
-		for(int i=0; i<pmxInfo.face_continuing_datasets/3; i++)
+		for(int i = 0; i < pmxInfo.face_continuing_datasets / 3; i++)
 		{
 			PMXFace *face = new PMXFace();
 		
-			miku.read((char*)&face->points[0],pmxInfo.vertexIndexSize);
-			miku.read((char*)&face->points[1],pmxInfo.vertexIndexSize);
-			miku.read((char*)&face->points[2],pmxInfo.vertexIndexSize);
+			miku.read((char*)&face->points[0], pmxInfo.vertexIndexSize);
+			miku.read((char*)&face->points[1], pmxInfo.vertexIndexSize);
+			miku.read((char*)&face->points[2], pmxInfo.vertexIndexSize);
 			
 			pmxInfo.faces.push_back(face);
 		}
 		cout<<"done."<<endl;
 		
 		//***Pull Texture Info***	
-		miku.read((char*)&pmxInfo.texture_continuing_datasets,4);
-		pmxInfo.texturePaths=new string[pmxInfo.texture_continuing_datasets+11];
+		miku.read((char*)&pmxInfo.texture_continuing_datasets, 4);
+		pmxInfo.texturePaths = new string[pmxInfo.texture_continuing_datasets + 11];
 		
 		cout<<"Loading textures...";
-		for(int i=0; i<pmxInfo.texture_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.texture_continuing_datasets; ++i)
 		{
 			getPMXText(miku, pmxInfo, pmxInfo.texturePaths[i]);
 			
-			pmxInfo.texturePaths[i].insert(0,"/");
-			pmxInfo.texturePaths[i].insert(0,foldername);
+			pmxInfo.texturePaths[i].insert(0, "/");
+			pmxInfo.texturePaths[i].insert(0, foldername);
 			
-			while(pmxInfo.texturePaths[i].find("\\")!=-1)
+			while(pmxInfo.texturePaths[i].find("\\") != -1)
 			{
-				int index=pmxInfo.texturePaths[i].find("\\");
-				pmxInfo.texturePaths[i][index]='/';
+				int index = pmxInfo.texturePaths[i].find("\\");
+				pmxInfo.texturePaths[i][index] = '/';
 			}
 		}
 
@@ -329,10 +329,10 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Pull Material Info***
-		miku.read((char*)&pmxInfo.material_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.material_continuing_datasets, 4);
 		
 		cout<<"Loading materials...";
-		for(int i=0; i<pmxInfo.material_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.material_continuing_datasets; ++i)
 		{		
 			PMXMaterial *material = new PMXMaterial();
 			
@@ -348,70 +348,69 @@ namespace ClosedMMDFormat
 			float a;
 			
 			//***Pull Diffuse Color***
-			miku.read((char*)&r,4);
-			miku.read((char*)&g,4);
-			miku.read((char*)&b,4);
-			miku.read((char*)&a,4);
+			miku.read((char*)&r, 4);
+			miku.read((char*)&g, 4);
+			miku.read((char*)&b, 4);
+			miku.read((char*)&a, 4);
 			
-			material->diffuse = glm::vec4(r,g,b,a);
+			material->diffuse = glm::vec4(r, g, b, a);
 			
 			//cout<<"diffuse: "<<r<<" "<<g<<" "<<b<<endl;
 			
 			//***Pull Specular Color***
-			miku.read((char*)&material->specular.r,4);
-			miku.read((char*)&material->specular.g,4);
-			miku.read((char*)&material->specular.b,4);
+			miku.read((char*)&material->specular.r, 4);
+			miku.read((char*)&material->specular.g, 4);
+			miku.read((char*)&material->specular.b, 4);
 			
-			//material->specular=glm::vec3(r,g,b);
+			//material->specular = glm::vec3(r, g, b);
 			
 			//cout<<"specular: "<<material->specular.r<<" "<<material->specular.g<<" "<<material->specular.b<<endl;
 			
 			//***Pull Specular Coefficient***
-			miku.read((char*)&material->shininess,4);
+			miku.read((char*)&material->shininess, 4);
 			
 			//cout<<"shininess: "<<material->shininess<<endl;
 			
 			//***Pull Ambient Color***
-			miku.read((char*)&r,4);
-			miku.read((char*)&g,4);
-			miku.read((char*)&b,4);
+			miku.read((char*)&r, 4);
+			miku.read((char*)&g, 4);
+			miku.read((char*)&b, 4);
 			
-			material->ambient = glm::vec3(r,g,b);
+			material->ambient = glm::vec3(r, g, b);
 			
 			//***Pull Bitflag***
 			char bitflag_char[1];
-			miku.read(bitflag_char,1);
+			miku.read(bitflag_char, 1);
 			bitset<8> bitflag(*bitflag_char);
 			r = bitflag.size() - 1; //here r is used for reversing the bit sequence
 			
 			stringstream bitflag_ss;
 			bitflag_ss<<bitflag[r]<<bitflag[r-1]<<bitflag[r-2]<<bitflag[r-3]<<bitflag[r-4]<<bitflag[r-5]<<bitflag[r-6]<<bitflag[r-7]<<endl;
 			
-			material->drawBothSides=bitflag[0];
-			material->drawGroundShadow=bitflag[1];
-			material->drawToSelfShadowMap=bitflag[2];
-			material->drawSelfShadow=bitflag[3];
-			material->drawEdges=bitflag[4];
-
+			material->drawBothSides       = bitflag[0];
+			material->drawGroundShadow    = bitflag[1];
+			material->drawToSelfShadowMap = bitflag[2];
+			material->drawSelfShadow      = bitflag[3];
+			material->drawEdges           = bitflag[4];
 			
 			//***Pull Edge Color***
-			miku.read((char*)&r,4);
-			miku.read((char*)&g,4);
-			miku.read((char*)&b,4);
-			miku.read((char*)&a,4);
+			miku.read((char*)&r, 4);
+			miku.read((char*)&g, 4);
+			miku.read((char*)&b, 4);
+			miku.read((char*)&a, 4);
 			
-			material->edgeColor = glm::vec4(r,g,b,a);
+			material->edgeColor = glm::vec4(r, g, b, a);
 			
 			//***Pull Edge Size***
-			miku.read((char*)&material->edgeSize,4);
+			miku.read((char*)&material->edgeSize, 4);
 					
 			//***Pull Texture and Sphere Indices***
-			getPMXIndex(miku, material->textureIndex,pmxInfo.textureIndexSize);
-			getPMXIndex(miku, material->sphereIndex,pmxInfo.textureIndexSize);
+			getPMXIndex(miku, material->textureIndex, pmxInfo.textureIndexSize);
+			getPMXIndex(miku, material->sphereIndex,  pmxInfo.textureIndexSize);
 			
 			//***Pull sphereMode and shareToon flag***
-			miku.read((char*)&material->sphereMode,1);
-			miku.read((char*)&material->shareToon,1);
+			miku.read((char*)&material->sphereMode, 1);
+			miku.read((char*)&material->shareToon,  1);
 			
 			//if((int)material->sphereMode>0) cout<<"YAYYYYY SPHERE MODE MATERIALLLL: "<<(int)material->sphereMode<<" "<<material->name<<endl;
 			
@@ -420,7 +419,7 @@ namespace ClosedMMDFormat
 				//cerr<<"No support for shared toon yet, please code in support"<<endl;
 				//cerr<<"Number of datasets: "<<i<<" "<<pmxInfo.material_continuing_datasets<<endl;
 				
-				miku.read((char*)&material->shareToonTexture,(int)1);
+				miku.read((char*)&material->shareToonTexture, (int)1);
 				
 				//cout<<"shareToonTexture: "<<(int)material->shareToonTexture<<endl;
 				//exit(EXIT_FAILURE);
@@ -436,7 +435,7 @@ namespace ClosedMMDFormat
 			getPMXText(miku, pmxInfo, material->memo);
 			
 			//***Pull number of faces that use the material***
-			miku.read((char*)&material->hasFaceNum,4);
+			miku.read((char*)&material->hasFaceNum, 4);
 			
 			if (material->name == u8"め")
 			{
@@ -448,10 +447,10 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Pull Bone Info***
-		miku.read((char*)&pmxInfo.bone_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.bone_continuing_datasets, 4);
 		
 		cout<<"Loading bones...";
-		for(int i=0; i<pmxInfo.bone_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.bone_continuing_datasets; ++i)
 		{
 			PMXBone *bone = new PMXBone();
 			
@@ -459,13 +458,13 @@ namespace ClosedMMDFormat
 			getPMXText(miku, pmxInfo, bone->nameEng);
 			
 			//***Pull Position***
-			miku.read((char*)&bone->position.x,4);
-			miku.read((char*)&bone->position.y,4);
-			miku.read((char*)&bone->position.z,4);
+			miku.read((char*)&bone->position.x, 4);
+			miku.read((char*)&bone->position.y, 4);
+			miku.read((char*)&bone->position.z, 4);
 			bone->position.z = -bone->position.z;
 			
 			//***Pull Parent Index***
-			getPMXIndex(miku, bone->parentBoneIndex,pmxInfo.boneIndexSize);
+			getPMXIndex(miku, bone->parentBoneIndex, pmxInfo.boneIndexSize);
 			
 			if(bone->parentBoneIndex != -1)
 			{
@@ -483,11 +482,11 @@ namespace ClosedMMDFormat
 			
 			
 			//***Pull Transformation Level***/
-			miku.read((char*)&bone->transformationLevel,4);
+			miku.read((char*)&bone->transformationLevel, 4);
 			
 			//***Pull Bitflag***
 			char bitflag_char[1];
-			miku.read(bitflag_char,1);
+			miku.read(bitflag_char, 1);
 			bitset<8> bitflag(*bitflag_char);
 			int r = bitflag.size() - 1;
 			stringstream bitflag_ss;
@@ -515,54 +514,53 @@ namespace ClosedMMDFormat
 			
 			if (bone->connectionDisplayMethod == 0) //0: Display with Coordinate Offset
 			{
-				miku.read((char*)&bone->coordinateOffset.x,4);
-				miku.read((char*)&bone->coordinateOffset.y,4);
-				miku.read((char*)&bone->coordinateOffset.z,4);
+				miku.read((char*)&bone->coordinateOffset.x, 4);
+				miku.read((char*)&bone->coordinateOffset.y, 4);
+				miku.read((char*)&bone->coordinateOffset.z, 4);
 			}
 			else //1: Display with Bone
 			{
-				getPMXIndex(miku, bone->connectionBoneIndex,pmxInfo.boneIndexSize);
+				getPMXIndex(miku, bone->connectionBoneIndex, pmxInfo.boneIndexSize);
 			}
 			
 			if (bone->giveRotation || bone->giveTranslation)
 			{
-				getPMXIndex(miku, bone->givenParentBoneIndex,pmxInfo.boneIndexSize);
-				miku.read((char*)&bone->giveRate,4);
+				getPMXIndex(miku, bone->givenParentBoneIndex, pmxInfo.boneIndexSize);
+				miku.read((char*)&bone->giveRate, 4);
 			}
 			
 			if (bone->axisFixed)
 			{
-				miku.read((char*)&bone->axisDirectionVector.x,4);
-				miku.read((char*)&bone->axisDirectionVector.y,4);
-				miku.read((char*)&bone->axisDirectionVector.z,4);
+				miku.read((char*)&bone->axisDirectionVector.x, 4);
+				miku.read((char*)&bone->axisDirectionVector.y, 4);
+				miku.read((char*)&bone->axisDirectionVector.z, 4);
 			}
 			
 			if (bone->localAxis)
 			{
-				miku.read((char*)&bone->XAxisDirectionVector.x,4);
-				miku.read((char*)&bone->XAxisDirectionVector.y,4);
-				miku.read((char*)&bone->XAxisDirectionVector.z,4);
+				miku.read((char*)&bone->XAxisDirectionVector.x, 4);
+				miku.read((char*)&bone->XAxisDirectionVector.y, 4);
+				miku.read((char*)&bone->XAxisDirectionVector.z, 4);
 				
-				miku.read((char*)&bone->ZAxisDirectionVector.x,4);
-				miku.read((char*)&bone->ZAxisDirectionVector.y,4);
-				miku.read((char*)&bone->ZAxisDirectionVector.z,4);
+				miku.read((char*)&bone->ZAxisDirectionVector.x, 4);
+				miku.read((char*)&bone->ZAxisDirectionVector.y, 4);
+				miku.read((char*)&bone->ZAxisDirectionVector.z, 4);
 			}
 			
 			if (bone->externalParentTransform)
 			{
-				miku.read((char*)&bone->keyValue,4);
+				miku.read((char*)&bone->keyValue, 4);
 			}
 			
 			if (bone->IK)
 			{
 				getPMXIndex(miku, bone->IKTargetBoneIndex, pmxInfo.boneIndexSize);
 				//cout<<"targetBone: "<<bone->IKTargetBoneIndex<<endl;
-				miku.read((char*)&bone->IKLoopCount,4);
-				miku.read((char*)&bone->IKLoopAngleLimit,4);
+				miku.read((char*)&bone->IKLoopCount,      4);
+				miku.read((char*)&bone->IKLoopAngleLimit, 4);
+				miku.read((char*)&bone->IKLinkNum,        4);
 				
-				miku.read((char*)&bone->IKLinkNum,4);
-				
-				for(int j=0; j<bone->IKLinkNum; ++j)
+				for(int j = 0; j < bone->IKLinkNum; ++j)
 				{
 					PMXIKLink *link = new PMXIKLink();
 					
@@ -570,7 +568,7 @@ namespace ClosedMMDFormat
 					//cout<<link->linkBoneIndex<<endl;
 					
 					uint8_t tmpInt;
-					miku.read((char*)&tmpInt,1);
+					miku.read((char*)&tmpInt, 1);
 					link->angleLimit = tmpInt;
 					
 					if (link->angleLimit)
@@ -578,22 +576,20 @@ namespace ClosedMMDFormat
 						glm::vec3 minVec;
 						glm::vec3 maxVec;
 						
-						miku.read((char*)&minVec.x,4);
-						miku.read((char*)&minVec.y,4);
-						miku.read((char*)&minVec.z,4);
+						miku.read((char*)&minVec.x, 4);
+						miku.read((char*)&minVec.y, 4);
+						miku.read((char*)&minVec.z, 4);
 				
-						miku.read((char*)&maxVec.x,4);
-						miku.read((char*)&maxVec.y,4);
-						miku.read((char*)&maxVec.z,4);
+						miku.read((char*)&maxVec.x, 4);
+						miku.read((char*)&maxVec.y, 4);
+						miku.read((char*)&maxVec.z, 4);
 						
 						link->lowerLimit = minVec;
 						link->upperLimit = maxVec;
 						//link->lowerLimit=glm::vec3(-99.0,-99.0,-99.0);
 						//link->upperLimit=glm::vec3(99.0,99.0,99.0);
-						
 						//link->lowerLimit.x=-maxVec.x;
 						//link->upperLimit.x=-minVec.x;
-						
 						
 						//cout<<"lowerLimit: "<<link->lowerLimit.x<<" "<<link->lowerLimit.y<<" "<<link->lowerLimit.z<<endl;
 						//cout<<"upperLimit: "<<link->upperLimit.x<<" "<<link->upperLimit.y<<" "<<link->upperLimit.z<<endl;
@@ -615,11 +611,11 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 			
 		//***Pull Morph Info***
-		miku.read((char*)&pmxInfo.morph_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.morph_continuing_datasets, 4);
 		//cout<<"Morph Continuing Datasets: "<<pmxInfo.morph_continuing_datasets<<endl;
 		
 		cout<<"Loading morphs...";
-		for(int m=0; m<pmxInfo.morph_continuing_datasets; ++m)
+		for(int m = 0; m < pmxInfo.morph_continuing_datasets; ++m)
 		{
 			//cout<<"[Morph "<<i<<endl;
 			PMXMorph *morph = new PMXMorph;
@@ -629,15 +625,15 @@ namespace ClosedMMDFormat
 			//cout<<"Name: "<<morph->name<<endl;
 			//cout<<"Name English: "<<morph->nameEng<<endl;
 			
-			miku.read((char*)&morph->controlPanel,1);
-			miku.read((char*)&morph->type,1);
-			miku.read((char*)&morph->morphOffsetNum,4);
+			miku.read((char*)&morph->controlPanel, 1);
+			miku.read((char*)&morph->type, 1);
+			miku.read((char*)&morph->morphOffsetNum, 4);
 			
 			//cout<<"Control Panel: "<<(int)morph->controlPanel<<endl;
 			//cout<<"Type: "<<(int)morph->type<<endl;
 			//cout<<"Offset Number: "<<morph->morphOffsetNum<<endl;
 			
-			for(int i=0; i<morph->morphOffsetNum; ++i)
+			for(int i = 0; i < morph->morphOffsetNum; ++i)
 			{
 				PMXMorphData *data;
 				switch(morph->type)
@@ -645,12 +641,12 @@ namespace ClosedMMDFormat
 					case MORPH_TYPE_VERTEX:
 					{
 						PMXVertexMorph *vertexMorph = new PMXVertexMorph();
-						getPMXIndex(miku, vertexMorph->vertexIndex,pmxInfo.vertexIndexSize);
+						getPMXIndex(miku, vertexMorph->vertexIndex, pmxInfo.vertexIndexSize);
 					
-						miku.read((char*)&vertexMorph->coordinateOffset.x,4);
-						miku.read((char*)&vertexMorph->coordinateOffset.y,4);
-						miku.read((char*)&vertexMorph->coordinateOffset.z,4);
-						vertexMorph->coordinateOffset.z=-vertexMorph->coordinateOffset.z;
+						miku.read((char*)&vertexMorph->coordinateOffset.x, 4);
+						miku.read((char*)&vertexMorph->coordinateOffset.y, 4);
+						miku.read((char*)&vertexMorph->coordinateOffset.z, 4);
+						vertexMorph->coordinateOffset.z = -vertexMorph->coordinateOffset.z;
 					
 						//cout<<"Vertex Index: "<<vertexMorph->vertexIndex<<endl;
 					
@@ -668,12 +664,12 @@ namespace ClosedMMDFormat
 					{
 						PMXUVMorph *UVMorph = new PMXUVMorph();
 					
-						getPMXIndex(miku, UVMorph->vertexIndex,pmxInfo.vertexIndexSize);
+						getPMXIndex(miku, UVMorph->vertexIndex, pmxInfo.vertexIndexSize);
 					
-						miku.read((char*)&UVMorph->UVOffsetAmount.x,4);
-						miku.read((char*)&UVMorph->UVOffsetAmount.y,4);
-						miku.read((char*)&UVMorph->UVOffsetAmount.z,4);
-						miku.read((char*)&UVMorph->UVOffsetAmount.w,4);
+						miku.read((char*)&UVMorph->UVOffsetAmount.x, 4);
+						miku.read((char*)&UVMorph->UVOffsetAmount.y, 4);
+						miku.read((char*)&UVMorph->UVOffsetAmount.z, 4);
+						miku.read((char*)&UVMorph->UVOffsetAmount.w, 4);
 					
 						//cout<<"Vertex Index: "<<UVMorph->vertexIndex<<endl;
 					
@@ -689,21 +685,21 @@ namespace ClosedMMDFormat
 					
 						getPMXIndex(miku, boneMorph->boneIndex,pmxInfo.boneIndexSize);
 					
-						miku.read((char*)&boneMorph->inertia.x,4);
-						miku.read((char*)&boneMorph->inertia.y,4);
-						miku.read((char*)&boneMorph->inertia.z,4);
+						miku.read((char*)&boneMorph->inertia.x, 4);
+						miku.read((char*)&boneMorph->inertia.y, 4);
+						miku.read((char*)&boneMorph->inertia.z, 4);
 						
-						miku.read((char*)&boneMorph->rotationAmount.x,4);
-						miku.read((char*)&boneMorph->rotationAmount.y,4);
-						miku.read((char*)&boneMorph->rotationAmount.z,4);
-						miku.read((char*)&boneMorph->rotationAmount.w,4);
+						miku.read((char*)&boneMorph->rotationAmount.x, 4);
+						miku.read((char*)&boneMorph->rotationAmount.y, 4);
+						miku.read((char*)&boneMorph->rotationAmount.z, 4);
+						miku.read((char*)&boneMorph->rotationAmount.w, 4);
 					
 						//cout<<"Vertex Index: "<<boneMorph->boneIndex<<endl;
 					
 						//cerr<<"Movement Amount: "<<boneMorph->inertia.x<<" "<<boneMorph->inertia.y<<" "<<boneMorph->inertia.z<<endl;
 						//cerr<<"Rotation Amount: "<<boneMorph->rotationAmount.x<<" "<<boneMorph->rotationAmount.y<<" "<<boneMorph->rotationAmount.z<<" "<<boneMorph->rotationAmount.w<<endl;
 					
-						data=boneMorph;
+						data = boneMorph;
 					}
 					break;
 					
@@ -711,45 +707,47 @@ namespace ClosedMMDFormat
 					{
 						PMXMaterialMorph *materialMorph = new PMXMaterialMorph();
 					
-						getPMXIndex(miku, materialMorph->materialIndex,pmxInfo.materialIndexSize);
-						miku.read((char*)&materialMorph->offsetCalculationFormula,1);
+						getPMXIndex(miku, materialMorph->materialIndex, pmxInfo.materialIndexSize);
+						miku.read((char*)&materialMorph->offsetCalculationFormula, 1);
 					
-						miku.read((char*)&materialMorph->diffuse.r,4);
-						miku.read((char*)&materialMorph->diffuse.g,4);
-						miku.read((char*)&materialMorph->diffuse.b,4);
-						miku.read((char*)&materialMorph->diffuse.a,4);
+						miku.read((char*)&materialMorph->diffuse.r, 4);
+						miku.read((char*)&materialMorph->diffuse.g, 4);
+						miku.read((char*)&materialMorph->diffuse.b, 4);
+						miku.read((char*)&materialMorph->diffuse.a, 4);
 						
-						miku.read((char*)&materialMorph->specular.r,4);
-						miku.read((char*)&materialMorph->specular.g,4);
-						miku.read((char*)&materialMorph->specular.b,4);
-						miku.read((char*)&materialMorph->shininess,4);
+						miku.read((char*)&materialMorph->specular.r, 4);
+						miku.read((char*)&materialMorph->specular.g, 4);
+						miku.read((char*)&materialMorph->specular.b, 4);
 						
-						miku.read((char*)&materialMorph->ambient.r,4);
-						miku.read((char*)&materialMorph->ambient.g,4);
-						miku.read((char*)&materialMorph->ambient.b,4);
+						miku.read((char*)&materialMorph->shininess, 4);
 						
-						miku.read((char*)&materialMorph->edgeColor.r,4);
-						miku.read((char*)&materialMorph->edgeColor.g,4);
-						miku.read((char*)&materialMorph->edgeColor.b,4);
-						miku.read((char*)&materialMorph->edgeColor.a,4);
-						miku.read((char*)&materialMorph->edgeSize,4);
+						miku.read((char*)&materialMorph->ambient.r, 4);
+						miku.read((char*)&materialMorph->ambient.g, 4);
+						miku.read((char*)&materialMorph->ambient.b, 4);
 						
-						miku.read((char*)&materialMorph->textureCoefficient.r,4);
-						miku.read((char*)&materialMorph->textureCoefficient.g,4);
-						miku.read((char*)&materialMorph->textureCoefficient.b,4);
-						miku.read((char*)&materialMorph->textureCoefficient.a,4);
+						miku.read((char*)&materialMorph->edgeColor.r, 4);
+						miku.read((char*)&materialMorph->edgeColor.g, 4);
+						miku.read((char*)&materialMorph->edgeColor.b, 4);
+						miku.read((char*)&materialMorph->edgeColor.a, 4);
 						
-						miku.read((char*)&materialMorph->sphereTextureCoefficient.r,4);
-						miku.read((char*)&materialMorph->sphereTextureCoefficient.g,4);
-						miku.read((char*)&materialMorph->sphereTextureCoefficient.b,4);
-						miku.read((char*)&materialMorph->sphereTextureCoefficient.a,4);
+						miku.read((char*)&materialMorph->edgeSize, 4);
 						
-						miku.read((char*)&materialMorph->toonTextureCoefficient.r,4);
-						miku.read((char*)&materialMorph->toonTextureCoefficient.g,4);
-						miku.read((char*)&materialMorph->toonTextureCoefficient.b,4);
-						miku.read((char*)&materialMorph->toonTextureCoefficient.a,4);
+						miku.read((char*)&materialMorph->textureCoefficient.r, 4);
+						miku.read((char*)&materialMorph->textureCoefficient.g, 4);
+						miku.read((char*)&materialMorph->textureCoefficient.b, 4);
+						miku.read((char*)&materialMorph->textureCoefficient.a, 4);
 						
-						data=materialMorph;
+						miku.read((char*)&materialMorph->sphereTextureCoefficient.r, 4);
+						miku.read((char*)&materialMorph->sphereTextureCoefficient.g, 4);
+						miku.read((char*)&materialMorph->sphereTextureCoefficient.b, 4);
+						miku.read((char*)&materialMorph->sphereTextureCoefficient.a, 4);
+						
+						miku.read((char*)&materialMorph->toonTextureCoefficient.r, 4);
+						miku.read((char*)&materialMorph->toonTextureCoefficient.g, 4);
+						miku.read((char*)&materialMorph->toonTextureCoefficient.b, 4);
+						miku.read((char*)&materialMorph->toonTextureCoefficient.a, 4);
+						
+						data = materialMorph;
 					}
 					break;
 					
@@ -757,8 +755,8 @@ namespace ClosedMMDFormat
 					{
 						PMXGroupMorph *groupMorph = new PMXGroupMorph();
 						
-						getPMXIndex(miku, groupMorph->morphIndex,pmxInfo.morphIndexSize);
-						miku.read((char*)&groupMorph->morphRate,4);
+						getPMXIndex(miku, groupMorph->morphIndex, pmxInfo.morphIndexSize);
+						miku.read((char*)&groupMorph->morphRate, 4);
 					}
 					break;
 					
@@ -776,36 +774,36 @@ namespace ClosedMMDFormat
 		cout<<"done"<<endl;
 		
 		//***Pull Display Frame Info***
-		miku.read((char*)&pmxInfo.display_frame_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.display_frame_continuing_datasets, 4);
 		//cout<<"Display Frame Continuing Datasets: "<<pmxInfo.display_frame_continuing_datasets<<endl;
 		
 		cout<<"Loading display frame...";
-		for(int f=0; f<pmxInfo.display_frame_continuing_datasets; ++f)
+		for(int f = 0; f < pmxInfo.display_frame_continuing_datasets; ++f)
 		{
 			PMXDisplayFrame *df = new PMXDisplayFrame();
 			getPMXText(miku, pmxInfo, df->name);
 			getPMXText(miku, pmxInfo, df->nameEng);
 			
 			uint8_t tmp;
-			miku.read((char*)&tmp,1);
+			miku.read((char*)&tmp, 1);
 			df->specialFrameFlag = tmp;
 			
-			miku.read((char*)&df->elementsWithinFrame,4);
+			miku.read((char*)&df->elementsWithinFrame, 4);
 			
-			for(int i=0; i<df->elementsWithinFrame; ++i)
+			for(int i = 0; i < df->elementsWithinFrame; ++i)
 			{
 				PMXDisplayFrameElement *element = new PMXDisplayFrameElement();
 				
-				miku.read((char*)&tmp,1);
+				miku.read((char*)&tmp, 1);
 				element->target = tmp;
 				
 				if (element->target == 0) //Bone
 				{
-					miku.read((char*)&element->index,pmxInfo.boneIndexSize);
+					miku.read((char*)&element->index, pmxInfo.boneIndexSize);
 				}
 				else //==1; Morph
 				{
-					miku.read((char*)&element->index,pmxInfo.morphIndexSize);
+					miku.read((char*)&element->index, pmxInfo.morphIndexSize);
 				}
 				df->elements.push_back(element);
 			}
@@ -814,104 +812,104 @@ namespace ClosedMMDFormat
 		cout<<"done"<<endl;
 		
 		//***Pull Rigid Body Info***
-		miku.read((char*)&pmxInfo.rigid_body_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.rigid_body_continuing_datasets, 4);
 		//cout<<"Rigid Body Continuing Datasets: "<<pmxInfo.rigid_body_continuing_datasets<<endl;
 		
 		cout<<"Loading rigid body...";
-		for(int i=0; i<pmxInfo.rigid_body_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.rigid_body_continuing_datasets; ++i)
 		{
 			PMXRigidBody *rb = new PMXRigidBody();
 			getPMXText(miku, pmxInfo, rb->name);
 			getPMXText(miku, pmxInfo, rb->nameEng);
 			
-			getPMXIndex(miku, rb->relatedBoneIndex,pmxInfo.boneIndexSize);
+			getPMXIndex(miku, rb->relatedBoneIndex, pmxInfo.boneIndexSize);
 			
-			miku.read((char*)&rb->group,1);
-			miku.read((char*)&rb->noCollisionGroupFlag,2);
+			miku.read((char*)&rb->group, 1);
+			miku.read((char*)&rb->noCollisionGroupFlag, 2);
 			
-			miku.read((char*)&rb->shape,1);
+			miku.read((char*)&rb->shape, 1);
 			
-			miku.read((char*)&rb->size.x,4);
-			miku.read((char*)&rb->size.y,4);
-			miku.read((char*)&rb->size.z,4);
+			miku.read((char*)&rb->size.x, 4);
+			miku.read((char*)&rb->size.y, 4);
+			miku.read((char*)&rb->size.z, 4);
 			
 			//rb->position.z=-rb->size.z;
 			
-			miku.read((char*)&rb->position.x,4);
-			miku.read((char*)&rb->position.y,4);
-			miku.read((char*)&rb->position.z,4);
+			miku.read((char*)&rb->position.x, 4);
+			miku.read((char*)&rb->position.y, 4);
+			miku.read((char*)&rb->position.z, 4);
 			
 			rb->position.z = -rb->position.z;
 			
-			miku.read((char*)&rb->rotation.x,4);
-			miku.read((char*)&rb->rotation.y,4);
-			miku.read((char*)&rb->rotation.z,4);
+			miku.read((char*)&rb->rotation.x, 4);
+			miku.read((char*)&rb->rotation.y, 4);
+			miku.read((char*)&rb->rotation.z, 4);
 			
 			rb->rotation.x = -rb->rotation.x;
 			
-			miku.read((char*)&rb->mass,4);
-			miku.read((char*)&rb->movementDecay,4);
-			miku.read((char*)&rb->rotationDecay,4);
-			miku.read((char*)&rb->elasticity,4);
-			miku.read((char*)&rb->friction,4);
+			miku.read((char*)&rb->mass, 4);
+			miku.read((char*)&rb->movementDecay, 4);
+			miku.read((char*)&rb->rotationDecay, 4);
+			miku.read((char*)&rb->elasticity, 4);
+			miku.read((char*)&rb->friction, 4);
 			
-			miku.read((char*)&rb->physicsOperation,1);
+			miku.read((char*)&rb->physicsOperation, 1);
 			
 			pmxInfo.rigidBodies.push_back(rb);
 		}
 		cout<<"done"<<endl;
 		
 		//***Pull Rigid Body Info***
-		miku.read((char*)&pmxInfo.joint_continuing_datasets,4);
+		miku.read((char*)&pmxInfo.joint_continuing_datasets, 4);
 		//cout<<"Joint Continuing Datasets: "<<pmxInfo.joint_continuing_datasets<<endl;
-		for(int i=0; i<pmxInfo.joint_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.joint_continuing_datasets; ++i)
 		{
 			PMXJoint *joint = new PMXJoint;
 			getPMXText(miku, pmxInfo, joint->name);
 			getPMXText(miku, pmxInfo, joint->nameEng);
 			
-			miku.read((char*)&joint->type,1);
+			miku.read((char*)&joint->type, 1);
 			
 			if (joint->type == 0)
 			{
 				getPMXIndex(miku, joint->relatedRigidBodyIndexA,pmxInfo.rigidBodyIndexSize);
 				getPMXIndex(miku, joint->relatedRigidBodyIndexB,pmxInfo.rigidBodyIndexSize);
 				
-				miku.read((char*)&joint->position.x,4);
-				miku.read((char*)&joint->position.y,4);
-				miku.read((char*)&joint->position.z,4);
+				miku.read((char*)&joint->position.x, 4);
+				miku.read((char*)&joint->position.y, 4);
+				miku.read((char*)&joint->position.z, 4);
 				
 				joint->position.z = -joint->position.z;
 				
-				miku.read((char*)&joint->rotation.x,4);
-				miku.read((char*)&joint->rotation.y,4);
-				miku.read((char*)&joint->rotation.z,4);
+				miku.read((char*)&joint->rotation.x, 4);
+				miku.read((char*)&joint->rotation.y, 4);
+				miku.read((char*)&joint->rotation.z, 4);
 				
 				joint->rotation.x = -joint->rotation.x;
 				
-				miku.read((char*)&joint->movementLowerLimit.x,4);
-				miku.read((char*)&joint->movementLowerLimit.y,4);
-				miku.read((char*)&joint->movementLowerLimit.z,4);
+				miku.read((char*)&joint->movementLowerLimit.x, 4);
+				miku.read((char*)&joint->movementLowerLimit.y, 4);
+				miku.read((char*)&joint->movementLowerLimit.z, 4);
 				
-				miku.read((char*)&joint->movementUpperLimit.x,4);
-				miku.read((char*)&joint->movementUpperLimit.y,4);
-				miku.read((char*)&joint->movementUpperLimit.z,4);
+				miku.read((char*)&joint->movementUpperLimit.x, 4);
+				miku.read((char*)&joint->movementUpperLimit.y, 4);
+				miku.read((char*)&joint->movementUpperLimit.z, 4);
 				
-				miku.read((char*)&joint->rotationLowerLimit.x,4);
-				miku.read((char*)&joint->rotationLowerLimit.y,4);
-				miku.read((char*)&joint->rotationLowerLimit.z,4);
+				miku.read((char*)&joint->rotationLowerLimit.x, 4);
+				miku.read((char*)&joint->rotationLowerLimit.y, 4);
+				miku.read((char*)&joint->rotationLowerLimit.z, 4);
 				
-				miku.read((char*)&joint->rotationUpperLimit.x,4);
-				miku.read((char*)&joint->rotationUpperLimit.y,4);
-				miku.read((char*)&joint->rotationUpperLimit.z,4);
+				miku.read((char*)&joint->rotationUpperLimit.x, 4);
+				miku.read((char*)&joint->rotationUpperLimit.y, 4);
+				miku.read((char*)&joint->rotationUpperLimit.z, 4);
 				
-				miku.read((char*)&joint->springMovementConstant.x,4);
-				miku.read((char*)&joint->springMovementConstant.y,4);
-				miku.read((char*)&joint->springMovementConstant.z,4);
+				miku.read((char*)&joint->springMovementConstant.x, 4);
+				miku.read((char*)&joint->springMovementConstant.y, 4);
+				miku.read((char*)&joint->springMovementConstant.z, 4);
 				
-				miku.read((char*)&joint->springRotationConstant.x,4);
-				miku.read((char*)&joint->springRotationConstant.y,4);
-				miku.read((char*)&joint->springRotationConstant.z,4);
+				miku.read((char*)&joint->springRotationConstant.x, 4);
+				miku.read((char*)&joint->springRotationConstant.y, 4);
+				miku.read((char*)&joint->springRotationConstant.z, 4);
 			}
 			else
 			{
@@ -968,7 +966,7 @@ namespace ClosedMMDFormat
 		
 		cout<<"Number of Continuing Vertex Datasets: "<<pmxInfo.vertex_continuing_datasets<<endl;
 		
-		for(int i=0; i<pmxInfo.vertex_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.vertex_continuing_datasets; ++i)
 		{
 			PMXVertex *vertex = pmxInfo.vertices[i];
 			
@@ -1025,7 +1023,7 @@ namespace ClosedMMDFormat
 		cout<<"Number of Continuing Texture Datasets: "<<pmxInfo.texture_continuing_datasets<<endl;
 		
 		cout<<"Number of Continuing Material Datasets: "<<pmxInfo.material_continuing_datasets<<endl;
-		for(int i=0; i<pmxInfo.material_continuing_datasets; ++i)
+		for(int i = 0; i < pmxInfo.material_continuing_datasets; ++i)
 		{		
 			if (MATERIAL_DEBUG) cout<<"[Material "<<i<<"]"<<endl;
 			
@@ -1084,7 +1082,7 @@ namespace ClosedMMDFormat
 			if (MATERIAL_DEBUG)
 			{
 				cout<<"Texture Index: "<<material->textureIndex<<endl;
-				scout<<"Toon Texture Index: "<<material->toonTextureIndex<<endl;
+				cout<<"Toon Texture Index: "<<material->toonTextureIndex<<endl;
 				cout<<"Sphere Index: "<<material->sphereIndex<<endl<<endl;
 			}
 		}
