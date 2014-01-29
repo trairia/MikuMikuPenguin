@@ -56,22 +56,19 @@ namespace ClosedMMDFormat
 		//TODO: Apply this method of setting the index to the rest of the file-reading code (make a function)
 		if (indexSize == 1) {
 			int8_t tmpIndex;
-			miku.read((char*)&tmpIndex, (int)indexSize);
-			
+			miku.read((char*)&tmpIndex, (int)indexSize);	
 			index = (int)tmpIndex;
 		} else if (indexSize == 2) {
 			int16_t tmpIndex;
 			miku.read((char*)&tmpIndex, (int)indexSize);
-			
 			index = (int)tmpIndex;
 		} else if (indexSize == 4) {
 			int tmpIndex;
 			miku.read((char*)&tmpIndex, (int)indexSize);
-			
 			index = (int)tmpIndex;
 		}
 	}
-
+	
 	void getPMXText(ifstream &miku, PMXInfo &pmxInfo, string &result, bool debug)
 	{
 		uint32_t text_size;
@@ -167,34 +164,27 @@ namespace ClosedMMDFormat
 			PMXVertex *vertex = new PMXVertex();
 			
 			//***Pull position info***
-			float *x = (float*) malloc(sizeof(float));
-			float *y = (float*) malloc(sizeof(float));
-			float *z = (float*) malloc(sizeof(float));
-		
-			miku.read((char*)x, 4);
-			miku.read((char*)y, 4);
-			miku.read((char*)z, 4);
-		
-			vertex->pos = glm::vec3(*x,*y,-*z);
-		
+			miku.read((char*)&vertex->pos.x, 4);
+			miku.read((char*)&vertex->pos.y, 4);
+			miku.read((char*)&vertex->pos.z, 4);
+			
+			vertex->pos.z = -vertex->pos.z;
+			
 			//***Pull normal vector info***
-			miku.read((char*)x, 4);
-			miku.read((char*)y, 4);
-			miku.read((char*)z, 4);
-		
-			vertex->normal = glm::vec3(*x, *y, -*z);
-		
+			miku.read((char*)&vertex->normal.x, 4);
+			miku.read((char*)&vertex->normal.y, 4);
+			miku.read((char*)&vertex->normal.z, 4);
+			
+			vertex->normal.z = -vertex->normal.z;
+			
 			//***Pull unit vector info***
-			miku.read((char*)x, 4);
-			miku.read((char*)y, 4);
-		
-			vertex->UV = glm::vec2(*x, *y);
+			miku.read((char*)&vertex->UV.x, 4);
+			miku.read((char*)&vertex->UV.y, 4);
 		
 			if (pmxInfo.extraUVCount > 0) {
 				cerr<<"ERROR: please add support for extra UVs"<<endl;
 				exit(EXIT_FAILURE);
 			}
-		
 		
 			miku.read((char*)&vertex->weight_transform_formula, 1);
 		
@@ -223,23 +213,17 @@ namespace ClosedMMDFormat
 				miku.read((char*)&vertex->weight1, 4);
 				//vertex->weight2 = 1.0 - vertex->weight1; //For BDEF2 and SDEF: weight of bone2=1.0-weight1
 				
-				miku.read((char*)x, 4);
-				miku.read((char*)y, 4);
-				miku.read((char*)z, 4);
+				miku.read((char*)&vertex->C.x, 4);
+				miku.read((char*)&vertex->C.y, 4);
+				miku.read((char*)&vertex->C.z, 4);
 				
-				//vertex->C = glm::vec3(*x, *y, *z);
+				miku.read((char*)&vertex->R0.x, 4);
+				miku.read((char*)&vertex->R0.y, 4);
+				miku.read((char*)&vertex->R0.z, 4);
 				
-				miku.read((char*)x, 4);
-				miku.read((char*)y, 4);
-				miku.read((char*)z, 4);
-				
-				//vertex->R0 = glm::vec3(*x, *y, *z);
-				
-				miku.read((char*)x, 4);
-				miku.read((char*)y, 4);
-				miku.read((char*)z, 4);
-				
-				//vertex->R1 = glm::vec3(*x, *y, *z);
+				miku.read((char*)&vertex->R1.x, 4);
+				miku.read((char*)&vertex->R1.y, 4);
+				miku.read((char*)&vertex->R1.z, 4);
 				
 				//cerr<<"ERROR: SDEF unsupported in shader currently, please add support!"<<endl;
 				//cerr<<"(The program is being forcibly closed because lack of SDEF support is suspected to cause issues in basic model loading and animation"<<endl;
@@ -252,10 +236,6 @@ namespace ClosedMMDFormat
 			miku.read((char*)&vertex->edgeScale, 4);
 			
 			pmxInfo.vertices.push_back(vertex);
-			
-			free(x);
-			free(y);
-			free(z);
 		}
 		cout<<"done."<<endl;
 		
@@ -310,19 +290,12 @@ namespace ClosedMMDFormat
 			//cout<<"Material Name: "<<material->name<<endl;
 			getPMXText(miku, pmxInfo, material->nameEng);
 			//cout<<material->nameEng<<endl;
-			
-			float r;
-			float g;
-			float b;
-			float a;
-			
+						
 			//***Pull Diffuse Color***
-			miku.read((char*)&r, 4);
-			miku.read((char*)&g, 4);
-			miku.read((char*)&b, 4);
-			miku.read((char*)&a, 4);
-			
-			material->diffuse = glm::vec4(r, g, b, a);
+			miku.read((char*)&material->diffuse.r, 4);
+			miku.read((char*)&material->diffuse.g, 4);
+			miku.read((char*)&material->diffuse.b, 4);
+			miku.read((char*)&material->diffuse.a, 4);
 			
 			//cout<<"diffuse: "<<r<<" "<<g<<" "<<b<<endl;
 			
@@ -330,8 +303,6 @@ namespace ClosedMMDFormat
 			miku.read((char*)&material->specular.r, 4);
 			miku.read((char*)&material->specular.g, 4);
 			miku.read((char*)&material->specular.b, 4);
-			
-			//material->specular = glm::vec3(r, g, b);
 			
 			//cout<<"specular: "<<material->specular.r<<" "<<material->specular.g<<" "<<material->specular.b<<endl;
 			
@@ -341,16 +312,15 @@ namespace ClosedMMDFormat
 			//cout<<"shininess: "<<material->shininess<<endl;
 			
 			//***Pull Ambient Color***
-			miku.read((char*)&r, 4);
-			miku.read((char*)&g, 4);
-			miku.read((char*)&b, 4);
-			
-			material->ambient = glm::vec3(r, g, b);
-			
+			miku.read((char*)&material->ambient.r, 4);
+			miku.read((char*)&material->ambient.g, 4);
+			miku.read((char*)&material->ambient.b, 4);
+						
 			//***Pull Bitflag***
 			char bitflag_char[1];
 			miku.read(bitflag_char, 1);
 			bitset<8> bitflag(*bitflag_char);
+			int r;
 			r = bitflag.size() - 1; //here r is used for reversing the bit sequence
 			
 			stringstream bitflag_ss;
@@ -363,12 +333,10 @@ namespace ClosedMMDFormat
 			material->drawEdges           = bitflag[4];
 			
 			//***Pull Edge Color***
-			miku.read((char*)&r, 4);
-			miku.read((char*)&g, 4);
-			miku.read((char*)&b, 4);
-			miku.read((char*)&a, 4);
-			
-			material->edgeColor = glm::vec4(r, g, b, a);
+			miku.read((char*)&material->edgeColor.r, 4);
+			miku.read((char*)&material->edgeColor.g, 4);
+			miku.read((char*)&material->edgeColor.b, 4);
+			miku.read((char*)&material->edgeColor.a, 4);
 			
 			//***Pull Edge Size***
 			miku.read((char*)&material->edgeSize, 4);
@@ -426,6 +394,7 @@ namespace ClosedMMDFormat
 			miku.read((char*)&bone->position.x, 4);
 			miku.read((char*)&bone->position.y, 4);
 			miku.read((char*)&bone->position.z, 4);
+			
 			bone->position.z = -bone->position.z;
 			
 			//***Pull Parent Index***
@@ -518,24 +487,19 @@ namespace ClosedMMDFormat
 					getPMXIndex(miku, link->linkBoneIndex, pmxInfo.boneIndexSize);
 					//cout<<link->linkBoneIndex<<endl;
 					
-					uint8_t tmpInt;
-					miku.read((char*)&tmpInt, 1);
-					link->angleLimit = tmpInt;
+					//uint8_t tmpInt;
+					//miku.read((char*)&tmpInt, 1);
+					//link->angleLimit = tmpInt;
+					miku.read((char*)&link->angleLimit, 1); // bool PMXLink->angleLimit
 					
 					if (link->angleLimit) {
-						glm::vec3 minVec;
-						glm::vec3 maxVec;
-						
-						miku.read((char*)&minVec.x, 4);
-						miku.read((char*)&minVec.y, 4);
-						miku.read((char*)&minVec.z, 4);
+						miku.read((char*)&link->lowerLimit.x, 4);
+						miku.read((char*)&link->lowerLimit.y, 4);
+						miku.read((char*)&link->lowerLimit.z, 4);
 				
-						miku.read((char*)&maxVec.x, 4);
-						miku.read((char*)&maxVec.y, 4);
-						miku.read((char*)&maxVec.z, 4);
-						
-						link->lowerLimit = minVec;
-						link->upperLimit = maxVec;
+						miku.read((char*)&link->upperLimit.x, 4);
+						miku.read((char*)&link->upperLimit.y, 4);
+						miku.read((char*)&link->upperLimit.z, 4);
 						
 						//cout<<"lowerLimit: "<<link->lowerLimit.x<<" "<<link->lowerLimit.y<<" "<<link->lowerLimit.z<<endl;
 						//cout<<"upperLimit: "<<link->upperLimit.x<<" "<<link->upperLimit.y<<" "<<link->upperLimit.z<<endl;
@@ -582,7 +546,7 @@ namespace ClosedMMDFormat
 			for(int i = 0; i < morph->morphOffsetNum; ++i)
 			{
 				PMXMorphData *data;
-				switch(morph->type)
+				switch (morph->type)
 				{
 					case MORPH_TYPE_VERTEX:
 					{
@@ -730,9 +694,10 @@ namespace ClosedMMDFormat
 			getPMXText(miku, pmxInfo, df->name);
 			getPMXText(miku, pmxInfo, df->nameEng);
 			
-			uint8_t tmp;
-			miku.read((char*)&tmp, 1);
-			df->specialFrameFlag = tmp;
+			//uint8_t tmp;
+			//miku.read((char*)&tmp, 1);
+			//df->specialFrameFlag = tmp;
+			miku.read((char*)&df->specialFrameFlag, 1); // bool PMXDisplayFrame->specialFrameFlag
 			
 			miku.read((char*)&df->elementsWithinFrame, 4);
 			
@@ -740,8 +705,9 @@ namespace ClosedMMDFormat
 			{
 				PMXDisplayFrameElement *element = new PMXDisplayFrameElement();
 				
-				miku.read((char*)&tmp, 1);
-				element->target = tmp;
+				//miku.read((char*)&tmp, 1);
+				//element->target = tmp;
+				miku.read((char*)&element->target, 1); // bool PMXDisplayFrameElement->target
 				
 				if (element->target) {
 					//1(true): Morph
