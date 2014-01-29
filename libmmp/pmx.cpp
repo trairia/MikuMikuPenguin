@@ -12,7 +12,7 @@ using namespace std;
 
 	
 
-	std::string UTF16to8(const unsigned short * in)
+	std::string UTF16to8(const unsigned short *in)
 	{
 		std::string out;
 		unsigned int codepoint = 0;
@@ -27,21 +27,16 @@ using namespace std;
 				else
 					codepoint = *in;
 
-				if (codepoint <= 0x7f)
+				if (codepoint <= 0x7f) {
 					out.append(1, static_cast<char>(codepoint));
-				else if (codepoint <= 0x7ff)
-				{
+				} else if (codepoint <= 0x7ff) {
 					out.append(1, static_cast<char>(0xc0 | ((codepoint >> 6) & 0x1f)));
 					out.append(1, static_cast<char>(0x80 | (codepoint & 0x3f)));
-				}
-				else if (codepoint <= 0xffff)
-				{
+				} else if (codepoint <= 0xffff) {
 					out.append(1, static_cast<char>(0xe0 | ((codepoint >> 12) & 0x0f)));
 					out.append(1, static_cast<char>(0x80 | ((codepoint >> 6) & 0x3f)));
 					out.append(1, static_cast<char>(0x80 | (codepoint & 0x3f)));
-				}
-				else
-				{
+				} else {
 					out.append(1, static_cast<char>(0xf0 | ((codepoint >> 18) & 0x07)));
 					out.append(1, static_cast<char>(0x80 | ((codepoint >> 12) & 0x3f)));
 					out.append(1, static_cast<char>(0x80 | ((codepoint >> 6) & 0x3f)));
@@ -59,22 +54,17 @@ namespace ClosedMMDFormat
 	void getPMXIndex(ifstream &miku, int &index, uint8_t &indexSize)
 	{
 		//TODO: Apply this method of setting the index to the rest of the file-reading code (make a function)
-		if (indexSize == 1)
-		{
+		if (indexSize == 1) {
 			int8_t tmpIndex;
 			miku.read((char*)&tmpIndex, (int)indexSize);
 			
 			index = (int)tmpIndex;
-		}
-		else if (indexSize == 2)
-		{
+		} else if (indexSize == 2) {
 			int16_t tmpIndex;
 			miku.read((char*)&tmpIndex, (int)indexSize);
 			
 			index = (int)tmpIndex;
-		}
-		else if (indexSize == 4)
-		{
+		} else if (indexSize == 4) {
 			int tmpIndex;
 			miku.read((char*)&tmpIndex, (int)indexSize);
 			
@@ -87,11 +77,9 @@ namespace ClosedMMDFormat
 		uint32_t text_size;
 		miku.read((char*)&text_size, 4);
 
-		if (!text_size)
-			return;
+		if (!text_size) {	 return; }
 	     
-		if (pmxInfo.unicode_type == PMX_ENCODE_UTF16)
-		{
+		if (pmxInfo.unicode_type == PMX_ENCODE_UTF16) {
 			//WARNING: UTF-16 text-pulling code does NOT support the extra (multi-byte) codesets of UTF-16!!!!             
 			unsigned short c16[text_size / 2 + 1];
 			memset(c16, 0, text_size + 2);
@@ -106,13 +94,8 @@ namespace ClosedMMDFormat
 			converted<<result<<endl;
 			converted << '\n';
 			converted.close();*/
-
-
-
 			//exit(EXIT_SUCCESS);
-		}
-		else
-		{
+		} else {
 			//WARNING: Loading UTF-8 encoded PMX files is untested
 			char c8[text_size];
 			miku.read((char*)&c8, text_size);
@@ -132,8 +115,7 @@ namespace ClosedMMDFormat
 		
 		//ifstream miku("apimiku/Appearance Miku.pmx", ios::in | ios::binary);
 		ifstream miku(fname.c_str(), ios::in | ios::binary);
-		if (!miku)
-		{
+		if (!miku) {
 			cerr<<"ERROR: PMX file could not be found: "<<fname<<endl;
 			exit(EXIT_FAILURE);
 		}
@@ -148,8 +130,7 @@ namespace ClosedMMDFormat
 			cerr<<"Error: Invalid PMX file header (is this really a PMX file?)"<<endl;
 			//exit(EXIT_FAILURE);
 		}*/
-		if (pmxInfo.ver != 2.0)
-		{
+		if (pmxInfo.ver != 2.0) {
 			cerr<<"Error: Only version 2.0 of the PMX file format is supported!"<<endl;
 			exit(EXIT_FAILURE);
 		}
@@ -166,8 +147,7 @@ namespace ClosedMMDFormat
 		miku.read((char*)&pmxInfo.rigidBodyIndexSize, 1);
 		
 
-		if (pmxInfo.unicode_type == PMX_ENCODE_UTF8)
-		{
+		if (pmxInfo.unicode_type == PMX_ENCODE_UTF8) {
 			cerr<<"WARNING: UTF-8 encoded PMX file loading is untested"<<endl;
 		}
 		
@@ -183,8 +163,7 @@ namespace ClosedMMDFormat
 		//exit(EXIT_SUCCESS);
 		cout<<"Loading vertices...";
 		for(int i = 0; i < pmxInfo.vertex_continuing_datasets; ++i)
-		{
-			
+		{			
 			PMXVertex *vertex = new PMXVertex();
 			
 			//***Pull position info***
@@ -211,8 +190,7 @@ namespace ClosedMMDFormat
 		
 			vertex->UV = glm::vec2(*x, *y);
 		
-			if (pmxInfo.extraUVCount > 0)
-			{
+			if (pmxInfo.extraUVCount > 0) {
 				cerr<<"ERROR: please add support for extra UVs"<<endl;
 				exit(EXIT_FAILURE);
 			}
@@ -220,20 +198,15 @@ namespace ClosedMMDFormat
 		
 			miku.read((char*)&vertex->weight_transform_formula, 1);
 		
-			if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF1)
-			{
+			if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF1) {
 				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF2)
-			{
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF2) {
 				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
 				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
 				
 				miku.read((char*)&vertex->weight1, 4);
 				vertex->weight2 = 1.0 - vertex->weight1; //For BDEF2: weight of bone2=1.0-weight1
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF4)
-			{			
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF4) {			
 				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
 				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
 				getPMXIndex(miku, vertex->boneIndex3, pmxInfo.boneIndexSize);
@@ -243,9 +216,7 @@ namespace ClosedMMDFormat
 				miku.read((char*)&vertex->weight2, 4);
 				miku.read((char*)&vertex->weight3, 4);
 				miku.read((char*)&vertex->weight4, 4);
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_SDEF)
-			{			
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_SDEF) {			
 				getPMXIndex(miku, vertex->boneIndex1, pmxInfo.boneIndexSize);
 				getPMXIndex(miku, vertex->boneIndex2, pmxInfo.boneIndexSize);
 				
@@ -273,9 +244,7 @@ namespace ClosedMMDFormat
 				//cerr<<"ERROR: SDEF unsupported in shader currently, please add support!"<<endl;
 				//cerr<<"(The program is being forcibly closed because lack of SDEF support is suspected to cause issues in basic model loading and animation"<<endl;
 				//exit(EXIT_FAILURE);
-			}
-			else
-			{
+			} else {
 				cerr<<"ERROR: bone structure (QDEF?) not supported yet"<<endl;
 				exit(EXIT_FAILURE);
 			}
@@ -414,8 +383,7 @@ namespace ClosedMMDFormat
 			
 			//if((int)material->sphereMode>0) cout<<"YAYYYYY SPHERE MODE MATERIALLLL: "<<(int)material->sphereMode<<" "<<material->name<<endl;
 			
-			if (material->shareToon == 1)
-			{
+			if (material->shareToon == 1) {
 				//cerr<<"No support for shared toon yet, please code in support"<<endl;
 				//cerr<<"Number of datasets: "<<i<<" "<<pmxInfo.material_continuing_datasets<<endl;
 				
@@ -423,9 +391,7 @@ namespace ClosedMMDFormat
 				
 				//cout<<"shareToonTexture: "<<(int)material->shareToonTexture<<endl;
 				//exit(EXIT_FAILURE);
-			}
-			else
-			{
+			} else {
 				getPMXIndex(miku, material->toonTextureIndex,pmxInfo.textureIndexSize);
 				//unsigned int toonTextureIndex;//=(char*) malloc(sizeof(pmxInfo.textureIndexSize));
 				//miku.read((char*)&material->toonTextureIndex,(int)pmxInfo.textureIndexSize);
@@ -437,8 +403,7 @@ namespace ClosedMMDFormat
 			//***Pull number of faces that use the material***
 			miku.read((char*)&material->hasFaceNum, 4);
 			
-			if (material->name == u8"め")
-			{
+			if (material->name == u8"め") {
 				cout<<"eye info: "<<material->hasFaceNum<<" "<<(int)material->sphereMode<<" "<<(int)material->shareToon<<" "<<endl;
 			}
 			
@@ -466,12 +431,9 @@ namespace ClosedMMDFormat
 			//***Pull Parent Index***
 			getPMXIndex(miku, bone->parentBoneIndex, pmxInfo.boneIndexSize);
 			
-			if(bone->parentBoneIndex != -1)
-			{
+			if(bone->parentBoneIndex != -1) {
 				bone->parent = pmxInfo.bones[bone->parentBoneIndex];
-			}
-			else
-			{
+			} else {
 				bone->parent = NULL;
 			}
 			
@@ -512,32 +474,25 @@ namespace ClosedMMDFormat
 			bone->transformAfterPhysics   = bitflag2[4];
 			bone->externalParentTransform = bitflag2[5];
 			
-			if (bone->connectionDisplayMethod == 0) //0: Display with Coordinate Offset
-			{
+			if (bone->connectionDisplayMethod == 0) {
+				//0: Display with Coordinate Offset
 				miku.read((char*)&bone->coordinateOffset.x, 4);
 				miku.read((char*)&bone->coordinateOffset.y, 4);
 				miku.read((char*)&bone->coordinateOffset.z, 4);
-			}
-			else //1: Display with Bone
-			{
+			} else {
+				//1: Display with Bone
 				getPMXIndex(miku, bone->connectionBoneIndex, pmxInfo.boneIndexSize);
 			}
-			
-			if (bone->giveRotation || bone->giveTranslation)
-			{
+			if (bone->giveRotation || bone->giveTranslation) {
 				getPMXIndex(miku, bone->givenParentBoneIndex, pmxInfo.boneIndexSize);
 				miku.read((char*)&bone->giveRate, 4);
 			}
-			
-			if (bone->axisFixed)
-			{
+			if (bone->axisFixed) {
 				miku.read((char*)&bone->axisDirectionVector.x, 4);
 				miku.read((char*)&bone->axisDirectionVector.y, 4);
 				miku.read((char*)&bone->axisDirectionVector.z, 4);
 			}
-			
-			if (bone->localAxis)
-			{
+			if (bone->localAxis) {
 				miku.read((char*)&bone->XAxisDirectionVector.x, 4);
 				miku.read((char*)&bone->XAxisDirectionVector.y, 4);
 				miku.read((char*)&bone->XAxisDirectionVector.z, 4);
@@ -546,14 +501,10 @@ namespace ClosedMMDFormat
 				miku.read((char*)&bone->ZAxisDirectionVector.y, 4);
 				miku.read((char*)&bone->ZAxisDirectionVector.z, 4);
 			}
-			
-			if (bone->externalParentTransform)
-			{
+			if (bone->externalParentTransform) {
 				miku.read((char*)&bone->keyValue, 4);
 			}
-			
-			if (bone->IK)
-			{
+			if (bone->IK) {
 				getPMXIndex(miku, bone->IKTargetBoneIndex, pmxInfo.boneIndexSize);
 				//cout<<"targetBone: "<<bone->IKTargetBoneIndex<<endl;
 				miku.read((char*)&bone->IKLoopCount,      4);
@@ -571,8 +522,7 @@ namespace ClosedMMDFormat
 					miku.read((char*)&tmpInt, 1);
 					link->angleLimit = tmpInt;
 					
-					if (link->angleLimit)
-					{
+					if (link->angleLimit) {
 						glm::vec3 minVec;
 						glm::vec3 maxVec;
 						
@@ -586,10 +536,6 @@ namespace ClosedMMDFormat
 						
 						link->lowerLimit = minVec;
 						link->upperLimit = maxVec;
-						//link->lowerLimit=glm::vec3(-99.0,-99.0,-99.0);
-						//link->upperLimit=glm::vec3(99.0,99.0,99.0);
-						//link->lowerLimit.x=-maxVec.x;
-						//link->upperLimit.x=-minVec.x;
 						
 						//cout<<"lowerLimit: "<<link->lowerLimit.x<<" "<<link->lowerLimit.y<<" "<<link->lowerLimit.z<<endl;
 						//cout<<"upperLimit: "<<link->upperLimit.x<<" "<<link->upperLimit.y<<" "<<link->upperLimit.z<<endl;
@@ -797,13 +743,12 @@ namespace ClosedMMDFormat
 				miku.read((char*)&tmp, 1);
 				element->target = tmp;
 				
-				if (element->target == 0) //Bone
-				{
-					miku.read((char*)&element->index, pmxInfo.boneIndexSize);
-				}
-				else //==1; Morph
-				{
+				if (element->target) {
+					//1(true): Morph
 					miku.read((char*)&element->index, pmxInfo.morphIndexSize);
+				} else {
+					//0(false): Bone
+					miku.read((char*)&element->index, pmxInfo.boneIndexSize);
 				}
 				df->elements.push_back(element);
 			}
@@ -870,8 +815,7 @@ namespace ClosedMMDFormat
 			
 			miku.read((char*)&joint->type, 1);
 			
-			if (joint->type == 0)
-			{
+			if (joint->type == 0) {
 				getPMXIndex(miku, joint->relatedRigidBodyIndexA,pmxInfo.rigidBodyIndexSize);
 				getPMXIndex(miku, joint->relatedRigidBodyIndexB,pmxInfo.rigidBodyIndexSize);
 				
@@ -910,9 +854,7 @@ namespace ClosedMMDFormat
 				miku.read((char*)&joint->springRotationConstant.x, 4);
 				miku.read((char*)&joint->springRotationConstant.y, 4);
 				miku.read((char*)&joint->springRotationConstant.z, 4);
-			}
-			else
-			{
+			} else {
 				cerr<<"Unsupported PMX format version or file reading error"<<endl;
 				exit(EXIT_FAILURE);
 			}
@@ -947,7 +889,6 @@ namespace ClosedMMDFormat
 	void printDebugInfo(PMXInfo &pmxInfo)
 	{
 		cout<<pmxInfo.header_str<<"ver "<<pmxInfo.ver<<endl;
-		
 		cout<<"line size: "<<(int)pmxInfo.line_size<<endl;
 		cout<<"Unicode Type(0-UTF-16, 1-UTF-8): "<<pmxInfo.unicode_type<<endl;
 		cout<<"Extra UV count: "<<(int)pmxInfo.extraUVCount<<endl;
@@ -957,13 +898,10 @@ namespace ClosedMMDFormat
 		cout<<"Bone Index Size: "<<(int)pmxInfo.boneIndexSize<<endl;
 		cout<<"Morph Index Size: "<<(int)pmxInfo.morphIndexSize<<endl;
 		cout<<"Rig Index Size: "<<(int)pmxInfo.rigidBodyIndexSize<<endl;
-		
 		cout<<endl<<endl;
-		
 		cout<<pmxInfo.modelName<<endl;
 		cout<<pmxInfo.modelNameEnglish<<endl;
 		cout<<endl;
-		
 		cout<<"Number of Continuing Vertex Datasets: "<<pmxInfo.vertex_continuing_datasets<<endl;
 		
 		for(int i = 0; i < pmxInfo.vertex_continuing_datasets; ++i)
@@ -971,35 +909,25 @@ namespace ClosedMMDFormat
 			PMXVertex *vertex = pmxInfo.vertices[i];
 			
 			if (VERTEX_DEBUG) cout<<"[Vertex "<<i<<"]"<<endl;
-			
 			if (VERTEX_DEBUG) cout<<"Position: "<<vertex->pos[0]<<" "<<vertex->pos[1]<<" "<<vertex->pos[2]<<endl<<endl;
 			if (VERTEX_DEBUG) cout<<"Normal Vector: "<<vertex->normal[0]<<" "<<vertex->normal[1]<<" "<<vertex->normal[2]<<endl<<endl;
 			if (VERTEX_DEBUG) cout<<vertex->UV[0]<<" "<<vertex->UV[1]<<" "<<endl<<endl;
-			
 			if (VERTEX_DEBUG) cout<<"Weight transform formula(0-BDEF1, 1-BDEF2, 2-BDEF4, 3-SDEF): "<<(int)vertex->weight_transform_formula<<endl;
-			
-			if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF1)
-			{
+			if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF1) {
 				if (VERTEX_DEBUG) cout<<"boneIndex1: "<<vertex->boneIndex1<<endl;
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF2)
-			{
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF2) {
 				if (VERTEX_DEBUG) cout<<"boneIndex1: "<<vertex->boneIndex1<<endl;
 				if (VERTEX_DEBUG) cout<<"boneIndex2: "<<vertex->boneIndex2<<endl;	
 				if (VERTEX_DEBUG) cout<<"Weight1: "<<vertex->weight1<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight2: "<<vertex->weight2<<endl;
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF4)
-			{			
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_BDEF4) {			
 				if (VERTEX_DEBUG) cout<<"boneIndex1: "<<vertex->boneIndex1<<endl;
 				if (VERTEX_DEBUG) cout<<"boneIndex1: "<<vertex->boneIndex2<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight1: "<<vertex->weight1<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight2: "<<vertex->weight2<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight3: "<<vertex->weight3<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight4: "<<vertex->weight4<<endl;
-			}
-			else if (vertex->weight_transform_formula == WEIGHT_FORMULA_SDEF)
-			{			
+			} else if (vertex->weight_transform_formula == WEIGHT_FORMULA_SDEF) {			
 				if (VERTEX_DEBUG) cout<<"boneIndex1: "<<vertex->boneIndex1<<endl;
 				if (VERTEX_DEBUG) cout<<"boneIndex2: "<<vertex->boneIndex2<<endl;
 				if (VERTEX_DEBUG) cout<<"Weight1: "<<vertex->weight1<<endl;
@@ -1029,58 +957,45 @@ namespace ClosedMMDFormat
 			
 			PMXMaterial *material=pmxInfo.materials[i];
 			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Diffuse: "<<endl;
 				cout<<"R: "<<material->diffuse[0]<<endl;
 				cout<<"G: "<<material->diffuse[1]<<endl;
 				cout<<"B: "<<material->diffuse[2]<<endl;
 				cout<<"A: "<<material->diffuse[3]<<endl<<endl;
 			}
-			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Specular: "<<endl;
 				cout<<"R: "<<material->specular[0]<<endl;
 				cout<<"G: "<<material->specular[1]<<endl;
 				cout<<"B: "<<material->specular[2]<<endl;
 			}
-			
 			if (MATERIAL_DEBUG) cout<<"Specular Coefficient: "<<material->shininess<<endl<<endl;
-			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Edge Color: "<<endl;
 				cout<<"R: "<<material->edgeColor[0]<<endl;
 				cout<<"G: "<<material->edgeColor[1]<<endl;
 				cout<<"B: "<<material->edgeColor[2]<<endl;
 				cout<<"A: "<<material->edgeColor[3]<<endl;
 			}
-			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Ambient: "<<endl;
 				cout<<"R: "<<material->ambient[0]<<endl;
 				cout<<"G: "<<material->ambient[1]<<endl;
 				cout<<"B: "<<material->ambient[2]<<endl;
 			}
-			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Draw Both Sides: "<<material->drawBothSides<<endl;
 				cout<<"Draw Ground Shadow: "<<material->drawGroundShadow<<endl;
 				cout<<"Draw To Self Shadow Map: "<<material->drawToSelfShadowMap<<endl;
 				cout<<"Draw Self Shadow: "<<material->drawSelfShadow<<endl;
 				cout<<"Draw Edges: "<<material->drawEdges<<endl<<endl;
 			}
-			
 			if (MATERIAL_DEBUG) cout<<"Edge Size: "<<material->edgeSize<<endl<<endl;
 			if (MATERIAL_DEBUG) cout<<"Sphere Mode: "<<(int)material->sphereMode<<endl;
 			if (MATERIAL_DEBUG) cout<<"Share Toon: "<<(int)material->shareToon<<endl;
 			if (MATERIAL_DEBUG) cout<<"Number of Indices that have this Material: "<<material->hasFaceNum<<endl;
-			
-			if (MATERIAL_DEBUG)
-			{
+			if (MATERIAL_DEBUG) {
 				cout<<"Texture Index: "<<material->textureIndex<<endl;
 				cout<<"Toon Texture Index: "<<material->toonTextureIndex<<endl;
 				cout<<"Sphere Index: "<<material->sphereIndex<<endl<<endl;
@@ -1145,12 +1060,10 @@ namespace ClosedMMDFormat
 				cerr<<"Key Value: "<<bone->keyValue<<endl;
 			}
 			
-			if(bone->IK)
-			{
+			if (bone->IK) {
 				cerr<<"IK Target Bone Index: "<<bone->IKTargetBoneIndex<<endl;
 				cerr<<"IK Loop Count: "<<bone->IKLoopCount<<endl;
 				cerr<<"IK Loop Radian Angle: "<<bone->IKLoopRadianAngle<<endl;
-				
 				cerr<<"IK Links: "<<bone->IKLinkNum<<endl;
 				
 				for(int j=0; j<bone->IKLinkNum; ++j)
@@ -1158,8 +1071,7 @@ namespace ClosedMMDFormat
 					cerr<<endl<<"[Link "<<j<<"]"<<endl;
 					cerr<<"IKLink Bone Index: "<<bone->IKLinks[j]->linkBoneIndex<<endl;
 					cerr<<"IKLink Angle Limit: "<<bone->IKLinks[j]->angleLimit<<endl;
-					if(bone->IKLinks[j]->angleLimit)
-					{
+					if (bone->IKLinks[j]->angleLimit) {
 						cerr<<"IKLink Lower Limit: "<<bone->IKLinks[j]->lowerLimit.x<<" "<<bone->IKLinks[j]->lowerLimit.y<<" "<<bone->IKLinks[j]->lowerLimit.z<<endl;
 						cerr<<"IKLink Upper Limit: "<<bone->IKLinks[j]->upperLimit.x<<" "<<bone->IKLinks[j]->upperLimit.y<<" "<<bone->IKLinks[j]->upperLimit.z<<endl;
 					}
