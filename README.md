@@ -71,6 +71,50 @@ https://github.com/g-truc/glm/issues/15
 
 みたいな感じで大丈夫です。
 
+## あなたはどのブランチを使うべきか?
+
+今のところ、 あなたのコンピュータが、どのバージョンのOpenGLを使える
+かによって、コンパイルするべき git branch は異なります。
+
+### 確認方法
+
+#### Linux
+
+Linux での確認方法は、コマンドラインで、
+
+     glxinfo | grep OpenGL
+
+を実行して、
+
+     OpenGL vendor string: Tungsten Graphics, Inc
+     OpenGL renderer string: Mesa DRI Intel(R) Ironlake Mobile x86/MMX/SSE2
+     OpenGL version string: 2.1 Mesa 8.0.5
+     OpenGL shading language version string: 1.20
+     OpenGL extensions:
+
+とでてきたら、version strings に注目します。
+
+例示はあなたのコンピュータの OpenGL は Version 2.1
+だと示しています。
+
+### ブランチの切り替え方法
+
+git を使ったことがないなら、<http://progit-ja.github.io/> などで
+学ぶのがいいでしょう。
+
+git clone した直後には
+
+    git checkout -b legacy-210 orign/legacy-210
+
+を実行し、ローカルにブランチを作ります。確認方法は
+
+    git branch -a
+
+です。2回目以降は、git checkout を上記のサイトや書籍などで
+学んでください。
+遅かれ早かれ、ブランチの更新も勉強することになるでしょうから。
+
+
 他に質問がありました、気軽にメッセージ飛ばしてください。喜んで手伝います：
 * Twitter [@sn0w75](http://twitter.com/sn0w75)
 * E-mail <ibenrunnin@gmail.com>
