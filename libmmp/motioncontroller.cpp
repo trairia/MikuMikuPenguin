@@ -896,4 +896,17 @@ void limitAngle(glm::quat &pvec4Out, const glm::quat &pvec4Src, PMXIKLink *link)
 }
 
 
-void VMDMotionController::advanceTime() { ++time; }
+bool VMDMotionController::advanceTime()
+{
+	++time;
+
+	// if all boneKeyFrames are finished, return true
+	for(unsigned i = 0; i < pmxInfo.bone_continuing_datasets; i++)
+	{
+		if (ite_boneKeyFrames[i] != boneKeyFrames[i].end())
+		{
+			return false;
+		}
+	}
+	return true;
+}

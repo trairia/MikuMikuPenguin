@@ -135,13 +135,14 @@ void Viewer::handleLogic()
 	
 	//if(glfwGetKey('A')==GLFW_RELEASE)
 	{
-		motionController->advanceTime();
-		
+		if (!motionController->advanceTime())
+		{
+			motionController->updateVertexMorphs();
+			motionController->updateBoneAnimation();
+		}
 		//Debug- hold model in bind pose
 		//holdModelInBindPose();
 		
-		motionController->updateVertexMorphs();
-		motionController->updateBoneAnimation();
 		mmdPhysics->updateBones(doPhysics);
 		
 		glUseProgram(bulletPhysics->debugDrawer->shaderProgram);

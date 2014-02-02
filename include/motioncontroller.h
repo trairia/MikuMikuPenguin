@@ -52,8 +52,17 @@ class VMDMotionController
 										//!< \if JAPANESE \brief Uniform変数「Bones」をモデルのボーン変形行列の配列で更新する為の関数。 \endif
 	void updateBoneAnimation();			//!< \if ENGLISH \brief A function used to update the model's bone transformation matrices with the current frame of animation. \endif
 										//!< \if JAPANESE \brief モデルのボーン変形行列の配列を更新する為の関数。 \endif
-	void advanceTime();					//!< \if ENGLISH \brief A function used to move on to the next frame in the animation. \endif
-										//!< \if JAPANESE \brief モーションの次のフレームへと進む為の関数。 \endif
+	/*!
+	 * \if ENGLISH
+	 * \brief A function used to move on to the next frame in the animation.
+	 * \return true if animation is finished
+	 * \endif
+	 * \if JAPANESE
+	 * \brief モーションの次のフレームへと進む為の関数。
+	 * \return アニメーションが終了したらtrue
+	 * \endif
+	 */
+	bool advanceTime();
 	
 	
 	//public variables
