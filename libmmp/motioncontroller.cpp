@@ -1,6 +1,7 @@
 #include "motioncontroller.h"
 
 #include "interpolation.h"
+#include "glm_helper.h"
 
 #include <sstream>
 #include <iostream>
@@ -16,6 +17,7 @@
 #include <glm/gtx/euler_angles.hpp>
 
 //#define MODELDUMP true
+#define IK_DUMP false
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -712,6 +714,31 @@ void VMDMotionController::updateIK()
 				}
 			}
 		}
+	}
+
+	// dump rotation of IK link bone from parent
+	if (IK_DUMP)
+	{
+		for(int b=0; b<pmxInfo.bone_continuing_datasets; ++b)
+		{
+			const PMXBone &bone=*pmxInfo.bones[b];
+			if(!bone.IK) continue;
+			for(int attentionIndex=0 ; attentionIndex<bone.IKLinkNum; attentionIndex++)
+			{
+				const PMXBone &linkBone=*pmxInfo.bones[bone.IKLinks[attentionIndex]->linkBoneIndex];
+				if (time == 0)
+				{
+					cerr<<linkBone.name<<"[X], "<<linkBone.name<<"[Y], "<<linkBone.name<<"[Z]"<<", ";
+				}
+				else
+				{
+					const glm::quat q(linkBone.Local);
+					const glm::vec3 euler = glm::eulerAngles(q);
+					cerr<<euler<<", ";
+				}
+			}
+		}
+		cerr<<endl;
 	}
 }
 
