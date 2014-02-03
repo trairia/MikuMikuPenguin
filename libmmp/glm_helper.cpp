@@ -1,14 +1,23 @@
 #include "glm_helper.h"
 #include <iostream>
 
-std::ostream& operator<<(std::ostream& rOut, const glm::vec3& v)
+std::ostream&
+operator<<(std::ostream& rOut, const glm::vec3& v)
 {
-    rOut << v[0] << ", " << v[1] << ", " << v[2];
-    return rOut;
+	rOut << v[0] << ", " << v[1] << ", " << v[2];
+	return rOut;
 }
 
-std::ostream& operator<<(std::ostream& rOut, const glm::vec4& v)
+std::ostream&
+operator<<(std::ostream& rOut, const glm::vec4& v)
 {
-    rOut << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3];
-    return rOut;
+	rOut << v[0] << ", " << v[1] << ", " << v[2] << ", " << v[3];
+	return rOut;
+}
+
+void
+flip_z(glm::quat& rQuat)
+{
+	rQuat.x *= -1;
+	rQuat.y *= -1;
 }

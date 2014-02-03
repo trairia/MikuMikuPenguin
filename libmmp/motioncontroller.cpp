@@ -368,6 +368,7 @@ void VMDMotionController::updateIK()
 					localEffectorDir=glm::normalize(glm::vec3(glm::normalize(localEffectorPos)));
 					localTargetDir=glm::normalize(glm::vec3(glm::normalize(localTargetPos)));
 
+#if 0
 					if(linkBone->name.find(u8"ひざ") != string::npos)
 					{
 						localEffectorDir = glm::vec3(0, localEffectorDir.y, localEffectorDir.z);
@@ -377,6 +378,7 @@ void VMDMotionController::updateIK()
 						localTargetDir = glm::vec3(0, localTargetDir.y, localTargetDir.z);
 						localTargetDir = glm::normalize(localTargetDir);
 					}
+#endif
 					
 					//cout<<localEffectorDir.x<<" "<<localEffectorDir.y<<" "<<localEffectorDir.z<<endl;
 					//cout<<localTargetDir.x<<" "<<localTargetDir.y<<" "<<localTargetDir.z<<endl;
@@ -659,6 +661,7 @@ void VMDMotionController::updateIK()
 						cout<<"rotation: "<<rot.x<<" "<<rot.y<<" "<<rot.z<<" "<<rot.w<<endl;
 					}*/
 
+#if 0
 					if(linkBone->name.find(u8"ひざ") != string::npos)
 					{
 						glm::mat4 inv = invBindPose[IKLink->linkBoneIndex];
@@ -689,15 +692,30 @@ void VMDMotionController::updateIK()
 							rotation = glm::rotate((float)(180.0/M_PI*angle), xaxis);
 						}
 					}
+#endif
 					
 					/*cout<<"LinkBone Prior Rotation Matrix: "<<endl;
 					cout<<linkBone->Local[0][0]<<" "<<linkBone->Local[0][1]<<" "<<linkBone->Local[0][2]<<" "<<linkBone->Local[0][3]<<endl
 					<<linkBone->Local[1][1]<<" "<<linkBone->Local[1][1]<<" "<<linkBone->Local[1][2]<<" "<<linkBone->Local[1][3]<<endl
 					<<linkBone->Local[2][2]<<" "<<linkBone->Local[2][1]<<" "<<linkBone->Local[2][2]<<" "<<linkBone->Local[2][3]<<endl
 					<<linkBone->Local[3][2]<<" "<<linkBone->Local[3][1]<<" "<<linkBone->Local[3][2]<<" "<<linkBone->Local[3][3]<<endl<<endl;*/
-					
-					linkBone->Local = linkBone->Local * rotation;
-					
+
+					if (IKLink->angleLimit)
+					{
+						glm::quat desired_rotation(linkBone->Local * rotation);
+						flip_z(desired_rotation); // OpenGL to D3D
+						const glm::vec3 desired_euler = glm::radians(glm::eulerAngles(desired_rotation));
+						const glm::vec3 clamped_euler = glm::clamp(desired_euler, IKLink->lowerLimit, IKLink->upperLimit);
+						glm::quat clamped_rotation(clamped_euler);
+						flip_z(clamped_rotation); // D3D to OpenGL
+						const glm::mat4 translation = glm::translate(linkBone->Local[3][0], linkBone->Local[3][1], linkBone->Local[3][2]);
+						linkBone->Local = translation * glm::toMat4(clamped_rotation);
+					}
+					else
+					{
+						linkBone->Local *= rotation;
+					}
+
 					/*cout<<"LinkBone Final Rotation Matrix: "<<endl;
 					cout<<linkBone->Local[0][0]<<" "<<linkBone->Local[0][1]<<" "<<linkBone->Local[0][2]<<" "<<linkBone->Local[0][3]<<endl
 					<<linkBone->Local[1][1]<<" "<<linkBone->Local[1][1]<<" "<<linkBone->Local[1][2]<<" "<<linkBone->Local[1][3]<<endl
