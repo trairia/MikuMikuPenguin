@@ -123,6 +123,9 @@ namespace ClosedMMDFormat
 		
 		int selfShadowCount;
 		VMDSelfShadowFrame *selfShadowFrames;
+		
+		int showIKCount;
+		VMDShowIKFrame *showIKFrames;
 	};
 }
 
