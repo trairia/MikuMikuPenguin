@@ -56,6 +56,7 @@ class Viewer
 	void handleEvents();
 	void handleLogic();
 	void render();
+	void fpsCount();
 	
 	void setCamera(GLuint MVPLoc);
 	void holdModelInBindPose();
