@@ -203,13 +203,13 @@ void Viewer::fpsCount()
 	double current_time = glfwGetTime();
 	for (int i = 0; i < nbf_fps; i++)
 	{
-	  nb_frames[i]++;
+		nb_frames[i]++;
 	}
 
 	if (current_time - last_time >= seq)
 	{
-	  int nbf_now = nbf_count % nbf_fps;
-	  char title[128];
+		int nbf_now = nbf_count % nbf_fps;
+		char title[128];
 		sprintf(title, "%s | %2d fps", window_name, nb_frames[nbf_now]);
 		glfwSetWindowTitle(title);
 		nb_frames[nbf_now] = 0;
