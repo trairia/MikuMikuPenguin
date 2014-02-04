@@ -190,6 +190,34 @@ void Viewer::render()
 	//glReadPixels(0,0,1920,1080,GL_RGB,
 }
 
+void Viewer::fpsCount()
+{
+	static double last_time;
+	static int nb_frames[] = {0,0,0,0};
+	static const int nbf_fps = sizeof(nb_frames) / sizeof(int);
+	static const double seq = 1.0 / double(nbf_fps);
+	static int nbf_count = 0;
+	static const char* window_name = "PMX Viewer";
+	if (!last_time) last_time = glfwGetTime();
+	
+	double current_time = glfwGetTime();
+	for (int i = 0; i < nbf_fps; i++)
+	{
+	  nb_frames[i]++;
+	}
+
+	if (current_time - last_time >= seq)
+	{
+	  int nbf_now = nbf_count % nbf_fps;
+	  char title[128];
+		sprintf(title, "%s | %2d fps", window_name, nb_frames[nbf_now]);
+		glfwSetWindowTitle(title);
+		nb_frames[nbf_now] = 0;
+		last_time += seq;
+		nbf_count++;
+	}
+}
+
 void Viewer::run()
 {
 	while(glfwGetKey( GLFW_KEY_ESC ) != GLFW_PRESS && glfwGetWindowParam( GLFW_OPENED ))
@@ -197,6 +225,7 @@ void Viewer::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		startTime = glfwGetTime();
 		
+		fpsCount();
 		handleEvents();
 		handleLogic();
 		render();
