@@ -80,14 +80,14 @@ namespace ClosedMMDFormat
 	struct VMDInfoIK
 	{
 		std::string name; //char[20] before UTF8 conversion
-		bool on_off; //0:OFF 1:ON
+		bool isOn; //0:OFF 1:ON
 	};
 	
 	struct VMDShowIKFrame
 	{
 		unsigned int frame;
 		bool show; //0:OFF 1:ON
-		unsigned int ik_count;
+		unsigned int IKCount;
 		VMDInfoIK *ik;
 	};
 

@@ -213,17 +213,17 @@ namespace ClosedMMDFormat
 			
 			miku.read((char*)&f->frame,    4);
 			miku.read((char*)&f->show,     1);
-			miku.read((char*)&f->ik_count, 4);
-			vmdInfo.showIKFrames[i].ik = new VMDInfoIK[vmdInfo.showIKFrames[i].ik_count];
-			cout<<"IK Count: "<<vmdInfo.showIKFrames[i].ik_count<<endl; //
+			miku.read((char*)&f->IKCount, 4);
+			vmdInfo.showIKFrames[i].ik = new VMDInfoIK[vmdInfo.showIKFrames[i].IKCount];
+			cout<<"IK Count: "<<vmdInfo.showIKFrames[i].IKCount<<endl; //
 			
-			for(int i=0; i < vmdInfo.showIKFrames[i].ik_count; ++i)
+			for(int i=0; i < vmdInfo.showIKFrames[i].IKCount; ++i)
 			{
 				//VMDInfoIK *info = new VMDInfoIK();
 				char name[20];
 				miku.read((char*)&name, 20);
 				f->ik->name = sjisToUTF8(name);
-				miku.read((char*)&f->ik->on_off, 1);
+				miku.read((char*)&f->ik->isOn, 1);
 				// f->ik.push_back(info); // for std::vector
 			}
 		}
