@@ -65,13 +65,32 @@ namespace ClosedMMDFormat
 
 	struct VMDLightFrame
 	{
+		unsigned int frame;
+		glm::vec3 color;
+		glm::vec3 position;
 	};
 
 	struct VMDSelfShadowFrame
 	{
+		unsigned int frame;
+		uint8_t type; // self shadow type(0:OFF 1:Mode1 2:Mode2)
+		float distance;
 	};
 	
+	struct VMDInfoIK
+	{
+		std::string name; //char[20] before UTF8 conversion
+		bool on_off; //0:OFF 1:ON
+	};
 	
+	struct VMDShowIKFrame
+	{
+		unsigned int frame;
+		bool show; //0:OFF 1:ON
+		unsigned int ik_count;
+		VMDInfoIK *ik;
+	};
+
 	/*!  \class VMDInfo
 	 * \if ENGLISH
 	 * \brief Class for loading/storing info about a VMD motion file.
@@ -104,6 +123,9 @@ namespace ClosedMMDFormat
 		
 		int selfShadowCount;
 		VMDSelfShadowFrame *selfShadowFrames;
+		
+		int showIKCount;
+		VMDShowIKFrame *showIKFrames;
 	};
 }
 
