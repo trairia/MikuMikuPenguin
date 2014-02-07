@@ -84,7 +84,9 @@ class Viewer
 	//The actual OpenGL Version recieved
 	int GLVersionMajor,GLVersionMinor,GLVersionRevision;
 	
+	std::string vertShaderPath,fragShaderPath;
 	GLuint shaderProgram;
+	std::string bulletVertPath,bulletFragPath;
 	
 	//***Timing Variables
 	double startTime;

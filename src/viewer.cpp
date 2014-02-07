@@ -54,8 +54,9 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	
 	initGLFW();
 	
-	//initBuffers(); // move from line 72
-	ifstream test("shaders/model.vert");
+	
+	//NOTE: shaderProgram compilation now handled in hackShaderFiles() within initGLFW()
+	/*ifstream test("shaders/model.vert");
 	if(!test.is_open())
 	{
 		shaderProgram=compileShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
@@ -64,7 +65,7 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	{
 		shaderProgram=compileShaders("shaders/model.vert","shaders/model.frag");
 	}
-	test.close();
+	test.close();*/
 	
 	
 	
@@ -99,19 +100,7 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	
 	initSound(musicPath);
 	
-	string vertPath,fragPath; //vertex/fragment shader file paths
-	ifstream test2("shaders/bulletDebug.vert");
-	if(!test2.is_open())
-	{
-		vertPath=DATA_PATH"/shaders/bulletDebug.vert";
-		fragPath=DATA_PATH"/shaders/bulletDebug.frag";
-	}
-	else
-	{
-		vertPath="shaders/bulletDebug.vert";
-		fragPath="shaders/bulletDebug.frag";
-	}
-	bulletPhysics = new BulletPhysics(vertPath,fragPath);
+	bulletPhysics = new BulletPhysics(bulletVertPath,bulletFragPath);
 	glUseProgram(shaderProgram); //restore GL shader program binding to Viewer's shader program after initializing BulletPhysic's debugDrawer
 	mmdPhysics = new MMDPhysics(*pmxInfo,motionController,bulletPhysics);
 	
@@ -634,23 +623,60 @@ void Viewer::loadTextures()
 	//FreeImage_DeInitialise();
 }
 
-void hackShaderFile(string filename,int GLVersionMajor,int GLVersionMinor)
+string hackShaderFile(string filename)
 {
-	/*ifstream shaderFile(filename);
+	//Variables for temporary file name paths
+	char *tmpFilePathChar;
+	tmpFilePathChar=tmpnam(tmpFilePathChar); //Get path to a temporary file location
+	
+	string tmpFilePath=tmpFilePathChar;
+	ofstream tmpShaderFile(tmpFilePath);
+	
+	ifstream shaderFile(filename);
 	
 	string line;
-	getline(shaderFile,line);*/
+	getline(shaderFile,line); //discard first line
+	tmpShaderFile<<"#version 130"<<endl;
+	while(shaderFile.good())
+	{
+		getline(shaderFile,line);
+		tmpShaderFile<<line<<endl;
+	}
 	
+	//cout<<tmpFilePath<<endl;
+	
+	return tmpFilePath;
 }
 
 void Viewer::hackShaderFiles()
-{	
-	/*if(GLVersionMajor==3 && GLVersionMinor==0)
+{
+	//If using OpenGL 3.0, produce temporary shader files that use #version 130 (to prevent issues with OpenGL 3.0/GLSL 1.30 users
+	//Otherwise, use #version 150 to avoid issues in Mac OSX (which does not support #version 130)
+	
+	if(GLVersionMajor==3 && GLVersionMinor==0)
 	{
 		cout<<"Going to hack shader files for OpenGL 3.0 (assuming GLSL version 130)"<<endl;
 		
-		
 		string vertPath,fragPath; //vertex/fragment shader file paths
+		ifstream test("shaders/model.vert");
+		if(!test.is_open())
+		{
+			vertPath=DATA_PATH"/shaders/model.vert";
+			fragPath=DATA_PATH"/shaders/model.frag";
+		}
+		else
+		{
+			vertPath="shaders/model.vert";
+			fragPath="shaders/model.frag";
+		}
+		vertPath=hackShaderFile(vertPath);
+		fragPath=hackShaderFile(fragPath);
+		
+		shaderProgram=compileShaders(vertPath,fragPath);
+		
+		remove(vertPath.c_str());
+		remove(fragPath.c_str());
+		
 		ifstream test2("shaders/bulletDebug.vert");
 		if(!test2.is_open())
 		{
@@ -662,13 +688,43 @@ void Viewer::hackShaderFiles()
 			vertPath="shaders/bulletDebug.vert";
 			fragPath="shaders/bulletDebug.frag";
 		}
-		hackShaderFile(vertPath);
+		vertPath=hackShaderFile(vertPath);
+		fragPath=hackShaderFile(fragPath);
 		
-	}*/
+		bulletVertPath=vertPath;
+		bulletFragPath=fragPath;
+		
+	}
+	else
+	{
+		//Load included shader files as-is
+		ifstream test("shaders/model.vert");
+		if(!test.is_open())
+		{
+			shaderProgram=compileShaders(DATA_PATH"/shaders/model.vert",DATA_PATH"/shaders/model.frag");
+		}
+		else
+		{
+			shaderProgram=compileShaders("shaders/model.vert","shaders/model.frag");
+		}
+		test.close();
+		
+		ifstream test2("shaders/bulletDebug.vert");
+		if(!test2.is_open())
+		{
+			bulletVertPath=DATA_PATH"/shaders/bulletDebug.vert";
+			bulletFragPath=DATA_PATH"/shaders/bulletDebug.frag";
+		}
+		else
+		{
+			bulletVertPath="shaders/bulletDebug.vert";
+			bulletFragPath="shaders/bulletDebug.frag";
+		}
+	}
 }
 
 void Viewer::initGLFW()
-{
+{	
 	if (!glfwInit()) exit(EXIT_FAILURE);
 	
 	//glfwOpenWindow variables, feel free to modify if glfwOpenWindow() fails
@@ -711,8 +767,6 @@ void Viewer::initGLFW()
 	cout<<"(GLFW) OpenGL version recieved: "<<GLVersionMajor<<"."<<GLVersionMinor<<" (Revision "<<GLVersionRevision<<")"<<endl;
 	cout<<"OpenGL version info: "<<glGetString(GL_VERSION)<<endl;
 	cout<<"GLSL version info: "<<glGetString(GL_SHADING_LANGUAGE_VERSION)<<endl<<endl;
-	
-	//hackShaderFiles();
 
 	// Initialize GLEW
 	glewExperimental=true; //Needed in core profile
@@ -727,6 +781,9 @@ void Viewer::initGLFW()
 	
 	glfwSetMousePosCallback(mouseMotion);
 	glfwSetMouseWheelCallback(mouseWheel);
+	
+	
+	hackShaderFiles();
 }
 
 void Viewer::initUniformVarLocations()
