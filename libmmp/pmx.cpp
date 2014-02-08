@@ -1,4 +1,5 @@
 #include "pmx.h"
+#include "glm_helper.h"
 
 #include <fstream>
 #include <iostream>
@@ -501,17 +502,26 @@ namespace ClosedMMDFormat
 						miku.read((char*)&link->upperLimit.y, 4);
 						miku.read((char*)&link->upperLimit.z, 4);
 						
+						glm::quat lower_q(1.0, link->lowerLimit.x, link->lowerLimit.y, link->lowerLimit.z);
+						// glm::quat lower_q(link->lowerLimit); // Reverse Leg
+						flip_z(lower_q); // D3D to OpenGL
+						link->lowerLimit = glm::radians(glm::eulerAngles(lower_q));
+
+						glm::quat upper_q(1.0, link->upperLimit.x, link->upperLimit.y, link->upperLimit.z);
+						// glm::quat upper_q(link->upperLimit); // Reverse Leg
+						flip_z(upper_q); // D3D to OpenGL
+						link->upperLimit = glm::radians(glm::eulerAngles(upper_q));
+				
+						if (link->upperLimit.x < link->lowerLimit.x) swap(link->upperLimit.x, link->lowerLimit.x);
+						if (link->upperLimit.y < link->lowerLimit.y) swap(link->upperLimit.y, link->lowerLimit.y);
+						if (link->upperLimit.z < link->lowerLimit.z) swap(link->upperLimit.z, link->lowerLimit.z);
+						
 						//cout<<"lowerLimit: "<<link->lowerLimit.x<<" "<<link->lowerLimit.y<<" "<<link->lowerLimit.z<<endl;
 						//cout<<"upperLimit: "<<link->upperLimit.x<<" "<<link->upperLimit.y<<" "<<link->upperLimit.z<<endl;
-						
-						/*link->lowerLimit = glm::vec3(min(maxVec.x, minVec.x), min(maxVec.y, minVec.y), min(maxVec.z, minVec.z));
-			    link->upperLimit = glm::vec3(max(maxVec.x, minVec.x), max(maxVec.y, minVec.y), max(maxVec.z, minVec.z));*/
 					}
-					
 					bone->IKLinks.push_back(link);
 				}
 			}
-			
 			bone->Local[3][0] = bone->position.x;
 			bone->Local[3][1] = bone->position.y;
 			bone->Local[3][2] = bone->position.z;
