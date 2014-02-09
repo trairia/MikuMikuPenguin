@@ -501,17 +501,15 @@ namespace ClosedMMDFormat
 						miku.read((char*)&link->upperLimit.x, 4);
 						miku.read((char*)&link->upperLimit.y, 4);
 						miku.read((char*)&link->upperLimit.z, 4);
-						
-						glm::quat lower_q(1.0, link->lowerLimit.x, link->lowerLimit.y, link->lowerLimit.z);
-						// glm::quat lower_q(link->lowerLimit); // Reverse Leg
-						flip_z(lower_q); // D3D to OpenGL
-						link->lowerLimit = glm::radians(glm::eulerAngles(lower_q));
 
-						glm::quat upper_q(1.0, link->upperLimit.x, link->upperLimit.y, link->upperLimit.z);
-						// glm::quat upper_q(link->upperLimit); // Reverse Leg
-						flip_z(upper_q); // D3D to OpenGL
-						link->upperLimit = glm::radians(glm::eulerAngles(upper_q));
-				
+						glm::quat lower_q = fromEulerAnglesRadians(link->lowerLimit);
+						flipZ(lower_q); // D3D to OpenGL
+						link->lowerLimit = toEulerAnglesRadians(lower_q);
+
+						glm::quat upper_q = fromEulerAnglesRadians(link->upperLimit);
+						flipZ(upper_q); // D3D to OpenGL
+						link->upperLimit = toEulerAnglesRadians(upper_q);
+
 						if (link->upperLimit.x < link->lowerLimit.x) swap(link->upperLimit.x, link->lowerLimit.x);
 						if (link->upperLimit.y < link->lowerLimit.y) swap(link->upperLimit.y, link->lowerLimit.y);
 						if (link->upperLimit.z < link->lowerLimit.z) swap(link->upperLimit.z, link->lowerLimit.z);

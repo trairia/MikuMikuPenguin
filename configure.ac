@@ -125,5 +125,6 @@ AC_CONFIG_FILES([libmmp/Makefile])
 AC_CONFIG_FILES([doc/Makefile])
 AC_CONFIG_FILES([man/Makefile])
 AC_CONFIG_FILES([scripts/Makefile])
+AC_CONFIG_FILES([test/Makefile])
 
 AC_OUTPUT

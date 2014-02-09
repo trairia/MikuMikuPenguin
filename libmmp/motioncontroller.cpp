@@ -383,12 +383,10 @@ void VMDMotionController::updateIK()
 
 					if (IKLink->angleLimit)
 					{
-						glm::quat desired_rotation(linkBone->Local * rotation);
-						// flip_z(desired_rotation); // OpenGL to D3D
+						const glm::quat desired_rotation(linkBone->Local * rotation);
 						const glm::vec3 desired_euler = glm::radians(glm::eulerAngles(desired_rotation));
 						const glm::vec3 clamped_euler = glm::clamp(desired_euler, IKLink->lowerLimit, IKLink->upperLimit);
-						glm::quat clamped_rotation(clamped_euler);
-						// flip_z(clamped_rotation); // D3D to OpenGL
+						const glm::quat clamped_rotation(clamped_euler);
 						const glm::mat4 translation = glm::translate(linkBone->Local[3][0], linkBone->Local[3][1], linkBone->Local[3][2]);
 						linkBone->Local = translation * glm::toMat4(clamped_rotation);
 					}
