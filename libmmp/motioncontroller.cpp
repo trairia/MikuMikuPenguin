@@ -421,7 +421,7 @@ void VMDMotionController::updateIK()
 				else
 				{
 					const glm::quat q(linkBone.Local);
-					const glm::vec3 euler = glm::eulerAngles(q);
+					const glm::vec3 euler = glm::degrees(toEulerAnglesRadians(q));
 					cerr<<euler<<", ";
 				}
 			}

@@ -7,11 +7,14 @@
 #include <sstream>
 
 #include <string.h>
+#include <float.h>
 
+// These are used to clamp joint limits into proper range of euler angles.
+static const glm::vec3 gsEulerLower(-M_PI + FLT_EPSILON, -0.5 * M_PI + FLT_EPSILON, -M_PI + FLT_EPSILON);
+static const glm::vec3 gsEulerUpper(-gsEulerLower);
 
 using namespace std;
 
-	
 
 	std::string UTF16to8(const unsigned short *in)
 	{
@@ -502,6 +505,11 @@ namespace ClosedMMDFormat
 						miku.read((char*)&link->upperLimit.y, 4);
 						miku.read((char*)&link->upperLimit.z, 4);
 
+						// These clampings are needed.
+						// Because lower/upper limits of existing PMXs tend to go slightly outside of ranges of euler angles.
+						link->lowerLimit = glm::clamp(link->lowerLimit, gsEulerLower, gsEulerUpper);
+						link->upperLimit = glm::clamp(link->upperLimit, gsEulerLower, gsEulerUpper);
+
 						glm::quat lower_q = fromEulerAnglesRadians(link->lowerLimit);
 						flipZ(lower_q); // D3D to OpenGL
 						link->lowerLimit = toEulerAnglesRadians(lower_q);
@@ -513,9 +521,9 @@ namespace ClosedMMDFormat
 						if (link->upperLimit.x < link->lowerLimit.x) swap(link->upperLimit.x, link->lowerLimit.x);
 						if (link->upperLimit.y < link->lowerLimit.y) swap(link->upperLimit.y, link->lowerLimit.y);
 						if (link->upperLimit.z < link->lowerLimit.z) swap(link->upperLimit.z, link->lowerLimit.z);
-						
-						//cout<<"lowerLimit: "<<link->lowerLimit.x<<" "<<link->lowerLimit.y<<" "<<link->lowerLimit.z<<endl;
-						//cout<<"upperLimit: "<<link->upperLimit.x<<" "<<link->upperLimit.y<<" "<<link->upperLimit.z<<endl;
+
+						// cout<<"lowerLimit: "<<link->lowerLimit<<endl;
+						// cout<<"upperLimit: "<<link->upperLimit<<endl;
 					}
 					bone->IKLinks.push_back(link);
 				}
