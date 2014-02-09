@@ -653,9 +653,9 @@ void Viewer::hackShaderFiles()
 	//If using OpenGL 3.0, produce temporary shader files that use #version 130 (to prevent issues with OpenGL 3.0/GLSL 1.30 users
 	//Otherwise, use #version 150 to avoid issues in Mac OSX (which does not support #version 130)
 	
-	if(GLVersionMajor==3 && GLVersionMinor==0)
+	if(GLVersionMajor==3 && (GLVersionMinor==0 || GLVersionMinor==1))
 	{
-		cout<<"Going to hack shader files for OpenGL 3.0 (assuming GLSL version 130)"<<endl;
+		cout<<"Going to hack shader files for OpenGL "<<GLVersionMajor<<"."<<GLVersionMinor<<" (assuming GLSL version 130 supported)"<<endl;
 		
 		string vertPath,fragPath; //vertex/fragment shader file paths
 		ifstream test("shaders/model.vert");
