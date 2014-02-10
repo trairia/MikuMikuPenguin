@@ -506,7 +506,7 @@ namespace ClosedMMDFormat
 						miku.read((char*)&link->upperLimit.z, 4);
 
 						// These clampings are needed.
-						// Because lower/upper limits of existing PMXs tend to go slightly outside of ranges of euler angles.
+						// Because lower/upper limits of existing PMX files tend to go slightly outside of ranges of euler angles.
 						link->lowerLimit = glm::clamp(link->lowerLimit, gsEulerLower, gsEulerUpper);
 						link->upperLimit = glm::clamp(link->upperLimit, gsEulerLower, gsEulerUpper);
 
