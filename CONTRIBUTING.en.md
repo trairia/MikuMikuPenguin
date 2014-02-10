@@ -27,7 +27,7 @@ so that we can keep on top of things.
 ````
 Essential commit message information here.
 
-The first line is a real life imperative statement.
+The first line summarizes the patch content.
 The body paragraph describes the behavior without the patch,
 why this is a problem, and how the patch fixes the problem when applied.
 ````
