@@ -270,10 +270,8 @@ void Viewer::drawModel(bool drawEdges)
 	
 	glm::vec3 halfVector=glm::normalize(cameraPosition-cameraTarget);
 	halfVector.z=-halfVector.z;
-	GLuint halfVectorLoc=glGetUniformLocation(shaderProgram, "halfVector");
 	
 	glm::vec3 lightDirection=glm::normalize(glm::vec3(0.3,1.0,2.0));
-	GLuint lightDirectionLoc=glGetUniformLocation(shaderProgram, "lightDirection");
 	
 	int faceCount=0;
 	for(int m=0; m<pmxInfo->material_continuing_datasets; ++m) //pmxInfo->material_continuing_datasets
@@ -474,7 +472,7 @@ void Viewer::loadTextures()
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-			
+			glGet
 			if(texture==0)
 			{
 				cerr<<"Texture failed to load: "<<pmxInfo->texturePaths[i]<<endl;

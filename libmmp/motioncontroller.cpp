@@ -117,7 +117,7 @@ VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuin
 		modeldump << vertexData[i].str();
 		#endif
 	}
-	glBufferData(GL_ARRAY_BUFFER, pmxInfo.vertex_continuing_datasets*sizeof(VertexData), vertexData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, pmxInfo.vertex_continuing_datasets*sizeof(VertexData), vertexData, GL_STREAM_DRAW);
 	
 	morphKeyFrames.resize(pmxInfo.morph_continuing_datasets);
 	for(unsigned i=0; i<vmdInfo.morphCount; ++i)
