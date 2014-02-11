@@ -1,26 +1,28 @@
 # How to contribute
 
-第三者による寄稿はこれからのMikuMikuPenguinの開発には必須なものです。
-自分の環境でMMPを動かせる為の変更を出来るだけ易しく寄稿出来るようにしたい。
-その為には、寄稿者に指導方針に従うようお願い致します。
+第三者による貢献はこれからのMikuMikuPenguin(以下MMP)の開発には必要です。
+自分の環境でMMPを動かせる為の変更を出来るだけ簡単に貢献出来るようにしたい。
+その為に、貢献しようとする人は以下の方針に従うよう、お願いします。
 
 ## Getting Started
 
-* 寄稿する為には[GitHubアカウント](https://github.com/signup/free)が必要です。
+* MMPに貢献する為には[GitHubアカウント](https://github.com/signup/free)が必要です。
 * 問題にはIssueを作ってください（もうIssueが作られていない場合）。
   * バグをissueで報告する場合、バグを再現する為の説明を書いてください。
   * Issueのタイトルは英語が推奨ですが日本語でも構いません。
-  * 本文は自国語でお願いします。つまり日本の方なら日本語でお願いします。
+  * 本文は母国語で構いません。日本の方は日本語でお願いします。
 * GitHubでレポジトリのforkを作ってください。
 
 ## Making Changes
 
-* 寄稿のベースとなるブランチから話題ブランチを作ってください。
-  * 普段ならこれはmasterブランチです。
-  * masterブランチから話題ブランチを作るには： `git branch
+* コードやドキュメントをMMPに貢献するにはベースとなるブランチから、トピック・ブランチを作ってください。
+  * 通常、これはmasterブランチです。
+  * masterブランチから、トピック・ブランチを作るには： `git branch
     my_contribution master` してから `git
-    checkout my_contribution`で新しいブランチに切り替えます。直接masterブランチで作業するのを避けてください。
-* commitは合理的に分けてください。
+    checkout my_contribution`で新しいブランチに切り替えます。masterブランチ上で作業するのを避けてください。
+    間違って、masterブランチ上で作業しないように、[pre-commit hookでmasterへのcommitを禁止した](http://blog.n-z.jp/blog/2014-02-07-pre-commit-hook.html) のような仕掛け
+    をいれるのも良いでしょう。
+* commitは合理的(ロジック単位)に分けてください。
 * commitする前に、不要な空白は `git diff --check` で確認してください。
 * commitメッセージが正しいフォーマットにあることを確認してください。commitメッセージは出来るだけ英語でお願いします。
 
@@ -32,10 +34,10 @@
 ````
 
 * 変更の為にテストが必要ならそのテストが追加されているよう確認してください。
-* 「make check」で何かが無意に壊れなかったか確認してください。他にテストがあればそれも実行してみてください。
+* 「make check」で、あなたが行った変更で、ソースツリーが壊れなかったか確認してください。他にテストがあればそれも実行してみてください。
 
 ## Coding Style
-基本的に以下のようなスタイルでコードを書いてくださるようお願いします。
+以下のようなスタイルでコードを書いてくださるようお願いします。
 このスタイルに合わせなくても結構ですが推奨です。
 ```cpp
 int variableName;
@@ -58,8 +60,8 @@ void functionName()
 }
 ```
 
-概ね、「variable_name」より「variableName」を使います。
-クラス名の最初の字（ClassNameの「C」）は大文字です。
+概ね、「variable_name」より「variableName」を使います。(基本はロワー・キャメル・ケースであり、スネークケースではない)
+クラス名の最初の字（ClassNameの「C」）は大文字です。(Classは、アッパーキャメルケースです)
 ブラケットは普段別々の列で開かれ閉ざせます（以下の例と違って：）
 ```cpp
 void functionName() { //Bracket is opened on the same line as the class/function name. Typically unused style in MMP code
