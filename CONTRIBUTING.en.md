@@ -82,7 +82,7 @@ There is no example for contributing a documentation commit
 to the MMP repository. This is a problem because the contributor
 is left to assume how a commit of this nature may appear.
 
-The first line is a real life imperative statement with '(doc)'
+The first line summarizes the patch content, starting with '(doc)'
 at the beginning of the commit. The body describes the nature of
 the new documentation or comments added.
 ````
