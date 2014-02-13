@@ -14,7 +14,7 @@ out vec2 UV;
 out vec3 normal;
 
 uniform mat4 MVP;
-uniform mat4 Bones[254];
+uniform mat4 Bones[251];
 
 uniform bool isEdge;
 uniform float edgeSize;
