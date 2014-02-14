@@ -4,9 +4,9 @@ THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
 **注意**
 このファイルはSJISではなくUTF-8でエンコードされています！！！
 
-# LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
-
 English translation is [available](http://github.com/sn0w75/mikumikupenguin/blob/master/README.en.md).
+
+# LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
 
 どうも初めまして。sn0w75です。
 
@@ -104,7 +104,7 @@ git を使ったことがないなら、<http://progit-ja.github.io/> などで
 
 git clone した直後には
 
-    git checkout -b legacy-210 orign/legacy-210
+    git checkout -b legacy-210 origin/legacy-210
 
 を実行し、ローカルにブランチを作ります。確認方法は
 
@@ -113,6 +113,10 @@ git clone した直後には
 です。2回目以降は、git checkout を上記のサイトや書籍などで
 学んでください。
 遅かれ早かれ、ブランチの更新も勉強することになるでしょうから。
+
+## 実行出来ない、パフォーマンスが悪かった場合：
+* OSXでは、頂点シェ－ダーでボーン行列の数が多すぎるとソフト側で頂点シェーディングを行ってしまう場合があります。こういう場合、[shaders/model.vert](https://github.com/sn0w75/MikuMikuPenguin/blob/master/shaders/model.vert#L17)でBones（行列の配列）の行列の数を減らすことで回避出来ますが、少なすぎるとボーン変形でモデルが破損する場合があります。ご注意ください。
+* legacy-210ブランチを使えばOpenGL 2.1しか対応していない環境でもPMXViewerを使えるようになりますが、現代だとそんなような環境はバーチャル環境ぐらいです。OpenGL 2.1やバーチャル環境でのパフォーマンスについては何も保証出来ませんのでご了承ください。
 
 
 他に質問がありました、気軽にメッセージ飛ばしてください。喜んで手伝います：
