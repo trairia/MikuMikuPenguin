@@ -380,7 +380,7 @@ namespace ClosedMMDFormat
 	*/
 	struct PMXInfo
 	{
-		//For more info, see the PMX documentation included with PMDEditor (Hopefully also included with this source code)
+		//For more info, see the PMX documentation included with PMDEditor
 		//also http://gulshan-i-raz.geo.jp/labs/2012/10/17/pmx-format1/
 		
 		//Header

@@ -32,7 +32,7 @@ namespace ClosedMMDFormat
 		
 		//***Extract Bone Info***
 		miku.read((char*)&vmdInfo.boneCount, 4);
-		vmdInfo.boneFrames = new VMDBoneFrame[vmdInfo.boneCount];
+		vmdInfo.boneFrames.resize(vmdInfo.boneCount);
 		
 		//cout<<"Bone Count: "<<vmdInfo.boneCount<<endl;
 		
@@ -70,7 +70,7 @@ namespace ClosedMMDFormat
 			rotMatrix[1][2] = -rotMatrix[1][2];
 			f->rotation=glm::toQuat(rotMatrix);
 			
-			int8_t bezier[64];
+			uint8_t bezier[64];
 			miku.read((char*)bezier,64);
 			
 			//Cubic bezier variables
@@ -113,7 +113,7 @@ namespace ClosedMMDFormat
 		
 		//***Extract Morph Info***
 		miku.read((char*)&vmdInfo.morphCount, 4);
-		vmdInfo.morphFrames = new VMDMorphFrame[vmdInfo.morphCount];
+		vmdInfo.morphFrames.resize(vmdInfo.morphCount);
 		
 		//cout<<"Morph Count: "<<vmdInfo.morphCount<<endl;
 		
@@ -137,7 +137,7 @@ namespace ClosedMMDFormat
 		
 		//***Extract Camera Info***
 		miku.read((char*)&vmdInfo.cameraCount, 4);
-		vmdInfo.cameraFrames = new VMDCameraFrame[vmdInfo.cameraCount];
+		vmdInfo.cameraFrames.resize(vmdInfo.cameraCount);
 		//cout<<"Camera Count: "<<vmdInfo.cameraCount<<endl;
 		
 		cout<<"Loading camera frames...";
@@ -165,7 +165,7 @@ namespace ClosedMMDFormat
 		
 		//***Extract Light Info***
 		miku.read((char*)&vmdInfo.lightCount, 4);
-		vmdInfo.lightFrames = new VMDLightFrame[vmdInfo.lightCount];
+		vmdInfo.lightFrames.resize(vmdInfo.lightCount);
 		cout<<"Light Count: "<<vmdInfo.lightCount<<endl; //
 		
 		cout<<"Loading light frames...";
@@ -187,7 +187,7 @@ namespace ClosedMMDFormat
 	
 		//***Extract Self Shadow Info***
 		miku.read((char*)&vmdInfo.selfShadowCount, 4);
-		vmdInfo.selfShadowFrames = new VMDSelfShadowFrame[vmdInfo.selfShadowCount];
+		vmdInfo.selfShadowFrames.resize(vmdInfo.selfShadowCount);
 		cout<<"SelfShadow Count: "<<vmdInfo.selfShadowCount<<endl; //
 		
 		cout<<"Loading SelfShadow frames...";
@@ -203,7 +203,7 @@ namespace ClosedMMDFormat
 		
 		//***Extract Show IK Frame Info***
 		miku.read((char*)&vmdInfo.showIKCount, 4);
-		vmdInfo.showIKFrames = new VMDShowIKFrame[vmdInfo.showIKCount];
+		vmdInfo.showIKFrames.resize(vmdInfo.showIKCount);
 		cout<<"ShowIK Count: "<<vmdInfo.showIKCount<<endl; //
 		
 		cout<<"Loading ShowIK frames...";
@@ -214,17 +214,16 @@ namespace ClosedMMDFormat
 			miku.read((char*)&f->frame,    4);
 			miku.read((char*)&f->show,     1);
 			miku.read((char*)&f->IKCount, 4);
-			vmdInfo.showIKFrames[i].ik = new VMDInfoIK[vmdInfo.showIKFrames[i].IKCount];
+			vmdInfo.showIKFrames[i].ik.resize(vmdInfo.showIKFrames[i].IKCount);
 			cout<<"IK Count: "<<vmdInfo.showIKFrames[i].IKCount<<endl; //
 			
 			for(int i=0; i < vmdInfo.showIKFrames[i].IKCount; ++i)
 			{
-				//VMDInfoIK *info = new VMDInfoIK();
+				VMDIKInfo *info = &f->ik[i];
 				char name[20];
 				miku.read((char*)&name, 20);
-				f->ik->name = sjisToUTF8(name);
-				miku.read((char*)&f->ik->isOn, 1);
-				// f->ik.push_back(info); // for std::vector
+				info->name = sjisToUTF8(name);
+				miku.read((char*)&info->isOn, 1);
 			}
 		}
 		cout<<"done."<<endl;
