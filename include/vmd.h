@@ -104,7 +104,6 @@ namespace ClosedMMDFormat
 	*/
 	struct VMDInfo
 	{
-		char headerStr[30];
 		std::string modelName;
 		
 		std::vector<VMDBoneFrame> boneFrames;

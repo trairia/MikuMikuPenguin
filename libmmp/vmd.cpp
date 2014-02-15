@@ -21,13 +21,14 @@ namespace ClosedMMDFormat
 		if (!miku) { cerr<<"ERROR: VMD file could not be found: "<<filename<<endl; }
 		
 		//***Extract Header Info***
-		miku.read((char*)&vmdInfo.headerStr, 30);
+		char headerStr[30];
+		miku.read((char*)&headerStr, 30);
 		
 		char modelName[20];
 		miku.read((char*)&modelName, 20);
 		vmdInfo.modelName=sjisToUTF8(modelName);
 		
-		cout<<vmdInfo.headerStr<<endl;
+		cout<<headerStr<<endl;
 		//cout<<vmdInfo.modelName<<endl;
 		
 		//***Extract Bone Info***
@@ -170,7 +171,7 @@ namespace ClosedMMDFormat
 		unsigned lightCount=0;
 		miku.read((char*)&lightCount, 4);
 		vmdInfo.lightFrames.resize(lightCount);
-		cout<<"Light Count: "<<lightCount<<endl; //
+		//cout<<"Light Count: "<<lightCount<<endl;
 		
 		cout<<"Loading light frames...";
 		for(int i=0; i < vmdInfo.lightFrames.size(); ++i)
@@ -193,7 +194,7 @@ namespace ClosedMMDFormat
 		unsigned selfShadowCount=0;
 		miku.read((char*)&selfShadowCount, 4);
 		vmdInfo.selfShadowFrames.resize(selfShadowCount);
-		cout<<"SelfShadow Count: "<<selfShadowCount<<endl; //
+		//cout<<"SelfShadow Count: "<<selfShadowCount<<endl;
 		
 		cout<<"Loading SelfShadow frames...";
 		for(int i=0; i < vmdInfo.selfShadowFrames.size(); ++i)
@@ -210,7 +211,7 @@ namespace ClosedMMDFormat
 		unsigned showIKCount=0;
 		miku.read((char*)&showIKCount, 4);
 		vmdInfo.showIKFrames.resize(showIKCount);
-		cout<<"ShowIK Count: "<<showIKCount<<endl; //
+		//cout<<"ShowIK Count: "<<showIKCount<<endl;
 		
 		cout<<"Loading ShowIK frames...";
 		for(int i=0; i < vmdInfo.showIKFrames.size(); ++i)
@@ -222,7 +223,7 @@ namespace ClosedMMDFormat
 			miku.read((char*)&f->show,     1);
 			miku.read((char*)&IKCount,  4);
 			f->IKList.resize(IKCount);
-			cout<<"IK Count: "<<IKCount<<endl; //
+			//cout<<"IK Count: "<<IKCount<<endl;
 			
 			for(int i=0; i < f->IKList.size(); ++i)
 			{
