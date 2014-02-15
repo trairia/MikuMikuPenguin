@@ -43,7 +43,7 @@ VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuin
 	
 	
 	boneKeyFrames.resize(pmxInfo.bone_continuing_datasets);
-	for(unsigned i=0; i<vmdInfo.boneCount; ++i)
+	for(unsigned i=0; i<vmdInfo.boneFrames.size(); ++i)
 	{
 		//cout<<"Searching for match in model for "<<vmdInfo.boneFrames[i].name<<"...";
 		for(unsigned j=0; j<pmxInfo.bone_continuing_datasets; ++j)
@@ -120,7 +120,7 @@ VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuin
 	glBufferData(GL_ARRAY_BUFFER, pmxInfo.vertex_continuing_datasets*sizeof(VertexData), vertexData, GL_STREAM_DRAW);
 	
 	morphKeyFrames.resize(pmxInfo.morph_continuing_datasets);
-	for(unsigned i=0; i<vmdInfo.morphCount; ++i)
+	for(unsigned i=0; i<vmdInfo.morphFrames.size(); ++i)
 	{
 		for(unsigned j=0; j<pmxInfo.morph_continuing_datasets; ++j)
 		{

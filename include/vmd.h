@@ -87,8 +87,8 @@ namespace ClosedMMDFormat
 	{
 		unsigned int frame;
 		bool show; //0:OFF 1:ON
-		unsigned int IKCount;
-		std::vector<VMDIKInfo> ik;
+		
+		std::vector<VMDIKInfo> IKList;
 	};
 
 	/*!  \class VMDInfo
@@ -107,24 +107,11 @@ namespace ClosedMMDFormat
 		char headerStr[30];
 		std::string modelName;
 		
-		//Bone Frames
-		int boneCount; //number of continuing bone datasets
 		std::vector<VMDBoneFrame> boneFrames;
-		
-		//Morph Frames (Emotion data)
-		int morphCount;
 		std::vector<VMDMorphFrame> morphFrames;
-		
-		int cameraCount;
 		std::vector<VMDCameraFrame> cameraFrames;
-		
-		int lightCount;
 		std::vector<VMDLightFrame> lightFrames;
-		
-		int selfShadowCount;
 		std::vector<VMDSelfShadowFrame> selfShadowFrames;
-		
-		int showIKCount;
 		std::vector<VMDShowIKFrame> showIKFrames;
 	};
 }

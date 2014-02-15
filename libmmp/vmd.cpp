@@ -31,13 +31,14 @@ namespace ClosedMMDFormat
 		//cout<<vmdInfo.modelName<<endl;
 		
 		//***Extract Bone Info***
-		miku.read((char*)&vmdInfo.boneCount, 4);
-		vmdInfo.boneFrames.resize(vmdInfo.boneCount);
+		unsigned boneCount=0;
+		miku.read((char*)&boneCount, 4);
+		vmdInfo.boneFrames.resize(boneCount);
 		
 		//cout<<"Bone Count: "<<vmdInfo.boneCount<<endl;
 		
 		cout<<"Loading bone frames...";
-		for(int i=0; i < vmdInfo.boneCount; ++i)
+		for(int i=0; i < vmdInfo.boneFrames.size(); ++i)
 		{
 			VMDBoneFrame *f = &vmdInfo.boneFrames[i];
 			
@@ -112,13 +113,14 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Extract Morph Info***
-		miku.read((char*)&vmdInfo.morphCount, 4);
-		vmdInfo.morphFrames.resize(vmdInfo.morphCount);
+		unsigned morphCount=0;
+		miku.read((char*)&morphCount, 4);
+		vmdInfo.morphFrames.resize(morphCount);
 		
 		//cout<<"Morph Count: "<<vmdInfo.morphCount<<endl;
 		
 		cout<<"Loading morph frames...";
-		for(int i=0; i < vmdInfo.morphCount; ++i)
+		for(int i=0; i < vmdInfo.morphFrames.size(); ++i)
 		{
 			VMDMorphFrame *f = &vmdInfo.morphFrames[i];
 			
@@ -136,12 +138,13 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Extract Camera Info***
-		miku.read((char*)&vmdInfo.cameraCount, 4);
-		vmdInfo.cameraFrames.resize(vmdInfo.cameraCount);
+		unsigned int cameraCount=0;
+		miku.read((char*)&cameraCount, 4);
+		vmdInfo.cameraFrames.resize(cameraCount);
 		//cout<<"Camera Count: "<<vmdInfo.cameraCount<<endl;
 		
 		cout<<"Loading camera frames...";
-		for(int i=0; i < vmdInfo.cameraCount; ++i)
+		for(int i=0; i < vmdInfo.cameraFrames.size(); ++i)
 		{
 			VMDCameraFrame *f = &vmdInfo.cameraFrames[i];
 			
@@ -164,12 +167,13 @@ namespace ClosedMMDFormat
 		///NOTHING PAST THIS POINT TESTED (yet)
 		
 		//***Extract Light Info***
-		miku.read((char*)&vmdInfo.lightCount, 4);
-		vmdInfo.lightFrames.resize(vmdInfo.lightCount);
-		cout<<"Light Count: "<<vmdInfo.lightCount<<endl; //
+		unsigned lightCount=0;
+		miku.read((char*)&lightCount, 4);
+		vmdInfo.lightFrames.resize(lightCount);
+		cout<<"Light Count: "<<lightCount<<endl; //
 		
 		cout<<"Loading light frames...";
-		for(int i=0; i < vmdInfo.lightCount; ++i)
+		for(int i=0; i < vmdInfo.lightFrames.size(); ++i)
 		{
 			VMDLightFrame *f = &vmdInfo.lightFrames[i];
 			
@@ -186,12 +190,13 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 	
 		//***Extract Self Shadow Info***
-		miku.read((char*)&vmdInfo.selfShadowCount, 4);
-		vmdInfo.selfShadowFrames.resize(vmdInfo.selfShadowCount);
-		cout<<"SelfShadow Count: "<<vmdInfo.selfShadowCount<<endl; //
+		unsigned selfShadowCount=0;
+		miku.read((char*)&selfShadowCount, 4);
+		vmdInfo.selfShadowFrames.resize(selfShadowCount);
+		cout<<"SelfShadow Count: "<<selfShadowCount<<endl; //
 		
 		cout<<"Loading SelfShadow frames...";
-		for(int i=0; i < vmdInfo.selfShadowCount; ++i)
+		for(int i=0; i < vmdInfo.selfShadowFrames.size(); ++i)
 		{
 			VMDSelfShadowFrame *f = &vmdInfo.selfShadowFrames[i];
 			
@@ -202,24 +207,26 @@ namespace ClosedMMDFormat
 		cout<<"done."<<endl;
 		
 		//***Extract Show IK Frame Info***
-		miku.read((char*)&vmdInfo.showIKCount, 4);
-		vmdInfo.showIKFrames.resize(vmdInfo.showIKCount);
-		cout<<"ShowIK Count: "<<vmdInfo.showIKCount<<endl; //
+		unsigned showIKCount=0;
+		miku.read((char*)&showIKCount, 4);
+		vmdInfo.showIKFrames.resize(showIKCount);
+		cout<<"ShowIK Count: "<<showIKCount<<endl; //
 		
 		cout<<"Loading ShowIK frames...";
-		for(int i=0; i < vmdInfo.showIKCount; ++i)
+		for(int i=0; i < vmdInfo.showIKFrames.size(); ++i)
 		{
 			VMDShowIKFrame *f = &vmdInfo.showIKFrames[i];
 			
+			unsigned IKCount=0;
 			miku.read((char*)&f->frame,    4);
 			miku.read((char*)&f->show,     1);
-			miku.read((char*)&f->IKCount, 4);
-			vmdInfo.showIKFrames[i].ik.resize(vmdInfo.showIKFrames[i].IKCount);
-			cout<<"IK Count: "<<vmdInfo.showIKFrames[i].IKCount<<endl; //
+			miku.read((char*)&IKCount,  4);
+			f->IKList.resize(IKCount);
+			cout<<"IK Count: "<<IKCount<<endl; //
 			
-			for(int i=0; i < vmdInfo.showIKFrames[i].IKCount; ++i)
+			for(int i=0; i < f->IKList.size(); ++i)
 			{
-				VMDIKInfo *info = &f->ik[i];
+				VMDIKInfo *info = &f->IKList[i];
 				char name[20];
 				miku.read((char*)&name, 20);
 				info->name = sjisToUTF8(name);
