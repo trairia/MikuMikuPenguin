@@ -17,12 +17,13 @@ namespace ClosedMMDFormat
 {
 	struct VMDInfo;
 	VMDInfo &readVMD(std::string filename);
+	void writeVMD(VMDInfo &vmdInfo, std::string filename);
 
 	struct VMDBoneFrame
 	{
 		std::string name; //char[15] before UTF8 conversion
 		
-		unsigned int frame;
+		unsigned frame;
 		
 		glm::vec3 translation; //values will be 0 when there's no position
 		glm::quat rotation; //values will be 0 when there's no position (w will be 1.0)
@@ -39,7 +40,7 @@ namespace ClosedMMDFormat
 	struct VMDMorphFrame
 	{
 		std::string name; //char[15] before UTF8 conversion
-		unsigned int frame;
+		unsigned frame;
 		float value;
 		
 		bool operator < (const VMDMorphFrame &k) const
@@ -51,13 +52,14 @@ namespace ClosedMMDFormat
 
 	struct VMDCameraFrame
 	{
-		unsigned int frame;
+		unsigned frame;
 		
 		float distance; //Distance between the camera and pt of interest (the camera is negative when in front of the object)
 		glm::vec3 position;
 		glm::vec3 rotation;
 		
-		std::string interpolationParameters; //char[24] before UTF8 conversion
+		//TODO: Read Camera Frame Bezier Parameters correctly
+		char interpolationParameters[24];
 		
 		unsigned int viewAngle; //viewing angle in degrees
 		bool perspective; //0:ON 1:OFF
@@ -65,14 +67,14 @@ namespace ClosedMMDFormat
 
 	struct VMDLightFrame
 	{
-		unsigned int frame;
+		unsigned frame;
 		glm::vec3 color;
 		glm::vec3 position;
 	};
 
 	struct VMDSelfShadowFrame
 	{
-		unsigned int frame;
+		unsigned frame;
 		uint8_t type; // self shadow type(0:OFF 1:Mode1 2:Mode2)
 		float distance;
 	};
@@ -85,7 +87,7 @@ namespace ClosedMMDFormat
 	
 	struct VMDShowIKFrame
 	{
-		unsigned int frame;
+		unsigned frame;
 		bool show; //0:OFF 1:ON
 		
 		std::vector<VMDIKInfo> IKList;
@@ -104,7 +106,7 @@ namespace ClosedMMDFormat
 	*/
 	struct VMDInfo
 	{
-		std::string modelName;
+		std::string modelName; //char[20] before UTF8 conversion
 		
 		std::vector<VMDBoneFrame> boneFrames;
 		std::vector<VMDMorphFrame> morphFrames;

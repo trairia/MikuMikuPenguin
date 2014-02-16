@@ -52,6 +52,10 @@ Viewer::Viewer(string modelPath, string motionPath,string musicPath)
 	//pmxInfo=&readPMX("data/model/gumiv3/","GUMI_V3.pmx");
 	//vmdInfo=&readVMD("data/motion/Watashi no Jikan/私の時間_short_Lat式ミク.vmd");
 	
+	//Below is a test for VMD file-writing. Write the current vmdInfo object to a file, then read back the output into a new vmdInfo object
+	//writeVMD(*vmdInfo,"testVMD.vmd");
+	//vmdInfo=&readVMD("testVMD.vmd");
+	
 	initGLFW();
 	
 	
