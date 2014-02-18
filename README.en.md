@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sn0w75/MikuMikuPenguin.png)](https://travis-ci.org/sn0w75/MikuMikuPenguin)
+
 # LibMikuMikuPenguin(libmmp) v0.2 Readme (English)
 Hello~
 
