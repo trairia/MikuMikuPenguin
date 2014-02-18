@@ -6,7 +6,7 @@ THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
 
 English translation is [available](http://github.com/sn0w75/mikumikupenguin/blob/master/README.en.md).
 
-# LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
+# LibMikuMikuPenguin(libmmp) v0.2 リードミ（日本語）
 
 どうも初めまして。sn0w75です。
 
