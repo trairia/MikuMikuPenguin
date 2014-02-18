@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sn0w75/MikuMikuPenguin.png)](https://travis-ci.org/sn0w75/MikuMikuPenguin)
+
 **WARNING**
 THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
 
