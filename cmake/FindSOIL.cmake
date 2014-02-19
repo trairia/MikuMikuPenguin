@@ -5,9 +5,9 @@
 #  SOIL_INCLUDE_DIR, where to find SOIL.h
 #  SOIL_LIBRARY_DIR
 #
-# To Adding search path, set SOIL_ROOT_DIR as follows
-#    set(SOIL_ROOT_DIR "path/to/soil")
-# or launch cmake with -DSOIL_ROOT_DIR="/path/to/SOIL_ROOT_DIR".
+# To Adding search path, set SOIL_DIR as follows
+#    set(SOIL_DIR "path/to/soil")
+# or launch cmake with -DSOIL_DIR="/path/to/SOIL_DIR".
 #
 # author: Kazunori Kimura
 # email : kazunori.abu@gmail.com
@@ -19,7 +19,7 @@ find_path(SOIL_INCLUDE_DIR SOIL/SOIL.h
 
 find_library(SOIL_LIBRARY
   NAMES SOIL
-  HINTS ${SOIL_ROOT_DIR}
+  HINTS ${SOIL_DIR}
   PATH_SUFFIXES lib
   )
 
