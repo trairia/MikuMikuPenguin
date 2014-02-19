@@ -7,6 +7,10 @@
 #   Options:
 #     - GLFW_DIR
 #         Additional search path.
+#
+# Module Author: Kazunori Kimura
+# twitter: http://twitter.com/trairia
+# mail: kazunori.abu@gmail.com
 
 find_path(GLFW_INCLUDE_DIR GL/glfw.h
   HINTS ${GLFW_DIR}
