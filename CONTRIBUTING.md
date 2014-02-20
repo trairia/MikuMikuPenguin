@@ -1,7 +1,7 @@
 # How to contribute
 
-第三者による貢献はこれからのMikuMikuPenguin(以下MMP)の開発には必要です。
-自分の環境でMMPを動かせる為の変更を出来るだけ簡単に貢献出来るようにしたい。
+第三者による貢献がこれからのMikuMikuPenguin(以下MMP)の開発には必要です。
+我々は、皆さんの環境でMMPが動くようにする変更の貢献を出来るだけ簡単にできるようにしたいと考えています。
 その為に、貢献しようとする人は以下の方針に従うよう、お願いします。
 
 ## Getting Started
@@ -16,7 +16,7 @@
 ## Making Changes
 
 * コードやドキュメントをMMPに貢献するにはベースとなるブランチから、トピック・ブランチを作ってください。
-  * 通常、これはmasterブランチです。
+  * 通常、これ(ベースとなるブランチ)はmasterブランチです。
   * masterブランチから、トピック・ブランチを作るには： `git branch
     my_contribution master` してから `git
     checkout my_contribution`で新しいブランチに切り替えます。masterブランチ上で作業するのを避けてください。
@@ -34,11 +34,11 @@
 ````
 
 * 変更の為にテストが必要ならそのテストが追加されているよう確認してください。
-* 「make check」で、あなたが行った変更で、ソースツリーが壊れなかったか確認してください。他にテストがあればそれも実行してみてください。
+* 「make check」で、あなたが行った変更でソースツリーが壊れなかったか確認してください。他にテストがあればそれも実行してみてください。
 
 ## Coding Style
 以下のようなスタイルでコードを書いてくださるようお願いします。
-このスタイルに合わせなくても結構ですが推奨です。
+このスタイルに合わせなくても結構ですが、推奨です。
 ```cpp
 int variableName;
 
@@ -60,11 +60,13 @@ void functionName()
 }
 ```
 
-概ね、「variable_name」より「variableName」を使います。(基本はロワー・キャメル・ケースであり、スネークケースではない)
-クラス名の最初の字（ClassNameの「C」）は大文字です。(Classは、アッパーキャメルケースです)
-ブラケットは普段別々の列で開かれ閉ざせます（以下の例と違って：）
+変数名と関数名には「variable_name」より「variableName」を使います。(基本はローワー・キャメル・ケースであり、スネークケースではない)
+
+クラス名の頭文字 (ClassNameの「C」) は大文字です。(Classは、アッパーキャメルケースです)
+
+ブラケットは開き括弧も閉じ括弧も行を分けて書いて下さい。次の例 **ではなく**:
 ```cpp
-void functionName() { //Bracket is opened on the same line as the class/function name. Typically unused style in MMP code
+void functionName() { //ブラケットがクラス名や関数名と同じ行で開かれている例です。MMPのコードでは使われません。
 	//Function contents here...
 };
 ```
@@ -94,12 +96,12 @@ the new documentation or comments added.
 
 ## Submitting Changes
 
-* 自分のforkで、変更を話題ブランチにpushしてください。
+* 自分のforkで、変更をトピック・ブランチにpushしてください。
 * MikuMikuPenguinのレポジトリにpull requestを投稿してください。
 
 # Additional Resources
 
 * [General GitHub documentation](http://help.github.com/)
 * [GitHub pull request documentation](http://help.github.com/send-pull-requests/)
-* sn0w75を連絡： (http://twitter.com/sn0w75), メール (ibenrunnin@gmail.com)
+* sn0w75に連絡: (http://twitter.com/sn0w75), メール (ibenrunnin@gmail.com)
 
