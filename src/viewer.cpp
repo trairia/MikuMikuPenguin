@@ -786,6 +786,9 @@ void Viewer::initGLFW()
 	
 	
 	hackShaderFiles();
+	
+	//Ensure vsync
+	glfwSwapInterval(1);
 }
 
 void Viewer::initUniformVarLocations()
