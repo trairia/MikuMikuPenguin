@@ -13,20 +13,21 @@ case "$host" in
 *-*-mingw*|*-*-cygwin*)
 AC_DEFINE(PLATFORM_WIN32, 1, [Platform is Win32])
 bullet_CXXFLAGS="-I/usr/include/bullet"
-opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+pmx_opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
 PLATFORM_STRING="Win32"
 ;;
 *-*-linux*)
 AC_DEFINE(PLATFORM_LINUX, 1, [Platform is Linux])
 bullet_CXXFLAGS="-I/usr/include/bullet"
-opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+pmx_opengl_LIBS="-lglfw -lGLU -lGLEW -lGL"
+qt_editor_opengl_LIBS="-lGLU -lGLEW -lGL"
 PLATFORM_STRING="Linux"
 ;;
 *-*-darwin*)
 AC_MSG_WARN([Hello])
 AC_DEFINE(PLATFORM_APPLE, 1, [Platform is Apple])
 bullet_CXXFLAGS="-stdlib=libc++ -I/usr/local/include/bullet"
-opengl_LIBS="-framework AGL -framework OpenGL -lglfw -lglew"
+pmx_opengl_LIBS="-framework AGL -framework OpenGL -lglfw -lglew"
 PLATFORM_STRING="Apple"
 #AC_SUBST(CXXFLAGS, "-stdlib=libc++ -I/usr/local/include/bullet")
 #AC_SUBST(LDFLAGS, "-L/System/Library/Frameworks/OpenGL.framework/Libraries")
