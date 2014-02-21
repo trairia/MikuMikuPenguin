@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sn0w75/MikuMikuPenguin.png)](https://travis-ci.org/sn0w75/MikuMikuPenguin)
+
 **WARNING**
 THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
 
@@ -6,7 +8,7 @@ THIS FILE IS ENCODED IN UTF-8, NOT SJIS!!!
 
 English translation is [available](http://github.com/sn0w75/mikumikupenguin/blob/master/README.en.md).
 
-# LibMikuMikuPenguin(libmmp) v0.1 リードミ（日本語）
+# LibMikuMikuPenguin(libmmp) v0.2 リードミ（日本語）
 
 どうも初めまして。sn0w75です。
 
@@ -70,6 +72,10 @@ https://github.com/g-truc/glm/issues/15
     $ sudo make install
 
 みたいな感じで大丈夫です。
+
+***注意！！！***
+現在WindowsでビルドするにはMinGWを使う必要があります。詳細についてはsn0w75氏を連絡。
+（TODO: Windowsでの説示を書く）
 
 ## あなたはどのブランチを使うべきか?
 
