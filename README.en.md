@@ -57,6 +57,10 @@ To install libmmp and PMXViewer on your system, run:
 
     $ sudo make install
 
+## Troubleshooting
+* On OSX, there's currently an issue with software rendering occurring when using too many transformation matrices in the vertex shader. You can reduce the number in shaders/model.vert, but if you don't have enough the model view may break. (We're working on a more permanent solution to this)
+* If you are using the legacy-210 branch, I cannot guarantee anything as far as performance goes.
+
 (There may be an alternative to 'sudo' you need to use depending on your distro to run a process with admin privileges.)
 
 If you have any other questions, please toss me a message. I'll gladly help you out.
