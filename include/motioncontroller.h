@@ -1,9 +1,7 @@
 #ifndef MOTION_CONTROLLER_H
 #define MOTION_CONTROLLER_H
 
-#include <GL/glew.h>
-#define GLFW_INCLUDE_GLU
-#include <GL/glfw.h>
+#include <GL/gl.h>
 
 #include "pmx.h"
 #include "vmd.h"
@@ -89,14 +87,14 @@ class VMDMotionController
 	GLuint Bones_loc; //uniform variable location for Bones[] in shader
 	
 	//***BONE TRANSFORMATION VARIABLES
-	std::vector<std::list<ClosedMMDFormat::VMDBoneFrame>> boneKeyFrames;				//Hold a list of keyframes for each Bone
+	std::vector<std::list<ClosedMMDFormat::VMDBoneFrame> > boneKeyFrames;				//Hold a list of keyframes for each Bone
 	std::vector<std::list<ClosedMMDFormat::VMDBoneFrame>::iterator> ite_boneKeyFrames;	//Keyframe iterator
 	
 	std::vector<glm::quat> boneRot;
 	std::vector<glm::vec3> bonePos;	
 	
 	//***VERTEX MORPH VARIABLES
-	std::vector<std::list<ClosedMMDFormat::VMDMorphFrame>> morphKeyFrames;				//Hold a list of keyframes for each vertex morph
+	std::vector<std::list<ClosedMMDFormat::VMDMorphFrame> > morphKeyFrames;				//Hold a list of keyframes for each vertex morph
 	std::vector<std::list<ClosedMMDFormat::VMDMorphFrame>::iterator> ite_morphKeyFrames;	//Keyframe iterator
 	
 	std::vector<float> vMorphWeights;
