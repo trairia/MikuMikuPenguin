@@ -1,6 +1,7 @@
 #ifndef MOTION_CONTROLLER_H
 #define MOTION_CONTROLLER_H
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 
 #include "pmx.h"

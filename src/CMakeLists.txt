@@ -26,8 +26,16 @@ ${OPENGL_glu_LIBRARY}
 
 ${OPENGL_gl_LIBRARY})
 
+
 # Tell CMake to create the helloworld executable
 add_executable(MMPEditor main.cpp openglscene.cpp)
+
+#Copy QML to build directory (also installation dir???)
+add_custom_command(TARGET MMPEditor PRE_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_directory
+${CMAKE_CURRENT_SOURCE_DIR}/qml
+${CMAKE_BINARY_DIR}/qml
+)
 
 # Use the Widgets module from Qt 5.
 target_link_libraries(MMPEditor ${Qt5Widgets_LIBRARIES} ${libmmp_dep})
