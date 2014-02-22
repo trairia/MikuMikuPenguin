@@ -29,6 +29,16 @@
 #define RIGID_SHAPE_CUBE 1
 #define RIGID_SHAPE_CAPSULE 2
 
+//! \name 剛体タイプ
+//@{
+#define RIGID_TYPE_FOLLOWER 0         //!< \if ENGLISH bone follower type \endif
+                                      //!< \if JAPANESE ボーン追従タイプ \endif
+#define RIGID_TYPE_PHYSICS 1          //!< \if ENGLISH physics type \endif
+                                      //!< \if JAPANESE 物理演算タイプ \endif
+#define RIGID_TYPE_PHYSICS_ROT_ONLY 2 //!< \if ENGLISH physics (rotation only) type \endif
+                                      //!< \if JAPANESE 物理+ボーン位置合わせタイプ \endif
+//@}
+
 #define VERTEX_DEBUG false
 #define MATERIAL_DEBUG false
 
@@ -336,7 +346,7 @@ namespace ClosedMMDFormat
 		
 		//VARIABLES I ADDED BELOW THIS POINT
 		glm::mat4 Init; //The initial transformation matrix
-		glm::mat4 Offset; //The current offset matrix
+		glm::mat4 Offset; //The offset matrix (the inverse of the initial transformation matrix)
 	};
 
 	struct PMXJoint
