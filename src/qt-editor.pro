@@ -1,4 +1,4 @@
-QT += qml quick
+QT += qml quick gui
 
 HEADERS += openglscene.h
 SOURCES += openglscene.cpp main.cpp

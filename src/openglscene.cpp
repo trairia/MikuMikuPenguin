@@ -1,5 +1,3 @@
-#include "../include/motioncontroller.h"
-
 #include "openglscene.h"
 
 #include <QtQuick/qquickwindow.h>
