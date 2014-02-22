@@ -9,43 +9,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-
-#define WEIGHT_FORMULA_BDEF1 0
-#define WEIGHT_FORMULA_BDEF2 1
-#define WEIGHT_FORMULA_BDEF4 2
-#define WEIGHT_FORMULA_SDEF 3
-
-#define MORPH_TYPE_GROUP 0
-#define MORPH_TYPE_VERTEX 1
-#define MORPH_TYPE_BONE 2
-#define MORPH_TYPE_UV 3
-#define MORPH_TYPE_EXTRA_UV1 4
-#define MORPH_TYPE_EXTRA_UV2 5
-#define MORPH_TYPE_EXTRA_UV3 6
-#define MORPH_TYPE_EXTRA_UV4 7
-#define MORPH_TYPE_MATERIAL 8
-
-#define RIGID_SHAPE_SPHERE 0
-#define RIGID_SHAPE_CUBE 1
-#define RIGID_SHAPE_CAPSULE 2
-
-//! \name 剛体タイプ
-//@{
-#define RIGID_TYPE_FOLLOWER 0         //!< \if ENGLISH bone follower type \endif
-                                      //!< \if JAPANESE ボーン追従タイプ \endif
-#define RIGID_TYPE_PHYSICS 1          //!< \if ENGLISH physics type \endif
-                                      //!< \if JAPANESE 物理演算タイプ \endif
-#define RIGID_TYPE_PHYSICS_ROT_ONLY 2 //!< \if ENGLISH physics (rotation only) type \endif
-                                      //!< \if JAPANESE 物理+ボーン位置合わせタイプ \endif
-//@}
-
 #define VERTEX_DEBUG false
 #define MATERIAL_DEBUG false
-
-//PMX related structs
-
-#define PMX_ENCODE_UTF16 0
-#define PMX_ENCODE_UTF8 1
 
 /*! \namespace ClosedMMDFormat
  * \if ENGLISH \brief Namespace for closed/proprietary MMD File Format handlers.
@@ -59,6 +24,52 @@
 
 namespace ClosedMMDFormat
 {
+	enum WeightFormula
+	{
+		WEIGHT_FORMULA_BDEF1=0,
+		WEIGHT_FORMULA_BDEF2=1,
+		WEIGHT_FORMULA_BDEF4=2,
+		WEIGHT_FORMULA_SDEF=3
+	};
+
+	enum MorphType
+	{
+		MORPH_TYPE_GROUP=0,
+		MORPH_TYPE_VERTEX=1,
+		MORPH_TYPE_BONE=2,
+		MORPH_TYPE_UV=3,
+		MORPH_TYPE_EXTRA_UV1=4,
+		MORPH_TYPE_EXTRA_UV2=5,
+		MORPH_TYPE_EXTRA_UV3=6,
+		MORPH_TYPE_EXTRA_UV4=7,
+		MORPH_TYPE_MATERIAL=8
+	};
+
+	enum RigidBodyShapeType
+	{
+		RIGID_SHAPE_SPHERE=0,
+		RIGID_SHAPE_CUBE=1,
+		RIGID_SHAPE_CAPSULE=2
+	};
+
+	//!< \if ENGLISH rigid body type \endif
+	//!< \if JAPANESE 剛体タイプ \endif
+	enum RigidBodyType
+	{
+		RIGID_TYPE_FOLLOWER=0,		//!< \if ENGLISH bone follower type \endif
+									//!< \if JAPANESE ボーン追従タイプ \endif
+		RIGID_TYPE_PHYSICS=1,		//!< \if ENGLISH physics type \endif
+									//!< \if JAPANESE 物理演算タイプ \endif
+		RIGID_TYPE_PHYSICS_ROT_ONLY=2	//!< \if ENGLISH physics (rotation only) type \endif
+										//!< \if JAPANESE 物理+ボーン位置合わせタイプ \endif
+	};
+
+	enum PmxEncode
+	{
+		PMX_ENCODE_UTF16=0,
+		PMX_ENCODE_UTF8=1
+	};
+
 	struct PMXBone;
 	struct PMXInfo;
 	
