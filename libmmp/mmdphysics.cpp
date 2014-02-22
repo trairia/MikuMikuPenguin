@@ -1,5 +1,6 @@
 #include "mmdphysics.h"
 #include "pmx.h"
+#include "glm_helper.h"
 
 #include <iostream>
 
@@ -39,19 +40,11 @@ rotationDecay, physicsOperation == 0, 1 << group, noCollisionGroupFlag));*/
 	//createTestJoint
 }
 
-glm::mat4 MMDPhysics::createRigidMatrix(glm::vec3 &pos, glm::vec3 &rot, int &i)
+glm::mat4 MMDPhysics::createRigidMatrix(const glm::vec3 &pos, const glm::vec3 &rot)
 {
-	glm::vec3 p = glm::vec3(pos);
-	if(i!=-1)
-	{
-		//p += pmxInfo.bones[i]->parent->position; //p += glm::vec3((*bones)[i].initMatML.m[3]); //関連ボーンがある場合は、ボーン相対座標からモデルローカル座標に変換。MmdStruct::PmdRigidBody.pos_posを参照
-		//(*bones)[i].extraBoneControl = true;
-	}
-	glm::mat4 trans, rotation;
-	trans=glm::translate(p); //D3DXMatrixTranslation(&trans, p.x, p.y, p.z);
-	glm::vec3 r=rot;
-	rotation=glm::yawPitchRoll(r.y,r.x,r.z); //D3DXMatrixRotationYawPitchRoll(&rotation, r.y, r.x, r.z);
-	return trans*rotation;
+	glm::quat q=fromEulerAnglesRadians(rot);
+	flipZ(q);
+	return glm::translate(pos)*glm::toMat4(q);
 }
 
 vector<glm::vec3> createBox(float width, float height, float depth)
@@ -118,16 +111,14 @@ vector<glm::vec3> createBox(float width, float height, float depth)
 
 void MMDPhysics::createRigidBody()
 {
+	const std::vector<PMXRigidBody*> &rigidBodies=pmxInfo.rigidBodies;
+
 	for(int i=0; i<pmxInfo.rigid_body_continuing_datasets; ++i)
-	{		
-		std::vector<PMXRigidBody*> &rigidBodies=pmxInfo.rigidBodies;
-		
-		glm::mat4 world, world_inv;
-		world = createRigidMatrix(rigidBodies[i]->position, rigidBodies[i]->rotation, rigidBodies[i]->relatedBoneIndex);
-		world_inv = glm::inverse(world);
+	{
+		glm::mat4 world=createRigidMatrix(rigidBodies[i]->position, rigidBodies[i]->rotation);
 		rigidBodies[i]->Init=world;
-		rigidBodies[i]->Offset=world_inv;
-		
+		rigidBodies[i]->Offset=glm::inverse(world);
+
 		if (rigidBodies[i]->shape == RIGID_SHAPE_SPHERE) //球
 		{
 			float radius = rigidBodies[i]->size.x/2;

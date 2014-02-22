@@ -58,7 +58,7 @@ class MMDPhysics
 	
 	
 	private:
-	glm::mat4 createRigidMatrix(glm::vec3 &pos, glm::vec3 &rot, int &i);
+	glm::mat4 createRigidMatrix(const glm::vec3 &pos, const glm::vec3 &rot);
 	
 	void createRigidBody();
 	void createJoints();
