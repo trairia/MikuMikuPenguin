@@ -8,9 +8,16 @@
 std::ostream& operator<<(std::ostream&, const glm::vec3&);
 std::ostream& operator<<(std::ostream&, const glm::vec4&);
 std::ostream& operator<<(std::ostream&, const glm::quat&);
+std::ostream& operator<<(std::ostream&, const glm::mat4&);
+
+//! mutual conversion of lower/upper limit in euler angles between Direct3D and OpenGL
+void flipZAxisOfRotationalLimits(glm::vec3& rLower, glm::vec3& rUpper);
 
 //! mutual conversion between Direct3D and OpenGL
-void flipZ(glm::quat&);
+glm::vec3 flipZAxisOfEulerAnglesRadians(const glm::vec3&);
+
+//! mutual conversion between Direct3D and OpenGL
+glm::quat flipZAxisOfQuaternion(const glm::quat&);
 
 //! Conversion from quaternion to euler angles (XYZ euler angles in radians)
 glm::vec3 toEulerAnglesRadians(const glm::quat&);

@@ -67,8 +67,7 @@ VMDMotionController::VMDMotionController(PMXInfo &pmxInfo,VMDInfo &vmdInfo,GLuin
 	{
 		boneKeyFrames[i].sort();
 		ite_boneKeyFrames.push_back(boneKeyFrames[i].begin());
-		boneRot.push_back(glm::quat(0, 0, 0, 0));
-		boneRot[boneRot.size()-1].w=1;
+		boneRot.push_back(glm::quat(1, 0, 0, 0));
 		bonePos.push_back(glm::vec3(0, 0, 0));
 	}
 	
@@ -214,7 +213,11 @@ void VMDMotionController::updateVertexMorphs()
 }
 
 void VMDMotionController::updateBoneMatrix()
-{	
+{
+	for(unsigned i = 0; i < pmxInfo.bone_continuing_datasets; i++)
+	{
+		skinMatrix[i] = pmxInfo.bones[i]->calculateGlobalMatrix() * invBindPose[i];
+	}
 	glUniformMatrix4fv(Bones_loc, pmxInfo.bone_continuing_datasets, GL_FALSE, (const GLfloat*)skinMatrix);
 }
 
@@ -223,14 +226,10 @@ void VMDMotionController::updateBoneAnimation()
 	//cout<<"Bezier interpol: "<<bezier(0.25f,0.25f,0.1f,0.25f,1.0f)<<endl;
 	//exit(EXIT_FAILURE);
 	
-	
-	
-	PMXBone   *b  = pmxInfo.bones[0];
-	
 	//Root+FKBones
 	for(unsigned i = 0; i < pmxInfo.bone_continuing_datasets; i++)
 	{
-		b  = pmxInfo.bones[i];
+		PMXBone   *b  = pmxInfo.bones[i];
 		
 		unsigned long t0,t1;
 		glm::quat q0,q1;
@@ -246,7 +245,7 @@ void VMDMotionController::updateBoneAnimation()
 			boneRot[i] = q0 = (*ite_boneKeyFrames[i]).rotation;
 			bonePos[i] = p0 = (*ite_boneKeyFrames[i]).translation;
 			
-			BezierParameters &bez=(*ite_boneKeyFrames[i]).bezier;
+			const BezierParameters &bez=(*ite_boneKeyFrames[i]).bezier;
 			
 			if(++ite_boneKeyFrames[i] != boneKeyFrames[i].end())
 			{
@@ -280,29 +279,19 @@ void VMDMotionController::updateBoneAnimation()
 				
 				if(time!=t1) --ite_boneKeyFrames[i];
 			}
-		}
-		
-		if(b->parentBoneIndex!=-1)
-		{
-			PMXBone *parent = pmxInfo.bones[b->parentBoneIndex];
-			b->Local = glm::translate( bonePos[i] + b->position - parent->position ) * glm::toMat4(boneRot[i]);
-		}
-		else
-		{
-			b->Local = glm::translate( bonePos[i] + b->position ) * glm::toMat4(boneRot[i]);
+
+			if(b->parent)
+			{
+				b->Local = glm::translate( bonePos[i] + b->position - b->parent->position ) * glm::toMat4(boneRot[i]);
+			}
+			else
+			{
+				b->Local = glm::translate( bonePos[i] + b->position ) * glm::toMat4(boneRot[i]);
+			}
 		}
 	}
-	
+
 	updateIK();
-	
-	
-	for(unsigned i = 0; i < pmxInfo.bone_continuing_datasets; i++)
-	{
-		b  = pmxInfo.bones[i];
-		skinMatrix[i] = b->calculateGlobalMatrix() * invBindPose[i];
-	}
-	
-	updateBoneMatrix();
 }
 
 

@@ -137,6 +137,7 @@ void Viewer::handleLogic()
 		//holdModelInBindPose();
 		
 		mmdPhysics->updateBones(doPhysics);
+		motionController->updateBoneMatrix();
 		
 		glUseProgram(bulletPhysics->debugDrawer->shaderProgram);
 		setCamera(bulletPhysics->debugDrawer->MVPLoc);
