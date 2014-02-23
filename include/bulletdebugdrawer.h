@@ -1,8 +1,6 @@
 #ifndef BULLET_DEBUG_DRAWER_H
 #define BULLET_DEBUG_DRAWER_H
 
-#include <GL/glew.h>
-#include <GL/glfw.h>
 #include "btBulletDynamicsCommon.h"
 
 #include <vector>
@@ -11,6 +9,8 @@
 #include <glm/gtc/matrix_transform.hpp> 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/quaternion.hpp>
+
+#include <GL/gl.h>
 
 
 

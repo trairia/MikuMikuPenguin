@@ -26,8 +26,8 @@ std::string sjisToUTF8(const char *sjis)
 	
 	if(ret==0)
 	{
-		printf("FATAL ERROR: SJIS to UTF8 conversion failed\n");
-		exit(EXIT_FAILURE);
+		//printf("FATAL ERROR: SJIS to UTF8 conversion failed\n");
+		//exit(EXIT_FAILURE);
 	}
 	
 	//cout<<outbuf<<endl;

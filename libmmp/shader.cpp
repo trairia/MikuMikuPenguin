@@ -1,3 +1,6 @@
+#include <GL/glew.h>
+#include <GL/gl.h>
+
 #include "shader.h"
 
 #include <stdio.h>
@@ -76,6 +79,9 @@ GLuint compileShader(GLenum type, const GLchar *filename)
 
 GLuint compileShaders(string vertShaderName, string fragShaderName)
 {
+	glewExperimental = GL_TRUE;
+	glewInit();
+	
 	GLuint vertShader=compileShader(GL_VERTEX_SHADER,vertShaderName.c_str());
 	GLuint fragShader=compileShader(GL_FRAGMENT_SHADER,fragShaderName.c_str());
 

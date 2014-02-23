@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(MikuMikuPenguin)
 
-add_definitions("-DDATA_PATH=\"${PROJECT_SOURCE_DIR}\"")
+add_definitions("-ggdb")
+add_definitions("-DDATA_PATH=\"${PROJECT_SOURCE_DIR}/data\"")
 
 if(CMAKE_COMPILER_IS_GNUCXX)
   add_definitions("-std=c++0x")
