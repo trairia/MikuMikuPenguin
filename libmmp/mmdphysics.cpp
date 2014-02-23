@@ -130,7 +130,7 @@ void MMDPhysics::createRigidBody()
 		
 		if (rigidBodies[i]->shape == RIGID_SHAPE_SPHERE) //球
 		{
-			float radius = rigidBodies[i]->size.x/2;
+			float radius = rigidBodies[i]->size.x;
 			
 			this->rigidBodies.push_back(bulletPhysics->CreateSphere(
 radius, &world, rigidBodies[i]->mass, rigidBodies[i]->elasticity, rigidBodies[i]->friction, rigidBodies[i]->movementDecay,
@@ -155,7 +155,7 @@ rigidBodies[i]->rotationDecay, rigidBodies[i]->physicsOperation == 0, 1 << rigid
 		}
 		else if(rigidBodies[i]->shape == RIGID_SHAPE_CAPSULE) //カプセル
 		{
-			float radius = rigidBodies[i]->size.x/2, height = rigidBodies[i]->size.y/2;
+			float radius = rigidBodies[i]->size.x, height = rigidBodies[i]->size.y;
 			
 			this->rigidBodies.push_back(bulletPhysics->CreateCapsule(
 radius, height, &world, rigidBodies[i]->mass, rigidBodies[i]->elasticity, rigidBodies[i]->friction, rigidBodies[i]->movementDecay,
