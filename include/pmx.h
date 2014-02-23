@@ -30,7 +30,7 @@
 #define RIGID_SHAPE_CAPSULE 2
 
 #define VERTEX_DEBUG false
-#define MATERIAL_DEBUG true
+#define MATERIAL_DEBUG false
 
 //PMX related structs
 
@@ -475,6 +475,10 @@ namespace ClosedMMDFormat
 														//!< \if JAPANESE \brief ジョイントの配列（vector式） \endif
 	};
 
+	std::ostream& operator<<(std::ostream&, const PMXIKLink&);
+	std::ostream& operator<<(std::ostream&, const PMXBone&);
+	std::ostream& operator<<(std::ostream&, const PMXRigidBody&);
+	std::ostream& operator<<(std::ostream&, const PMXJoint&);
 }
 
 #endif

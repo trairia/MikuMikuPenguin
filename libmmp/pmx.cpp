@@ -968,81 +968,155 @@ namespace ClosedMMDFormat
 		}
 		
 		cout<<"Bone continuing datasets: "<<pmxInfo.bone_continuing_datasets<<endl;
-		/*for(int i=0; i<pmxInfo.bone_continuing_datasets; ++i)
+		for(int i=0; i<pmxInfo.bone_continuing_datasets; ++i)
 		{
-			PMXBone *bone=pmxInfo.bones[i];
-			
-			cerr<<endl<<"[Bone "<<i<<"]"<<endl;
-			cerr<<"Bone Name: "<<bone->name<<endl;
-			//cerr<<"Bone Name English: "<<bone->nameEng<<endl;
-			cerr<<"Position: "<<bone->position.x<<" "<<bone->position.y<<" "<<bone->position.z<<endl;
-			cerr<<"Parent Bone Index: "<<bone->parentBoneIndex<<endl;
-			cerr<<"Transformation Class/Level: "<<bone->transformationLevel<<endl;
-			//cerr<<bitflag_ss.str()<<endl;
-			
-			cerr<<"Connection Display Method: "<<bone->connectionDisplayMethod<<endl;
-			cerr<<"Rotation Possible: "<<bone->rotationPossible<<endl;
-			cerr<<"Movement Possible: "<<bone->movementPossible<<endl;
-			cerr<<"Show: "<<bone->show<<endl;
-			cerr<<"Control Possible: "<<bone->controlPossible<<endl;
-			cerr<<"IK: "<<bone->IK<<endl;
-			
-			cerr<<"Rotation Allowed: "<<bone->giveRotation<<endl;
-			cerr<<"Movement Allowed: "<<bone->giveTranslation<<endl;
-			cerr<<"Axis Fixed: "<<bone->axisFixed<<endl;
-			cerr<<"Local Axis: "<<bone->localAxis<<endl;
-			cerr<<"Transform After Physics: "<<bone->transformAfterPhysics<<endl;
-			cerr<<"External Parent Transform: "<<bone->externalParentTransform<<endl<<endl;
-			
-			if(bone->connectionDisplayMethod==0) //0: Display with Coordinate Offset
-			{
-				cerr<<"Bone Coordinate Offset: "<<bone->coordinateOffset.x<<" "<<bone->coordinateOffset.y<<" "<<bone->coordinateOffset.z<<endl;
-			}
-			else //1: Display with Bone
-			{
-				cerr<<"Connection Bone Index: "<<bone->connectionBoneIndex<<endl;
-			}
-			
-			if(bone->giveRotation || bone->giveTranslation)
-			{
-				cerr<<"Allowed Parent Bone Index: "<<bone->givenParentBoneIndex<<endl;
-				cerr<<"Allowed Rate: "<<bone->giveRate<<endl;
-			}
-			
-			if(bone->axisFixed)
-			{
-				cerr<<"Axis Direction Vector: "<<bone->axisDirectionVector.x<<" "<<bone->axisDirectionVector.y<<" "<<bone->axisDirectionVector.z<<endl;
-			}
-			
-			if(bone->localAxis)
-			{
-				cerr<<"X Axis Bone Coordinate Offset: "<<bone->XAxisDirectionVector.x<<" "<<bone->XAxisDirectionVector.y<<" "<<bone->XAxisDirectionVector.z<<endl;
-				cerr<<"Z Axis Bone Coordinate Offset: "<<bone->ZAxisDirectionVector.x<<" "<<bone->ZAxisDirectionVector.y<<" "<<bone->ZAxisDirectionVector.z<<endl;
-			}
-			
-			if(bone->externalParentTransform)
-			{
-				cerr<<"Key Value: "<<bone->keyValue<<endl;
-			}
-			
-			if (bone->IK) {
-				cerr<<"IK Target Bone Index: "<<bone->IKTargetBoneIndex<<endl;
-				cerr<<"IK Loop Count: "<<bone->IKLoopCount<<endl;
-				cerr<<"IK Loop Radian Angle: "<<bone->IKLoopRadianAngle<<endl;
-				cerr<<"IK Links: "<<bone->IKLinkNum<<endl;
-				
-				for(int j=0; j<bone->IKLinkNum; ++j)
-				{
-					cerr<<endl<<"[Link "<<j<<"]"<<endl;
-					cerr<<"IKLink Bone Index: "<<bone->IKLinks[j]->linkBoneIndex<<endl;
-					cerr<<"IKLink Angle Limit: "<<bone->IKLinks[j]->angleLimit<<endl;
-					if (bone->IKLinks[j]->angleLimit) {
-						cerr<<"IKLink Lower Limit: "<<bone->IKLinks[j]->lowerLimit.x<<" "<<bone->IKLinks[j]->lowerLimit.y<<" "<<bone->IKLinks[j]->lowerLimit.z<<endl;
-						cerr<<"IKLink Upper Limit: "<<bone->IKLinks[j]->upperLimit.x<<" "<<bone->IKLinks[j]->upperLimit.y<<" "<<bone->IKLinks[j]->upperLimit.z<<endl;
-					}
-				}
-			}
-		}*/
+			cout<<"\n[Bone "<<i<<"]"<<endl;
+			cout<<*pmxInfo.bones[i]<<endl;
+		}
+
+		cout<<"RigidBody continuing datasets: "<<pmxInfo.rigid_body_continuing_datasets<<endl;
+		for(int i = 0; i < pmxInfo.rigid_body_continuing_datasets; ++i)
+		{
+			cout<<"\n[RigidBody "<<i<<"]"<<endl;
+			cout<<*pmxInfo.rigidBodies[i]<<endl;
+		}
+
+		cout<<"Joint continuing datasets: "<<pmxInfo.joint_continuing_datasets<<endl;
+		for(int i = 0; i < pmxInfo.joint_continuing_datasets; ++i)
+		{
+			cout<<"\n[Joint "<<i<<"]"<<endl;
+			cout<<*pmxInfo.joints[i]<<endl;
+		}
 	}
-	
+
+#define PRINT_MEMBER(inst, x) \
+	{ rOut << #x << ": " << (inst).x << "\n"; }
+#define PRINT_MEMBER_CAST(inst, x, type) \
+	{ rOut << #x << ": " << (int)(inst).x << "\n"; }
+	using ::operator<<;
+
+	std::ostream&
+	operator<<(std::ostream& rOut, const PMXIKLink& link)
+	{
+		PRINT_MEMBER(link, linkBoneIndex);
+		PRINT_MEMBER(link, angleLimit);
+		if (link.angleLimit)
+		{
+			PRINT_MEMBER(link, lowerLimit);
+			PRINT_MEMBER(link, upperLimit);
+		}
+        return rOut;
+	}
+
+	std::ostream&
+	operator<<(std::ostream& rOut, const PMXBone& bone)
+	{
+		PRINT_MEMBER(bone, name);
+		PRINT_MEMBER(bone, nameEng);
+		PRINT_MEMBER(bone, position);
+		PRINT_MEMBER(bone, parentBoneIndex);
+		PRINT_MEMBER(bone, transformationLevel);
+		PRINT_MEMBER(bone, connectionDisplayMethod);
+		PRINT_MEMBER(bone, rotationPossible);
+		PRINT_MEMBER(bone, movementPossible);
+		PRINT_MEMBER(bone, show);
+		PRINT_MEMBER(bone, controlPossible);
+		PRINT_MEMBER(bone, IK);
+		PRINT_MEMBER(bone, giveRotation);
+		PRINT_MEMBER(bone, giveTranslation);
+		PRINT_MEMBER(bone, axisFixed);
+		PRINT_MEMBER(bone, localAxis);
+		PRINT_MEMBER(bone, transformAfterPhysics);
+		PRINT_MEMBER(bone, externalParentTransform);
+		if (bone.connectionDisplayMethod == 0)	//0: Display with Coordinate Offset
+		{
+			PRINT_MEMBER(bone, coordinateOffset);
+		}
+		else //1: Display with Bone
+		{
+			PRINT_MEMBER(bone, connectionBoneIndex);
+		}
+
+		if (bone.giveRotation || bone.giveTranslation)
+		{
+			PRINT_MEMBER(bone, givenParentBoneIndex);
+			PRINT_MEMBER(bone, giveRate);
+		}
+
+		if (bone.axisFixed)
+		{
+			PRINT_MEMBER(bone, axisDirectionVector);
+		}
+
+		if (bone.localAxis)
+		{
+			PRINT_MEMBER(bone, XAxisDirectionVector);
+			PRINT_MEMBER(bone, ZAxisDirectionVector);
+		}
+
+		if (bone.externalParentTransform)
+		{
+			PRINT_MEMBER(bone, keyValue);
+		}
+
+		if (bone.IK)
+		{
+			PRINT_MEMBER(bone, IKTargetBoneIndex);
+			PRINT_MEMBER(bone, IKLoopCount);
+			PRINT_MEMBER(bone, IKLoopAngleLimit);
+			PRINT_MEMBER(bone, IKLinkNum);
+
+			for (int j=0; j<bone.IKLinkNum; ++j)
+			{
+				rOut<<"\n[Link "<<j<<"]\n";
+				rOut<<*bone.IKLinks[j]<<"\n";
+			}
+		}
+
+		PRINT_MEMBER(bone, Local);
+		return rOut;
+	}
+
+	std::ostream&
+	operator<<(std::ostream& rOut, const PMXRigidBody& rb)
+	{
+		PRINT_MEMBER(rb, name);
+		PRINT_MEMBER(rb, nameEng);
+		PRINT_MEMBER(rb, relatedBoneIndex);
+		PRINT_MEMBER_CAST(rb, group, int);
+		PRINT_MEMBER(rb, noCollisionGroupFlag);
+		PRINT_MEMBER_CAST(rb, shape, int);
+		PRINT_MEMBER(rb, size);
+		PRINT_MEMBER(rb, position);
+		PRINT_MEMBER(rb, rotation);
+		PRINT_MEMBER(rb, mass);
+		PRINT_MEMBER(rb, movementDecay);
+		PRINT_MEMBER(rb, rotationDecay);
+		PRINT_MEMBER(rb, elasticity);
+		PRINT_MEMBER(rb, friction);
+		PRINT_MEMBER_CAST(rb, physicsOperation, int);
+		PRINT_MEMBER(rb, Init);
+		PRINT_MEMBER(rb, Offset);
+		return rOut;
+	}
+
+	std::ostream&
+	operator<<(std::ostream& rOut, const PMXJoint& jnt)
+	{
+		PRINT_MEMBER(jnt, name);
+		PRINT_MEMBER(jnt, nameEng);
+		PRINT_MEMBER(jnt, type);
+		PRINT_MEMBER(jnt, relatedRigidBodyIndexA);
+		PRINT_MEMBER(jnt, relatedRigidBodyIndexB);
+		PRINT_MEMBER(jnt, position);
+		PRINT_MEMBER(jnt, rotation);
+		PRINT_MEMBER(jnt, movementLowerLimit);
+		PRINT_MEMBER(jnt, movementUpperLimit);
+		PRINT_MEMBER(jnt, rotationLowerLimit);
+		PRINT_MEMBER(jnt, rotationUpperLimit);
+		PRINT_MEMBER(jnt, springMovementConstant);
+		PRINT_MEMBER(jnt, springRotationConstant);
+		PRINT_MEMBER(jnt, Local);
+		return rOut;
+	}
 } //end of namespace
