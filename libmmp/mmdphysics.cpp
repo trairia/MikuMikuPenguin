@@ -42,9 +42,7 @@ rotationDecay, physicsOperation == 0, 1 << group, noCollisionGroupFlag));*/
 
 glm::mat4 MMDPhysics::createRigidMatrix(const glm::vec3 &pos, const glm::vec3 &rot)
 {
-	glm::quat q=fromEulerAnglesRadians(rot);
-	flipZ(q);
-	return glm::translate(pos)*glm::toMat4(q);
+	return glm::translate(pos)*glm::toMat4(fromEulerAnglesRadians(rot));
 }
 
 vector<glm::vec3> createBox(float width, float height, float depth)
@@ -178,14 +176,7 @@ void MMDPhysics::createJoints()
 		for (int j =  0; j < 3; ++j) stiffness.push_back(joint->springMovementConstant[j]);
 		for (int j =  0; j < 3; ++j) stiffness.push_back(joint->springRotationConstant[j]);
 		
-		glm::vec3 p(joint->position);
-		glm::vec3 r(joint->rotation);
-		
-		
-		glm::mat4 trans, rotation, world, rot_x, rot_y, rot_z;
-		trans=glm::translate(p.x, p.y, p.z);
-		rotation=glm::yawPitchRoll(r.y, r.x, r.z);
-		world = trans*rotation;	// ジョイントの行列（モデルローカル座標系）
+		glm::mat4 world = createRigidMatrix(joint->position, joint->rotation);	// ジョイントの行列（モデルローカル座標系）
 		
 		btRigidBody *rigidbody_a,*rigidbody_b;
 		glm::mat4 a,b,frameInA,frameInB;

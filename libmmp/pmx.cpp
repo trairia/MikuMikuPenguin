@@ -9,9 +9,6 @@
 #include <string.h>
 #include <float.h>
 
-// These are used to clamp joint limits into proper range of euler angles.
-static const glm::vec3 gsEulerLower(-M_PI + FLT_EPSILON, -0.5 * M_PI + FLT_EPSILON, -M_PI + FLT_EPSILON);
-static const glm::vec3 gsEulerUpper(-gsEulerLower);
 
 using namespace std;
 
@@ -505,23 +502,7 @@ namespace ClosedMMDFormat
 						miku.read((char*)&link->upperLimit.y, 4);
 						miku.read((char*)&link->upperLimit.z, 4);
 
-						// These clampings are needed.
-						// Because lower/upper limits of existing PMX files tend to go slightly outside of ranges of euler angles.
-						link->lowerLimit = glm::clamp(link->lowerLimit, gsEulerLower, gsEulerUpper);
-						link->upperLimit = glm::clamp(link->upperLimit, gsEulerLower, gsEulerUpper);
-
-						glm::quat lower_q = fromEulerAnglesRadians(link->lowerLimit);
-						flipZ(lower_q); // D3D to OpenGL
-						link->lowerLimit = toEulerAnglesRadians(lower_q);
-
-						glm::quat upper_q = fromEulerAnglesRadians(link->upperLimit);
-						flipZ(upper_q); // D3D to OpenGL
-						link->upperLimit = toEulerAnglesRadians(upper_q);
-
-						if (link->upperLimit.x < link->lowerLimit.x) swap(link->upperLimit.x, link->lowerLimit.x);
-						if (link->upperLimit.y < link->lowerLimit.y) swap(link->upperLimit.y, link->lowerLimit.y);
-						if (link->upperLimit.z < link->lowerLimit.z) swap(link->upperLimit.z, link->lowerLimit.z);
-
+						flipZAxisOfRotationalLimits(link->lowerLimit, link->upperLimit);
 						// cout<<"lowerLimit: "<<link->lowerLimit<<endl;
 						// cout<<"upperLimit: "<<link->upperLimit<<endl;
 					}
@@ -772,8 +753,8 @@ namespace ClosedMMDFormat
 			miku.read((char*)&rb->rotation.y, 4);
 			miku.read((char*)&rb->rotation.z, 4);
 			
-			rb->rotation.x = -rb->rotation.x;
-			
+			rb->rotation = flipZAxisOfEulerAnglesRadians(rb->rotation);
+
 			miku.read((char*)&rb->mass, 4);
 			miku.read((char*)&rb->movementDecay, 4);
 			miku.read((char*)&rb->rotationDecay, 4);
@@ -811,8 +792,8 @@ namespace ClosedMMDFormat
 				miku.read((char*)&joint->rotation.y, 4);
 				miku.read((char*)&joint->rotation.z, 4);
 				
-				joint->rotation.x = -joint->rotation.x;
-				
+				joint->rotation = flipZAxisOfEulerAnglesRadians(joint->rotation);
+
 				miku.read((char*)&joint->movementLowerLimit.x, 4);
 				miku.read((char*)&joint->movementLowerLimit.y, 4);
 				miku.read((char*)&joint->movementLowerLimit.z, 4);
@@ -829,6 +810,8 @@ namespace ClosedMMDFormat
 				miku.read((char*)&joint->rotationUpperLimit.y, 4);
 				miku.read((char*)&joint->rotationUpperLimit.z, 4);
 				
+				flipZAxisOfRotationalLimits(joint->rotationLowerLimit, joint->rotationUpperLimit);
+
 				miku.read((char*)&joint->springMovementConstant.x, 4);
 				miku.read((char*)&joint->springMovementConstant.y, 4);
 				miku.read((char*)&joint->springMovementConstant.z, 4);
