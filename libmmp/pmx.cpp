@@ -509,11 +509,21 @@ namespace ClosedMMDFormat
 					bone->IKLinks.push_back(link);
 				}
 			}
-			bone->Local[3][0] = bone->position.x;
-			bone->Local[3][1] = bone->position.y;
-			bone->Local[3][2] = bone->position.z;
-			
 			pmxInfo.bones.push_back(bone);
+		}
+
+		// calculate and set transformation matrix from parent bone
+		for(int i = 0; i < pmxInfo.bone_continuing_datasets; ++i)
+		{
+			PMXBone *bone = pmxInfo.bones[i];
+			if(bone->parent)
+			{
+				bone->Local = glm::translate(bone->position - bone->parent->position);
+			}
+			else
+			{
+				bone->Local = glm::translate(bone->position);
+			}
 		}
 		cout<<"done."<<endl;
 			
