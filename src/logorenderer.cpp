@@ -433,7 +433,7 @@ void LogoRenderer::handleLogic()
 	
 	//if(glfwGetKey('A')==GLFW_RELEASE)
 	{
-		/*if(!motionController->advanceTime())
+		if(!motionController->advanceTime())
 		{
 			motionController->updateVertexMorphs();
 			motionController->updateBoneAnimation();
@@ -441,7 +441,9 @@ void LogoRenderer::handleLogic()
 		//Debug- hold model in bind pose
 		//holdModelInBindPose();
 		
-		mmdPhysics->updateBones(doPhysics);*/
+		mmdPhysics->updateBones(doPhysics);
+		
+		motionController->updateBoneMatrix();
 		
 		/*glUseProgram(bulletPhysics->debugDrawer->shaderProgram);
 		setCamera(bulletPhysics->debugDrawer->MVPLoc);*/
