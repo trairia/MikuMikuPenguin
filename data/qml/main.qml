@@ -6,8 +6,8 @@ import "."
 Item
 {
 	id:screen
-	width: 480
-	height: 320
+	width: 1280
+	height: 720
 	
 	/*OpenGLScene
 	{
