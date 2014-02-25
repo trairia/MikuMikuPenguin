@@ -25,9 +25,9 @@ protected:
 
 };
 
-#define err pmxvLogger::get()->e
-#define dbg pmxvLogger::get()->d
-#define log pmxvLogger::get()->m
+//#define err pmxvLogger::get()->e
+//#define dbg pmxvLogger::get()->d
+//#define log pmxvLogger::get()->m
 
 #endif // PMXV_LOGGER_H
 

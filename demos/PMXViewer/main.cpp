@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "pmxvLogger.h"
+#include "viewer.h"
 
 #include <libmmp.h>
 /*#include "texthandle.h"
@@ -11,8 +13,6 @@
 #include "pmxvLogger.h"
 
 #include "viewer.h"*/
-#include "pmxvLogger.h"
-#include "viewer.h"
 
 using namespace std;
 

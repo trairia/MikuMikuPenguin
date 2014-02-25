@@ -443,8 +443,8 @@ void LogoRenderer::handleLogic()
 		
 		mmdPhysics->updateBones(doPhysics);*/
 		
-		glUseProgram(bulletPhysics->debugDrawer->shaderProgram);
-		setCamera(bulletPhysics->debugDrawer->MVPLoc);
+		/*glUseProgram(bulletPhysics->debugDrawer->shaderProgram);
+		setCamera(bulletPhysics->debugDrawer->MVPLoc);*/
 		glUseProgram(shaderProgram);
 		setCamera(MVP_loc);
 	}
@@ -559,7 +559,7 @@ void LogoRenderer::drawModel(bool drawEdges)
 			glEnable(GL_TEXTURE_2D);
 			
 			glBindTexture(GL_TEXTURE_2D,textures[pmxInfo->materials[m]->toonTextureIndex]);
-			//glUniform1iARB(uniformVars[uToonSampler], 2);
+			glUniform1iARB(uniformVars[uToonSampler], 2);
 		}
 		else if((int)pmxInfo->materials[m]->shareToon==1)
 		{
@@ -567,7 +567,7 @@ void LogoRenderer::drawModel(bool drawEdges)
 			glEnable(GL_TEXTURE_2D);
 			
 			glBindTexture(GL_TEXTURE_2D,textures[textures.size()-11+pmxInfo->materials[m]->shareToonTexture]);
-			//glUniform1iARB(uniformVars[uToonSampler], 2);
+			glUniform1iARB(uniformVars[uToonSampler], 2);
 		}
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,textures[pmxInfo->materials[m]->textureIndex]);
@@ -607,7 +607,7 @@ void LogoRenderer::setCamera(GLuint MVPLoc)
 	glm::mat4 View       = glm::lookAt(
 		glm::vec3(cameraPosition.x,cameraPosition.y,-cameraPosition.z), // Camera is at (4,3,3), in World Space
 		cameraTarget, // and looks at the origin
-		glm::vec3(0,-1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+		glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
 	);
 	//View= glm::rotate(0.0f,0.0f,0.0f,1.0f)* View;
 	// Model matrix : an identity matrix (model will be at the origin)
@@ -692,6 +692,9 @@ void LogoRenderer::render()
 	glPointSize(5.0);
 	//glClearDepth(1.0f);
 	
+	glDisable(GL_SCISSOR_TEST);
+    glEnable(GL_STENCIL_TEST);
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	handleEvents();
@@ -708,11 +711,6 @@ void LogoRenderer::render()
 
     glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 
     glFrontFace(GL_CW);
     glCullFace(GL_FRONT);

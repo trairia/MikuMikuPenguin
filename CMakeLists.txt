@@ -45,3 +45,4 @@ set(libmmp_dep ${libmmp_dep}
 
 add_subdirectory(libmmp)
 add_subdirectory(src)
+add_subdirectory(demos/PMXViewer)

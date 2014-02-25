@@ -51,7 +51,7 @@ public:
 		funcs->initializeOpenGLFunctions();*/
 				
 		logo=new LogoRenderer(NULL);
-        logo->initialize();
+        //logo->initialize();
         
         //window->openglContext()->makeCurrent(window);
     }

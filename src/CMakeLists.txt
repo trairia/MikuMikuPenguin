@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.11)
 project(MMPEditor)
 
-include_directories(SYSTEM /home/sn0w75/Applications/Qt/5.2.1/gcc_64/include/QtWidgets)
+#include_directories(SYSTEM /home/sn0w75/Applications/Qt/5.2.1/gcc_64/include/QtWidgets)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
