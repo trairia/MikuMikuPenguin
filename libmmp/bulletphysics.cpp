@@ -22,7 +22,11 @@ BulletPhysics::BulletPhysics(std::string vertexShaderPath, std::string fragmentS
 	
 	dynamicsWorld=new btDiscreteDynamicsWorld(dispatcher,overlappingPairCache,solver,collisionConfiguration);
 	
-	dynamicsWorld->setGravity(btVector3(0,-10,0));
+	// gravity scaling
+	// official height of miku = 1.58[m]
+	// typical height of miku in pmx = 20
+	const double gravity = 9.80665*20/1.58;
+	dynamicsWorld->setGravity(btVector3(0,-gravity,0));
 	
 	if(vertexShaderPath!="" && fragmentShaderPath!="")
 	{
@@ -135,7 +139,7 @@ void BulletPhysics::MoveRigidBody(btRigidBody* body, const glm::mat4* world)
 
 void BulletPhysics::StepSimulation()
 {
-	dynamicsWorld->stepSimulation(1.0f/60.0f, 10);
+	dynamicsWorld->stepSimulation(1.0f/60.0f, 10, 1.0f/120.0f);
 }
 
 void BulletPhysics::SetDebugMode(int mode)
