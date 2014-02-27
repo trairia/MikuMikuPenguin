@@ -15,6 +15,9 @@
 #include "bulletphysics.h"
 #include "mmdphysics.h"
 
+#include <QCoreApplication>
+#include <QLocale>
+
 using namespace ClosedMMDFormat;
 using namespace std;
 
@@ -38,8 +41,27 @@ LogoRenderer::LogoRenderer(QWindow *window)
 
 void LogoRenderer::init()
 {
-	pmxInfo=&readPMX(DATA_PATH"/model/tdamiku/","tdamiku.pmx");
-	vmdInfo=&readVMD(DATA_PATH"/motion/私の時間/私の時間_short_Lat式ミク.vmd");
+	string modelPath=QCoreApplication::arguments().at(1).toUtf8().constData();
+	string motionPath=QCoreApplication::arguments().at(2).toUtf8().constData();
+	
+	int index=modelPath.rfind("/");
+	string modelFilePath,modelFolderPath;
+	
+	if(index==-1)
+	{
+		modelFolderPath="";
+		modelFilePath=modelPath;
+	}
+	else
+	{
+		modelFilePath=modelPath.substr(index);
+		modelFolderPath=modelPath.substr(0,index);
+	}
+	
+	pmxInfo=&readPMX(modelFolderPath,modelFilePath);
+	vmdInfo=&readVMD(motionPath);
+	//pmxInfo=&readPMX(DATA_PATH"/model/tdamiku/","tdamiku.pmx");
+	//vmdInfo=&readVMD(DATA_PATH"/motion/私の時間/私の時間_short_Lat式ミク.vmd");
 	
 	ifstream test("shaders/model.vert");
 	if(!test.is_open())
