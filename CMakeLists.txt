@@ -22,6 +22,7 @@ find_package(GLEW REQUIRED)
 find_package(Bullet REQUIRED)
 find_package(GLM REQUIRED)
 find_package(SOIL REQUIRED)
+find_package(Iconv REQUIRED)
 
 ### set include path
 include_directories(
@@ -30,7 +31,8 @@ include_directories(
   ${GLEW_INCLUDE_DIR}
   ${BULLET_INCLUDE_DIR}
   ${GLM_INCLUDE_DIR}
-  ${SOIL_INCLUDE_DIR})
+  ${SOIL_INCLUDE_DIR}
+	${ICONV_INCLUDE_DIR})
 
 if(MSYS)
   set(libmmp_dep iconv)
@@ -41,7 +43,8 @@ set(libmmp_dep ${libmmp_dep}
   ${GLEW_LIBRARY}
   ${OPENGL_glu_LIBRARY}
   ${OPENGL_gl_LIBRARY}
-  ${BULLET_LIBRARIES})
+  ${BULLET_LIBRARIES}
+  ${ICONV_LIBRARIES})
 
 add_subdirectory(libmmp)
 add_subdirectory(src)
