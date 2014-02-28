@@ -12,12 +12,12 @@ using namespace std;
 
 const GLchar* ReadShader(const char* filename)
 {
-#ifdef _WIN32
+#ifdef _MSVC
 	FILE* infile;
-	fopen( &infile, filename, "rb" );
+	fopen_s( &infile, filename, "rb" );
 #else
     FILE* infile = fopen( filename, "rb" );
-#endif //_WIN32
+#endif //_MSVC
 
     if ( !infile ) {
 #ifdef _DEBUG
