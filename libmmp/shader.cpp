@@ -12,7 +12,7 @@ using namespace std;
 
 const GLchar* ReadShader(const char* filename)
 {
-#ifdef _MSVC
+#if defined(_MSVC) || defined(_WIN32)
 	FILE* infile;
 	fopen_s( &infile, filename, "rb" );
 #else
