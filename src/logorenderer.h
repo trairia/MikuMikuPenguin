@@ -17,6 +17,10 @@
 
 #define BUFFER_OFFSET(offset) ((void *) (offset))
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 enum VAO_IDs { Vertices, NumVAOs };
 enum Buffer_IDs { VertexArrayBuffer, VertexIndexBuffer, RecordBuffer, NumBuffers };
 enum Attrib_IDs { vPosition, vUV, vNormal, vBoneIndices, vBoneWeights, vWeightFormula };

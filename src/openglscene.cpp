@@ -100,7 +100,7 @@ void OpenGLScene::loadTextures()
 	//Warning: Commented-out FreeImage code below is buggy (DOES NOT WORK)
 	
 	//FreeImage_Initialise();	
-	
+	QOpenGLFunctions_4_3_Core glFuncs;        
 	for(int i=0; i<pmxInfo->texture_continuing_datasets; ++i)
 	{
 		cout<<"Loading "<<pmxInfo->texturePaths[i]<<"...";
@@ -119,7 +119,7 @@ void OpenGLScene::loadTextures()
 			}
 			test.close();
 			
-			glActiveTexture( GL_TEXTURE0 );
+			glFuncs.glActiveTexture( GL_TEXTURE0 );
 			glGenTextures( 1, &texture );
 			glBindTexture( GL_TEXTURE_2D, texture );
 				image = SOIL_load_image( loc.c_str(), &width, &height, 0, SOIL_LOAD_RGBA );
@@ -160,7 +160,7 @@ void OpenGLScene::loadTextures()
 			}
 			test.close();
 			
-			glActiveTexture( GL_TEXTURE0 );
+			glFuncs.glActiveTexture( GL_TEXTURE0 );
 			glGenTextures( 1, &texture );
 			glBindTexture( GL_TEXTURE_2D, texture );
 				image = SOIL_load_image( loc.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA );
@@ -200,7 +200,7 @@ void OpenGLScene::loadTextures()
 			}
 			test.close();
 			
-			glActiveTexture(GL_TEXTURE0);
+			glFuncs.glActiveTexture(GL_TEXTURE0);
 			glGenTextures( 1, &texture );
 			glBindTexture( GL_TEXTURE_2D, texture );
 			image = SOIL_load_image( loc.c_str(), &width, &height, 0, SOIL_LOAD_RGB );

@@ -39,6 +39,7 @@ ${CMAKE_BINARY_DIR}/qml
 )
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(MMPEditor mmp SOIL ${Qt5Widgets_LIBRARIES} ${libmmp_dep})
+target_link_libraries(MMPEditor mmp ${SOIL_LIBRARY}
+  ${Qt5Widgets_LIBRARIES} ${libmmp_dep})
 
 qt5_use_modules(MMPEditor Core Quick Gui Widgets OpenGL)
